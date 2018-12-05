@@ -1,0 +1,86 @@
+.my-game {
+  color: green;
+}
+
+#invite-player-row.hidden {
+  display: none;
+  border: 1px solid #3490dc;
+}
+
+#invite-players-list {
+  height: 200px;
+  overflow-y: scroll;
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.invite-player-chk {
+  margin-bottom: 5px;
+  text-overflow: ellipsis;
+}
+
+#new-game-modal .modal-dialog {
+  max-width: 800px;
+}
+
+.player {
+  display: inline-block;
+  border: 2px solid #3490dc;
+  margin-right: 10px;
+  border-radius: 20px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#players-list {
+  display: inline;
+}
+
+.rem-player-btn {
+  color: red;
+}
+
+#add-players-btn {
+  color: green;
+}
+
+/************** FULL CALENDAR *****************/
+
+.booking {
+  font-size: 16px;
+  text-align: center;
+}
+
+.one-court {
+  background-color: #ffda76 !important;
+}
+
+.two-court {
+  background-color: #fb9c9c !important;
+}
+
+.fc-ltr .fc-time-grid .fc-event-container {
+  margin: 0px;
+}
+
+.fc-content .fc-time {
+  display: none;
+}
+
+.fc-slats tr:hover,
+.highlighted-col {
+  background-color: #00000010;
+}
+
+/************ Game Modal **************************/
+
+#game-modal .modal-dialog {
+  max-width: 800px;
+}
+
+.court-wrap {
+  min-height: 300px;
+  border: 1px solid black;
+}
+

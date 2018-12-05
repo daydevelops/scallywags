@@ -1,0 +1,30 @@
+#user-image {
+  height: 200px;
+  width: 200px;
+  border: 1px solid red;
+  border-radius: 50%;
+  display: block;
+  margin: auto;
+}
+
+#personal-info-wrapper {
+  text-align: center;
+}
+
+.user-game {
+  cursor: pointer;
+}
+
+.user-game:hover {
+  color: #444;
+}
+
+#invite-player-row.hidden {
+  display: none;
+}
+
+#gm-players,
+#invite-player-row {
+  margin-top: 15px;
+}
+
