@@ -2,7 +2,7 @@
 
 An application for a local racquetball group
 
-This project is still under construction
+This project is still under construction.
 
 ## What is RballNL?
 
