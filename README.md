@@ -1,9 +1,11 @@
 # RballNL
+
 An application for a local racquetball group
 
 This project is still under construction
 
 ## What is RballNL?
+
 I have a local racquetball group that I play with on a regular basis and I noticed that communication, both internal and public, could be improved.
 My main goal in developing this website was to provide myself with a fresh new project that I can use to teach myself the Laravel framework using a real world example. 
 
