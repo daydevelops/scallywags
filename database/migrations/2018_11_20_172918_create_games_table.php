@@ -16,7 +16,7 @@ class CreateGamesTable extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('event_id');
-            $table->date('gamedate');
+            $table->string('gamedate');
             $table->boolean('private');
             $table->boolean('admin-created');
             $table->timestamps();
