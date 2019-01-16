@@ -16,6 +16,7 @@ Route::get('/home', 'HomeController@home')->name('home');
 Route::get('/contact', 'HomeController@contact');
 Route::get('/about', 'HomeController@about');
 
+Route::get('/test', 'GamesController@test');
 
 // Route::get('/forum', 'ForumController@index');
 
