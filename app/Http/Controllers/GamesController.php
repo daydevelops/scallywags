@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Game;
 use App\User;
 use App\Event;
+use App\GameUser;
 use Illuminate\Http\Request;
 
 class GamesController extends Controller
@@ -66,13 +67,17 @@ class GamesController extends Controller
         }
 
         $game = Game::create($data);
-        $game->join();
+		GameUser::create([
+			'game_id'=>$game->id,
+			'user_id'=>auth()->id(),
+			'confirmed'=>1
+		]);
         if ($request->input('users')!=null) { // jquery ajax wont send users if array is empty
             foreach ($request->input('users') as $u) {
                 $game->invite((int)$u);
             }
         }
-        return response()->json(array('status'=>1,'fb'=>'Court has been booked'));;
+        return response()->json(array('status'=>1,'fb'=>'Court has been booked'));
     }
 
     public function togglePrivate(Request $request,Game $game) {
@@ -95,4 +100,30 @@ class GamesController extends Controller
     public function join(Game $game) {
         return response()->json($game->join());
     }
+
+	public function test() {
+		$data = array(
+            'private'=>'1',
+            'gamedate'=>time
+        );
+        $data['admin-created'] = auth()->user()->is_admin;
+        // echo json_encode($data);
+        // return null;
+        // try to book the court
+        $event_id = Event::bookCourt($data['gamedate']); // 0 -> all booked out, int>0 -> event_id
+        if ($event_id==0) { // both courts booked
+            return response()->json(array('status'=>0,'fb'=>'both courts are booked'));
+        } else {
+            $data['event_id']=$event_id;
+        }
+
+        $game = Game::create($data);
+        $game->join();
+        if ($request->input('users')!=null) { // jquery ajax wont send users if array is empty
+            foreach ($request->input('users') as $u) {
+                $game->invite((int)$u);
+            }
+        }
+        return response()->json(array('status'=>1,'fb'=>'Court has been booked'));
+	}
 }
