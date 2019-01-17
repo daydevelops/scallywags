@@ -374,40 +374,40 @@ window.filterGames = function () {
 		// check each game
 		// debugger
 		window.games.forEach(function (game, key) {
-			// first check game type
-			if (gt == 'public' && game.private == 1) {
-				//fail
-			} else if (gt == 'private' && game.private == 0) {
-				//fail
-			} else {
-				// game is correct Type
+			chk1 = false; // check 1: is the game type correct?
+			chk2 = false; // check 2: is the player_to_find a member of the game?
 
-				// if looking for a game that we are playing
-				if (false) {//
-					//
-				} else if (player_to_find !== '0' && game.users_public) {
-					// debugger
-					// can only see players for public games, or private games you have joined
+			// filter by game type first
+			if (gt == 'public' && game.private == 0) {
+				chk1 = true;
+			} else if (gt == 'private' && game.private == 1) {
+				chk1 = true;
+			} else if (gt == 'any') {
+				chk1 = true;
+			}
+
+			// short circuit
+			if (chk1 && player_to_find !== '0') {
+
+				// filter by player
+				// for private games, you cant see players unless the user is one
+				// if filtering by player and private, only show the users private games if applicable
+				if (game.users_public) {
 					var players = game.users_public;
-					var filters_passed = false;
 					players.forEach(function (player, key) {
 						if (player.pivot.user_id == player_to_find) {
-							filters_passed = true;
+							chk2 = true;
 						}
 					});
-					if (filters_passed) {
-						event_ids.push(game.event_id);
-					}
-				} else {
-					//only filter by game type
-					if (game.users_public) {
-						event_ids.push(game.event_id);
-					}
 				}
+			} else {
+				chk2 = true;
+			}
+
+			if (chk1 && chk2) {
+				event_ids.push(game.event_id);
 			}
 		});
-		// debugger
-		// add event object to array
 		window.events.forEach(function (event, key) {
 			// debugger
 			if ($.inArray(event.id, event_ids) !== -1) {
