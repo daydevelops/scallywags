@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Mail\InvitedToGame;
 
 class Game extends Model
 {
@@ -65,6 +66,11 @@ class Game extends Model
     }
 
     public function invite($user_id) {
+
+		\Mail::to(User::find($user_id)->email)->send(
+			new InvitedToGame(User::find($user_id),$this)
+		);
+
         GameUser::create([
             'game_id'=>$this->id,
             'user_id'=>$user_id,
