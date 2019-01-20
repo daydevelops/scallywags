@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class InvitedToGame extends Mailable
+class GameInvite extends Mailable
 {
     use Queueable, SerializesModels;
 	public $user;
