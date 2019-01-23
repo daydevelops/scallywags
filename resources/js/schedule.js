@@ -1,5 +1,6 @@
 ///////////////////// GLOBAL VARIABLES /////////////////////////
 window.players = [];
+window.users = [];
 window.games = [];
 window.events = [];
 window.calendar;
@@ -15,6 +16,7 @@ window.addEventListener('load',() => {
 		window.games = data.games;
 		console.log(window.games)
 		window.events = data.events;
+		window.users = data.users;
 		initCalendar();
 		showGames(window.events);
 	});
@@ -47,14 +49,15 @@ window.initCalendar = () => {
 }
 
 window.showGames = (events) => {
-	// console.log('showing events')
+	console.log('showing events')
 	events.forEach((evt,key) => {
+		// debugger
 		if (evt.title.charAt(0)=='1') { // 1 court is booked
 			evt.className = 'one-court booking';
 		} else if (evt.title.charAt(0)=='2') { // 2 courts are booked
 			evt.className = 'two-court booking';
 		}
-		$('#calendar').fullCalendar('renderEvent',evt,false);
+		$('#calendar').fullCalendar('renderEvent',evt,true);
 	})
 	// console.log(window.events);
 }
@@ -202,22 +205,37 @@ window.populateCourtInformation = (court,game) => {
 		if (game.isPlaying) {
 
 			var leave_btn = document.createElement('button');
-			leave_btn.classList.add('btn','btn-danger','d-inline');
+			leave_btn.classList.add('btn','btn-danger','d-block','m-auto');
 			leave_btn.innerHTML = "Leave Game";
 			leave_btn.onclick = () => {
 				leaveGame(game.id);
 			}
 
+			var invite_sel = document.createElement('select');
+			invite_sel.id = 'invite-to-'+game.id;
+			window.users.forEach((user,key) => {
+				if (game.users_public.find(up => up.pivot.user_id === user.id) || game.invites_public.find(up => up.pivot.user_id === user.id)) {
+					// ignore users already playing or invited
+				} else {
+					var opt = document.createElement('option');
+					opt.value = user.id;
+					opt.innerHTML = user.name;
+					invite_sel.appendChild(opt);
+				}
+			})
+			// create list of players not already playing or invited
 			var invite_btn = document.createElement('button');
 			invite_btn.classList.add('btn','btn-secondary','d-inline');
 			invite_btn.innerHTML = "Invite";
 			invite_btn.onclick = () => {
-				console.log('invite');
+				invitePlayer(game.id);
 			}
 
+
 			var btn_row = document.createElement('div');
-			btn_row.appendChild(leave_btn);
+			btn_row.appendChild(invite_sel);
 			btn_row.appendChild(invite_btn);
+			btn_row.appendChild(leave_btn);
 
 		} else {
 			var join_btn = document.createElement('button');
@@ -274,7 +292,44 @@ window.joinGame = (game_id) => {
 		}
 	});
 }
+window.toggleGamePrivate = () => {
+    console.log('toggle private');
 
+    $.ajax({
+        type:'post',
+        url:'/game/'+window.game.id+'/toggleprivate',
+        headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+        success: function(res) {
+            console.log(res);
+			if (res.status==1) {
+				location.reload();
+			}
+        },
+        error:function(err) {
+            console.log(err.responseText);
+        }
+    });
+}
+
+
+window.invitePlayer = (game_id) => {
+    var player = $('#invite-to-'+game_id).val();
+    $.ajax({
+        type:'post',
+        url:'/game/'+game_id+'/invite/'+player+'',
+        headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+        success: function(res) {
+            console.log(res);
+			if (res.status==1) {
+				location.reload();
+			}
+        },
+        error:function(err) {
+            console.log(err.responseText);
+        }
+    });
+    window.toggleInviteInput();
+}
 ////////////////////////////////////////////////////////////////
 
 //////////////////////// MISC FUNCTIONS ///////////////////

@@ -35,4 +35,8 @@ class User extends Authenticatable
     public function invites() {
         return $this->belongsToMany(Game::class)->wherePivot('confirmed','0');
     }
+
+	public static function allPublic() {
+		return User::select('id','name','skill','image')->get();
+	}
 }

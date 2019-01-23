@@ -74,6 +74,7 @@ class Game extends Model
             'user_id'=>$user_id,
             'confirmed'=>0
         ]);
+		return array('status'=>1,'fb'=>'Invitation sent');
 
     }
 

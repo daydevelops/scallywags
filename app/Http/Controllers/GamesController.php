@@ -37,7 +37,8 @@ class GamesController extends Controller
             $g->isPlaying = $g->isPlaying();
         }
         $events = Event::all();
-        return json_encode(compact('games','events'));
+		$users = User::allPublic();
+        return json_encode(compact('games','events','users'));
     }
 
     public function show(Game $game) {
@@ -91,7 +92,8 @@ class GamesController extends Controller
     }
 
     public function invite(Request $request,Game $game,User $user) {
-        $game->invite($user->id);
+        return response()->json($game->invite($user->id));
+
     }
 
     public function leave(Game $game) {
