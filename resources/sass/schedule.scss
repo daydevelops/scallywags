@@ -73,3 +73,15 @@
     min-height:300px;
     border:1px solid black;
 }
+.game-type-btn {
+	padding:5px;
+	cursor:pointer;
+	margin-right:30px;
+	border-radius:5px;
+}
+.game-type-btn:hover {
+	background-color:#CCC;
+}
+.game-type-btn.selected {
+	border:1px solid green;
+}

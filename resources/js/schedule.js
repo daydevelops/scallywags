@@ -181,11 +181,25 @@ window.populateCourtInformation = (court,game) => {
 		court.innerHTML = 'This booking is private';
 	}else if (game.private==0 || game.isPlaying) { // if game is public or owned by user
 		var header = document.createElement('h4');
+		var private_btn = document.createElement('span');
+		private_btn.classList.add('game-type-btn');
+		private_btn.innerHTML = "Private";
+		var public_btn = document.createElement('span');
+		public_btn.classList.add('game-type-btn');
+		public_btn.innerHTML = "Public";
 		if (game.private==1) {
-			header.innerHTML = 'Private Game';
+			private_btn.classList.add('selected');
 		} else {
-			header.innerHTML = 'Public Game';
+			public_btn.classList.add('selected');
 		}
+		private_btn.onclick = () => {
+			toggleGamePrivate(game,private_btn,public_btn);
+		}
+		public_btn.onclick = () => {
+			toggleGamePrivate(game,private_btn,public_btn);
+		}
+		header.appendChild(private_btn);
+		header.appendChild(public_btn);
 
 		// show list of players and invites
 		var player_list = document.createElement('ul');
@@ -292,43 +306,43 @@ window.joinGame = (game_id) => {
 		}
 	});
 }
-window.toggleGamePrivate = () => {
-    console.log('toggle private');
+window.toggleGamePrivate = (game,private_btn,public_btn) => {
+	console.log('toggle private');
 
-    $.ajax({
-        type:'post',
-        url:'/game/'+window.game.id+'/toggleprivate',
-        headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-        success: function(res) {
-            console.log(res);
+	$.ajax({
+		type:'post',
+		url:'/game/'+game.id+'/toggleprivate',
+		headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+		success: function(res) {
+			console.log(res);
 			if (res.status==1) {
 				location.reload();
 			}
-        },
-        error:function(err) {
-            console.log(err.responseText);
-        }
-    });
+		},
+		error:function(err) {
+			console.log(err.responseText);
+		}
+	});
 }
 
 
 window.invitePlayer = (game_id) => {
-    var player = $('#invite-to-'+game_id).val();
-    $.ajax({
-        type:'post',
-        url:'/game/'+game_id+'/invite/'+player+'',
-        headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
-        success: function(res) {
-            console.log(res);
+	var player = $('#invite-to-'+game_id).val();
+	$.ajax({
+		type:'post',
+		url:'/game/'+game_id+'/invite/'+player+'',
+		headers:{'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')},
+		success: function(res) {
+			console.log(res);
 			if (res.status==1) {
 				location.reload();
 			}
-        },
-        error:function(err) {
-            console.log(err.responseText);
-        }
-    });
-    window.toggleInviteInput();
+		},
+		error:function(err) {
+			console.log(err.responseText);
+		}
+	});
+	window.toggleInviteInput();
 }
 ////////////////////////////////////////////////////////////////
 
