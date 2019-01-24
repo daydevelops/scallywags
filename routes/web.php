@@ -16,11 +16,8 @@ Route::get('/home', 'HomeController@home')->name('home');
 Route::get('/contact', 'HomeController@contact');
 Route::get('/about', 'HomeController@about');
 
-Route::get('/test', 'GamesController@test');
-
-// Route::get('/forum', 'ForumController@index');
-
-// Route::get('/messages', 'Controller@contact');
+Route::get('/forum', 'ThreadsController@index');
+Route::get('/forum/{thread}', 'ThreadsController@show');
 
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/dashboard/{game}','DashboardController@editGame');
