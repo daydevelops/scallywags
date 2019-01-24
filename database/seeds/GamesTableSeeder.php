@@ -60,9 +60,21 @@ class GamesTableSeeder extends Seeder
                 'user_id'=>$randUser1->id,
                 'confirmed'=>1
             ]);
-            $game->invite($randUser2->id);
-            $game->invite($randUser3->id);
-            $game->invite($randUser4->id);
+			App\GameUser::create([
+                'game_id'=>$game->id,
+                'user_id'=>$randUser2->id,
+                'confirmed'=>1
+            ]);
+			App\GameUser::create([
+                'game_id'=>$game->id,
+                'user_id'=>$randUser3->id,
+                'confirmed'=>1
+            ]);
+			App\GameUser::create([
+                'game_id'=>$game->id,
+                'user_id'=>$randUser4->id,
+                'confirmed'=>1
+            ]);
         }
     }
 }
