@@ -16,4 +16,6 @@ mix.js('resources/js/app.js', 'public/js')
     .js('resources/js/schedule.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/dashboard.scss', 'public/css')
-    .sass('resources/sass/schedule.scss', 'public/css');
+    .sass('resources/sass/schedule.scss', 'public/css')
+    .sass('resources/sass/thread.scss', 'public/css')
+    .sass('resources/sass/forum.scss', 'public/css');

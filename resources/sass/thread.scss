@@ -1,0 +1,19 @@
+@import 'variables';
+
+.thread {
+	border:1px solid grey;
+	border-radius:5px;
+	padding:5px;
+	box-shadow:0px 0px 3px #444;
+	margin:15px 0px;
+}
+
+.thread-date, .thread-user {
+	margin:0px;
+}
+.reply {
+	border:1px solid grey;
+	border-radius:5px;
+	padding:5px;
+	box-shadow:0px 0px 3px #444;
+}
