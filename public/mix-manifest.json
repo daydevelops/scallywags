@@ -5,6 +5,8 @@
     "/css/schedule.css": "/css/schedule.css",
     "/css/thread.css": "/css/thread.css",
     "/css/forum.css": "/css/forum.css",
+    "/js/thread.js": "/js/thread.js",
     "/js/schedule.js": "/js/schedule.js",
+    "/js/forum.js": "/js/forum.js",
     "/js/dashboard.js": "/js/dashboard.js"
 }
