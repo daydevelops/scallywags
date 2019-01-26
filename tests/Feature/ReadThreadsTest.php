@@ -27,7 +27,7 @@ class ReadThreadsTest extends TestCase
 	/** @test */
 	public function a_user_can_view_a_thread()
 	{
-	 	$response = $this->get('/forum/'.$this->thread->id);
+	 	$response = $this->get($this->thread->getPath());
 		$response->assertSee($this->thread->title);
 	}
 
@@ -35,8 +35,15 @@ class ReadThreadsTest extends TestCase
 	public function a_user_can_see_replies_to_a_thread() {
 		// given we have a thread with replies
 		// when we visit the thread
-		$response = $this->get('/forum/'.$this->thread->id);
+		$response = $this->get($this->thread->getPath());
 		// we should see the replies
 		$response->assertSee($this->replies[0]->body);
 	}
+
+	/** @test*/
+	public function an_unauthenticated_user_cannot_access_the_thread_create_page() {
+		$this->withExceptionHandling()->get('forum/new')->assertRedirect('/login');
+		$this->withExceptionHandling()->post('forum')->assertRedirect('/login');
+	}
+
 }

@@ -37,7 +37,7 @@ class ThreadReplyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Thread $thread)
+    public function store(Request $request, $category_id, Thread $thread)
     {
         $thread->addReply([
 			'body'=>$request->body,

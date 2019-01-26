@@ -8,12 +8,13 @@
 	<div class="container">
 		<div class="thread">
 			<div class="row thread-header">
-				<div class="col-4 text-left">
+				<div class="col-8 text-left">
+					<h2 class='thread-title'>{{$thread->title}}</h2>
+					<p class='thread-category'><small><em>{{$thread->category->name}}</em></small></p>
+				</div>
+				<div class="col-4 text-right">
 					<h4 class='thread-user'><a href='user/{{$thread->user->id}}'>{{$thread->user->name}}</a></h4>
 					<p class='thread-date'><small><em>{{$thread->created_at->diffForHumans()}}</em></small></p>
-				</div>
-				<div class="col-8 text-right">
-					<h2 class='thread-title'>{{$thread->title}}</h2>
 				</div>
 			</div>
 			<hr>
@@ -35,7 +36,7 @@
 			<p class='text-center'>Please <a href='/login'>sign in</a> to comment</p>
 		@endguest
 		<div id="new-reply-wrap">
-			<form method='POST' action="/forum/{{$thread->id}}/reply">
+			<form method='POST' action="/forum/{{$thread->category->slug}}/{{$thread->id}}/reply">
 				@csrf
 				<div class="row">
 					<div class="col-8 offset-2">

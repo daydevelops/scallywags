@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Thread;
+use App\Category;
 use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
@@ -28,7 +29,8 @@ class ThreadsController extends Controller
      */
     public function create()
     {
-        return view('forum/new');
+		$categories = Category::all();
+        return view('forum/new',compact('categories'));
     }
 
     /**
@@ -39,15 +41,17 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
+		// dd($request);
 		$data = request()->validate([
             'title'=>'required',
-            'body'=>'required'
+            'body'=>'required',
+			'category_id'=>'required'
         ]);
 		$data['user_id'] = auth()->user()->id;
 
-        Thread::create($data);
+        $thread = Thread::create($data);
 
-		return redirect('/forum');
+		return redirect($thread->getPath());
     }
 
     /**
@@ -56,7 +60,7 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Thread $thread)
+    public function show($category_id, Thread $thread)
     {
 		$replies = $thread->replies;
         return view('forum/show',compact('thread','replies'));

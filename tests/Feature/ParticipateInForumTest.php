@@ -14,19 +14,18 @@ class ParticipateInForumTest extends TestCase
 	public function an_authenticated_user_can_reply_to_a_thread()
 	{
 		// given we have an authenticated user,
-		$user = factory('App\User')->create();
-		$this->be($user);
+		$this->signIn();
 
 		// and we have a thread they can read
 		$thread = factory('App\Thread')->create();
 
 		// when the user replies to the thread
 		$reply = factory('App\ThreadReply')->make();
-		$this->post('/forum/'.$thread->id.'/reply',$reply->toArray());
+		$this->post($thread->getPath().'/reply',$reply->toArray());
 
 		$this->assertInstanceOf('App\ThreadReply',$thread->replies()->first());
 		// the reply should be visible on the thread page
-		$response = $this->get('/forum/'.$thread->id);
+		$response = $this->get($thread->getPath());
 		$response->assertSee($reply->body);
 	}
 
@@ -34,13 +33,13 @@ class ParticipateInForumTest extends TestCase
 	public function an_unauthenticated_user_can_not_reply_to_a_thread()
 	{
 		$this->expectException('Illuminate\Auth\AuthenticationException');
-		$this->post('/forum/1/reply',[]);
+		$this->post('/forum/foobar/1/reply',[]);
 	}
 
 	/** @test*/
 	public function an_authenticated_user_can_create_a_thread() {
 		// given we have a user who is signed in
-		$this->be($user = factory('App\User')->create());
+		$this->signIn();
 
 		// when a user submits a post request to add a thread
 		$thread = factory('App\Thread')->make();
@@ -51,10 +50,5 @@ class ParticipateInForumTest extends TestCase
 		$response->assertSee($thread->title);
 		$response->assertSee($thread->body);
 	}
-	
-	/** @test */
-	public function an_unauthenticated_user_can_not_create_a_thread() {
-		$this->expectException('Illuminate\Auth\AuthenticationException');
-		$this->post('/forum/',[]);
-	}
+
 }

@@ -8,7 +8,9 @@
 }
 
 .thread-date,
-.thread-user {
+.thread-user,
+.thread-title,
+.thread-category {
   margin: 0px;
 }
 

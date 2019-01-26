@@ -8,7 +8,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-9">@foreach ($threads as $t)
-				<div class="thread panel" onclick='window.location="forum/{{$t->id}}"'>
+				<div class="thread panel" onclick='window.location="{{$t->getPath()}}"'>
 					<div class="row thread-header">
 						<div class="col-8 text-left">
 							<h2 class='thread-title'>{{$t->title}}</h2>
