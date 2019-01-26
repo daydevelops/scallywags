@@ -51,4 +51,42 @@ class ParticipateInForumTest extends TestCase
 		$response->assertSee($thread->body);
 	}
 
+	/** @test */
+	public function a_thread_requires_a_title() {
+		$this->publishThread(['title'=>null])->assertSessionHasErrors('title');
+	}
+	/** @test */
+	public function a_thread_requires_a_body() {
+		$this->publishThread(['body'=>null])->assertSessionHasErrors('body');
+	}
+	/** @test */
+	public function a_thread_requires_a_valid_category() {
+		factory('App\Category',5)->create();
+		$this->publishThread(['category_id'=>null])->assertSessionHasErrors('category_id');
+		$this->publishThread(['category_id'=>999999])->assertSessionHasErrors('category_id');
+	}
+
+	/** @test */
+	public function a_reply_requires_a_valid_thread() {
+		$this->publishReply(['thread_id'=>999])->assertSessionHasErrors('thread_id');
+		$this->publishReply(['thread_id'=>null])->assertSessionHasErrors('thread_id');
+	}
+	/** @test */
+	public function a_reply_requires_a_body() {
+		$this->publishReply(['body'=>null])->assertSessionHasErrors('body');
+	}
+
+	public function publishThread($overrides=[]) {
+		$this->signIn();
+		$thread = factory('App\Thread')->make($overrides);
+		return $this->withExceptionHandling()->post('/forum/',$thread->toArray());
+	}
+	public function publishReply($overrides=[]) {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->make($overrides);
+		return $this->withExceptionHandling()->post($thread->getPath().'/reply/',$reply->toArray());
+	}
+
+
 }

@@ -39,10 +39,13 @@ class ThreadReplyController extends Controller
      */
     public function store(Request $request, $category_id, Thread $thread)
     {
-        $thread->addReply([
-			'body'=>$request->body,
-			'user_id'=>auth()->user()->id
-		]);
+		$data = request()->validate([
+            'thread_id'=>'required|exists:threads,id',
+            'body'=>'required'
+        ]);
+		$data['user_id'] = auth()->user()->id;
+
+        $thread->addReply($data);
 		return back();
     }
 
