@@ -28,7 +28,7 @@ class ThreadsController extends Controller
      */
     public function create()
     {
-        //
+        return view('forum/new');
     }
 
     /**
@@ -39,7 +39,15 @@ class ThreadsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+		$data = request()->validate([
+            'title'=>'required',
+            'body'=>'required'
+        ]);
+		$data['user_id'] = auth()->user()->id;
+
+        Thread::create($data);
+
+		return redirect('/forum');
     }
 
     /**

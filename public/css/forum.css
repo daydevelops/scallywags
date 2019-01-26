@@ -1,10 +1,4 @@
 .thread {
-  border: 1px solid grey;
-  border-radius: 5px;
-  padding: 5px;
-  -webkit-box-shadow: 0px 0px 3px #444;
-          box-shadow: 0px 0px 3px #444;
-  margin: 15px 0px;
   cursor: pointer;
 }
 
@@ -18,5 +12,14 @@
 .thread-date,
 .thread-user {
   margin: 0px;
+}
+
+.panel {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+  -webkit-box-shadow: 0px 0px 3px #444;
+          box-shadow: 0px 0px 3px #444;
+  margin: 15px 0px;
 }
 
