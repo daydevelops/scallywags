@@ -17,7 +17,8 @@ Route::get('/contact', 'HomeController@contact');
 Route::get('/about', 'HomeController@about');
 
 Route::get('/forum', 'ThreadsController@index');
-Route::get('/forum/{thread}', 'ThreadsController@show');
+Route::post('forum/{thread}/reply','ThreadReplyController@store');
+Route::get('/forum/{thread}','ThreadsController@show');
 
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/dashboard/{game}','DashboardController@editGame');

@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\ThreadReply;
+use App\Thread;
 use Illuminate\Http\Request;
 
 class ThreadReplyController extends Controller
 {
+	public function __construct() {
+		$this->middleware('auth')->except(['index','show']);
+	}
     /**
      * Display a listing of the resource.
      *
@@ -33,9 +37,13 @@ class ThreadReplyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Thread $thread)
     {
-        //
+        $thread->addReply([
+			'body'=>$request->body,
+			'user_id'=>auth()->user()->id
+		]);
+		return back();
     }
 
     /**

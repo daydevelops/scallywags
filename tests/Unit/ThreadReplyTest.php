@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ThreadReply extends TestCase
+class ThreadReplyTest extends TestCase
 {
 	use DatabaseMigrations;
     /** @test */
