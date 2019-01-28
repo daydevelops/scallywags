@@ -36,12 +36,13 @@
 			<p class='text-center'>Please <a href='/login'>sign in</a> to comment</p>
 		@endguest
 		<div id="new-reply-wrap">
+			@include('components.error')
 			<form method='POST' action="/forum/{{$thread->category->slug}}/{{$thread->id}}/reply">
 				@csrf
 				<div class="row">
 					<div class="col-8 offset-2">
 						<div class="form-group">
-							<textarea class='form-control' name="body" id="new-reply" rows="5" placeholder="Have something to say?"></textarea>
+							<textarea class='form-control' name="body" id="new-reply" rows="5" placeholder="Have something to say?" value="{{old('body')}}"></textarea>
 						</div>
 					</div>
 				</div>

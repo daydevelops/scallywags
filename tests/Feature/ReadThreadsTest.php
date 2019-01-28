@@ -46,4 +46,16 @@ class ReadThreadsTest extends TestCase
 		$this->withExceptionHandling()->post('forum')->assertRedirect('/login');
 	}
 
+	/** @test */
+	public function a_user_can_browse_thread_by_category() {
+		$cat = factory('App\Category')->create();
+		$thread_in_cat = factory('App\Thread')->create(['category_id'=>$cat->id]);
+		$thread_not_in_cat = factory('App\Thread')->create();
+
+		$this->get('forum/'.$cat->slug)
+			->assertSee($thread_in_cat->title)
+			->assertDontSee($thread_not_in_cat->title);
+
+	}
+
 }

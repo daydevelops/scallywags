@@ -11,92 +11,97 @@ class ThreadsController extends Controller
 	public function __construct() {
 		$this->middleware('auth')->except(['index','show']);
 	}
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-		$threads = Thread::all();
-        return view('forum/index',compact('threads'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+	/**
+	* Display a listing of the resource.
+	*
+	* @return \Illuminate\Http\Response
+	*/
+	public function index(Category $category)
+	{
+		if ($category->exists) {
+			$threads = $category->threads()->latest()->get();
+		} else {
+			$threads = Thread::all();
+		}
 		$categories = Category::all();
-        return view('forum/new',compact('categories'));
-    }
+		return view('forum/index',compact('threads','categories'));
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+	/**
+	* Show the form for creating a new resource.
+	*
+	* @return \Illuminate\Http\Response
+	*/
+	public function create()
+	{
+		$categories = Category::all();
+		return view('forum/new',compact('categories'));
+	}
+
+	/**
+	* Store a newly created resource in storage.
+	*
+	* @param  \Illuminate\Http\Request  $request
+	* @return \Illuminate\Http\Response
+	*/
+	public function store(Request $request)
+	{
 		// dd($request);
 		$data = request()->validate([
-            'title'=>'required',
-            'body'=>'required',
+			'title'=>'required',
+			'body'=>'required',
 			'category_id'=>'required|exists:categories,id'
-        ]);
+		]);
 		$data['user_id'] = auth()->user()->id;
 
-        $thread = Thread::create($data);
+		$thread = Thread::create($data);
 
 		return redirect($thread->getPath());
-    }
+	}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function show($category_id, Thread $thread)
-    {
+	/**
+	* Display the specified resource.
+	*
+	* @param  \App\Thread  $thread
+	* @return \Illuminate\Http\Response
+	*/
+	public function show($category_id, Thread $thread)
+	{
 		$replies = $thread->replies;
-        return view('forum/show',compact('thread','replies'));
-    }
+		return view('forum/show',compact('thread','replies'));
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Thread $thread)
-    {
-        //
-    }
+	/**
+	* Show the form for editing the specified resource.
+	*
+	* @param  \App\Thread  $thread
+	* @return \Illuminate\Http\Response
+	*/
+	public function edit(Thread $thread)
+	{
+		//
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Thread $thread)
-    {
-        //
-    }
+	/**
+	* Update the specified resource in storage.
+	*
+	* @param  \Illuminate\Http\Request  $request
+	* @param  \App\Thread  $thread
+	* @return \Illuminate\Http\Response
+	*/
+	public function update(Request $request, Thread $thread)
+	{
+		//
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Thread $thread)
-    {
-        //
-    }
+	/**
+	* Remove the specified resource from storage.
+	*
+	* @param  \App\Thread  $thread
+	* @return \Illuminate\Http\Response
+	*/
+	public function destroy(Thread $thread)
+	{
+		//
+	}
 }

@@ -34,6 +34,17 @@
 					<hr>
 					<a class='btn btn-primary btn-lrg d-block' href='/forum/new'>Submit New Post</a>
 					<hr>
+					<div class="nav-item dropdown" id='categories-dropdown'>
+						<a class="nav-link dropdown-toggle text-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							Categories
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+							@foreach ($categories as $c)
+								<a class="dropdown-item text-center" href="/forum/{{$c->slug}}">{{$c->name}}</a>
+							@endforeach
+						</div>
+					</div>
+					<hr>
 					<h4 class='text-center'><b>Rules</b></h4>
 					<small>
 						<ol>
