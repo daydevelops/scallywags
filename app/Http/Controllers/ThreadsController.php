@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Thread;
 use App\Category;
+use App\Filters\ThreadFilter;
 use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
@@ -16,13 +17,14 @@ class ThreadsController extends Controller
 	*
 	* @return \Illuminate\Http\Response
 	*/
-	public function index(Category $category)
+	public function index(Category $category, ThreadFilter $filters)
 	{
 		if ($category->exists) {
-			$threads = $category->threads()->latest()->get();
+			$threads = $category->threads()->latest();
 		} else {
-			$threads = Thread::all();
+			$threads = Thread::latest();
 		}
+		$threads = $threads->filter($filters)->get();
 		$categories = Category::all();
 		return view('forum/index',compact('threads','categories'));
 	}

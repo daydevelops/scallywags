@@ -67,11 +67,6 @@ class ParticipateInForumTest extends TestCase
 	}
 
 	/** @test */
-	public function a_reply_requires_a_valid_thread() {
-		$this->publishReply(['thread_id'=>999])->assertSessionHasErrors('thread_id');
-		$this->publishReply(['thread_id'=>null])->assertSessionHasErrors('thread_id');
-	}
-	/** @test */
 	public function a_reply_requires_a_body() {
 		$this->publishReply(['body'=>null])->assertSessionHasErrors('body');
 	}

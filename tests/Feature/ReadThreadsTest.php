@@ -58,4 +58,17 @@ class ReadThreadsTest extends TestCase
 
 	}
 
+	/** @test */
+	public function a_user_can_filter_threads_by_user() {
+		// given that we have 2 threads from different users
+		// when trying to view only threads for user1
+		// then user1 thread should be visible
+		// and user2 thread should not be visible
+		$threads = factory('App\Thread',2)->create();
+
+		$this->get('forum?u='.$threads[0]->user_id)
+			->assertSee($threads[0]->title)
+			->assertDontSee($threads[1]->title);
+	}
+
 }

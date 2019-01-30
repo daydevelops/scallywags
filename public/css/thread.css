@@ -22,7 +22,7 @@
           box-shadow: 0px 0px 3px #444;
 }
 
-#new-reply-wrap {
+.hidden {
   display: none;
 }
 

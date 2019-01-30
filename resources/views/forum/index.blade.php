@@ -16,6 +16,7 @@
 						<div class="col-4 text-right">
 							<h4 class='thread-user'><a href='user/{{$t->user->id}}'>{{$t->user->name}}</a></h4>
 							<p class='thread-date'><small><em>{{$t->created_at->diffForHumans()}}</em></small></p>
+							<p class='thread-reply-count'><small><em>{{$t->replies_count}} {{str_plural('comments',$t->replies_count)}}</em></small></p>
 						</div>
 					</div>
 					<hr>

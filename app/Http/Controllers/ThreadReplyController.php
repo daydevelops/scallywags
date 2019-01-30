@@ -40,7 +40,6 @@ class ThreadReplyController extends Controller
     public function store(Request $request, $category_id, Thread $thread)
     {
 		$data = request()->validate([
-            'thread_id'=>'required|exists:threads,id',
             'body'=>'required'
         ]);
 		$data['user_id'] = auth()->user()->id;

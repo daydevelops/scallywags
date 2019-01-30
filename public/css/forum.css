@@ -10,7 +10,8 @@
 }
 
 .thread-date,
-.thread-user {
+.thread-user,
+.thread-reply-count {
   margin: 0px;
 }
 

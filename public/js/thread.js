@@ -77,12 +77,12 @@ module.exports = __webpack_require__(55);
 /***/ (function(module, exports) {
 
 window.showReplyForm = function () {
-	$('#new-reply-wrap').css('display', 'block');
-	$('#new-reply-btn').css('display', 'none');
+	$('#new-reply-wrap').removeClass('hidden');
+	$('#new-reply-btn').addClass('hidden');
 };
 window.hideReplyForm = function () {
-	$('#new-reply-wrap').css('display', 'none');
-	$('#new-reply-btn').css('display', 'block');
+	$('#new-reply-wrap').addClass('hidden');
+	$('#new-reply-btn').removeClass('hidden');
 };
 
 /***/ })

@@ -9,6 +9,13 @@ class Thread extends Model
 
 	protected $guarded = [];
 
+	protected static function boot() {
+		parent::boot();
+		static::addGlobalScope('replyCount', function ($builder) {
+			$builder->withCount('replies');
+		});
+	}
+
 	public function replies() {
 		return $this->hasMany(ThreadReply::class);
 	}
@@ -24,6 +31,10 @@ class Thread extends Model
 	}
 	public function getPath() {
 		return "/forum/".$this->category->slug."/".$this->id;
+	}
+
+	public function scopeFilter($query, $filters) {
+		return $filters->apply($query);
 	}
 
 }
