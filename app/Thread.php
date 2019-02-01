@@ -25,9 +25,18 @@ class Thread extends Model
 	public function category() {
 		return $this->belongsTo(Category::class);
 	}
+	public function favourites() {
+		return $this->morphMany(Favourite::class,'favourited');
+	}
 
 	public function addReply($reply) {
 		$this->replies()->create($reply);
+	}
+	public function favourite() {
+		$attributes = ['user_id'=>auth()->id()];
+		if (! $this->favourites()->where($attributes)->exists()) {
+			$this->favourites()->create($attributes);
+		}
 	}
 	public function getPath() {
 		return "/forum/".$this->category->slug."/".$this->id;

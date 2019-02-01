@@ -19,9 +19,11 @@ Route::get('/about', 'HomeController@about');
 Route::get('/forum', 'ThreadsController@index');
 Route::get('/forum/new', 'ThreadsController@create');
 Route::post('/forum', 'ThreadsController@store');
-Route::post('forum/{category}/{thread}/reply','ThreadReplyController@store');
+Route::post('/forum/{category}/{thread}/reply','ThreadReplyController@store');
 Route::get('/forum/{category}/{thread}','ThreadsController@show');
-Route::get('forum/{category}','ThreadsController@index');
+Route::get('/forum/{category}','ThreadsController@index');
+Route::post('/favourite/thread/{thread}','FavouriteController@storeThread');
+Route::post('/favourite/reply/{reply}','FavouriteController@storeReply');
 
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/dashboard/{game}','DashboardController@editGame');
