@@ -20,12 +20,19 @@ class ThreadsController extends Controller
 	public function index(Category $category, ThreadFilter $filters)
 	{
 		if ($category->exists) {
-			$threads = $category->threads()->latest();
+			$threads = $category->threads();
+			$threads = $threads->filter($filters)->latest()->paginate(10);
 		} else {
-			$threads = Thread::latest();
+			$threads = Thread::filter($filters)->paginate(10);
 		}
-		$threads = $threads->filter($filters)->get();
+		
+
 		$categories = Category::all();
+
+		if (request()->wantsJson()) {
+			return $threads;
+		}
+
 		return view('forum/index',compact('threads','categories'));
 	}
 
@@ -69,7 +76,7 @@ class ThreadsController extends Controller
 	*/
 	public function show($category_id, Thread $thread)
 	{
-		$replies = $thread->replies;
+		$replies = $thread->replies()->paginate(10);
 		return view('forum/show',compact('thread','replies'));
 	}
 

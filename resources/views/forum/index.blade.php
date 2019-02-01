@@ -7,27 +7,30 @@
 @section('content')
 	<div class="container">
 		<div class="row">
-			<div class="col-9">@foreach ($threads as $t)
-				<div class="thread panel" onclick='window.location="{{$t->getPath()}}"'>
-					<div class="row thread-header">
-						<div class="col-8 text-left">
-							<h2 class='thread-title'>{{$t->title}}</h2>
+			<div class="col-9">
+				@foreach ($threads as $t)
+					<div class="thread panel" onclick='window.location="{{$t->getPath()}}"'>
+						<div class="row thread-header">
+							<div class="col-8 text-left">
+								<h2 class='thread-title'>{{$t->title}}</h2>
+							</div>
+							<div class="col-4 text-right">
+								<h4 class='thread-user'><a href='user/{{$t->user->id}}'>{{$t->user->name}}</a></h4>
+								<p class='thread-date'><small><em>{{$t->created_at->diffForHumans()}}</em></small></p>
+								<p class='thread-reply-count'><small><em>{{$t->replies_count}} {{str_plural('comment',$t->replies_count)}}</em></small></p>
+							</div>
 						</div>
-						<div class="col-4 text-right">
-							<h4 class='thread-user'><a href='user/{{$t->user->id}}'>{{$t->user->name}}</a></h4>
-							<p class='thread-date'><small><em>{{$t->created_at->diffForHumans()}}</em></small></p>
-							<p class='thread-reply-count'><small><em>{{$t->replies_count}} {{str_plural('comments',$t->replies_count)}}</em></small></p>
+						<hr>
+						<div class="row">
+							<div class="col-12">
+								<p class='thread-body'>{{$t->body}}</p>
+							</div>
 						</div>
 					</div>
-					<hr>
-					<div class="row">
-						<div class="col-12">
-							<p class='thread-body'>{{$t->body}}</p>
-						</div>
-					</div>
-				</div>
 
-			@endforeach</div>
+				@endforeach
+				{{ $threads->links() }}
+			</div>
 			<div class="col-3">
 				<div id="sidebar" class='panel'>
 					<h3 class='text-center'>Welcome to the RballNL Forum!</h3>

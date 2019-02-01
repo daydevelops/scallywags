@@ -9,11 +9,14 @@ use App\User;
 
 class ThreadFilter extends Filter {
 
-	protected $filters = ['u'];
+	protected $filters = ['u','popular'];
 
 	public function u($user_id) {
-		
 		return $this->builder->where('user_id',$user_id);
+	}
+
+	public function popular() {
+		$this->builder->orderBy('replies_count','desc');
 	}
 
 }

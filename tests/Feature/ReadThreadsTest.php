@@ -16,18 +16,18 @@ class ReadThreadsTest extends TestCase
 		$this->replies = factory('App\ThreadReply',10)->create(['thread_id'=>$this->thread->id]);
 	}
 
-	 /** @test */
-    public function a_user_can_browse_threads()
-    {
-        $response = $this->get('/forum');
-        $response->assertSee($this->thread->title);
+	/** @test */
+	public function a_user_can_browse_threads()
+	{
+		$response = $this->get('/forum');
+		$response->assertSee($this->thread->title);
 
-    }
+	}
 
 	/** @test */
 	public function a_user_can_view_a_thread()
 	{
-	 	$response = $this->get($this->thread->getPath());
+		$response = $this->get($this->thread->getPath());
 		$response->assertSee($this->thread->title);
 	}
 
@@ -53,8 +53,8 @@ class ReadThreadsTest extends TestCase
 		$thread_not_in_cat = factory('App\Thread')->create();
 
 		$this->get('forum/'.$cat->slug)
-			->assertSee($thread_in_cat->title)
-			->assertDontSee($thread_not_in_cat->title);
+		->assertSee($thread_in_cat->title)
+		->assertDontSee($thread_not_in_cat->title);
 
 	}
 
@@ -67,8 +67,25 @@ class ReadThreadsTest extends TestCase
 		$threads = factory('App\Thread',2)->create();
 
 		$this->get('forum?u='.$threads[0]->user_id)
-			->assertSee($threads[0]->title)
-			->assertDontSee($threads[1]->title);
+		->assertSee($threads[0]->title)
+		->assertDontSee($threads[1]->title);
+	}
+
+	/** @test */
+	public function a_user_can_sort_threads_by_popularity() {
+		// given that we have many threads with random amount of replies
+		$t1 = factory('App\Thread')->create();
+		$t2 = factory('App\Thread')->create();
+		$t3 = $this->thread;
+
+		factory('App\ThreadReply',2)->create(['thread_id'=>$t1->id]);
+		factory('App\ThreadReply',3)->create(['thread_id'=>$t2->id]);
+
+		// when we sort those threads by the number of replies
+		$response = $this->getJson('/forum?popular=1')->json();
+		// dd($response);
+		// the user should see the threads sorted
+		$this->assertEquals([10,3,2],array_column($response['data'],'replies_count'));
 	}
 
 }
