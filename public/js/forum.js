@@ -76,7 +76,42 @@ module.exports = __webpack_require__(53);
 /***/ 53:
 /***/ (function(module, exports) {
 
-
+window.toggleFavourite = function (type, id) {
+	// if button has class of "favourited"
+	if ($('#' + type + '-' + id).hasClass('favourited')) {
+		// send post to unfavourite
+		$.ajax({
+			type: 'post',
+			url: '/unfavourite/' + type + '/' + id,
+			headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+			success: function success(res) {
+				console.log(res);
+				// if (res.status==1) {
+				$('#' + type + '-' + id).removeClass('favourited');
+				// }
+			},
+			error: function error(err) {
+				console.log(err.responseText);
+			}
+		});
+	} else {
+		// send post to favourite
+		$.ajax({
+			type: 'post',
+			url: '/favourite/' + type + '/' + id,
+			headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+			success: function success(res) {
+				console.log(res);
+				// if (res.status==1) {
+				$('#' + type + '-' + id).addClass('favourited');
+				// }
+			},
+			error: function error(err) {
+				console.log(err.responseText);
+			}
+		});
+	}
+};
 
 /***/ })
 

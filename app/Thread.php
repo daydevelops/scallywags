@@ -38,6 +38,15 @@ class Thread extends Model
 			$this->favourites()->create($attributes);
 		}
 	}
+	public function unfavourite() {
+		$attributes = ['user_id'=>auth()->id()];
+		if ($this->favourites()->where($attributes)->exists()) {
+			$this->favourites()->where($attributes)->delete();
+		}
+	}
+	public function isFavourited() {
+		return $this->favourites()->where(['user_id'=>auth()->id()])->exists();
+	}
 	public function getPath() {
 		return "/forum/".$this->category->slug."/".$this->id;
 	}

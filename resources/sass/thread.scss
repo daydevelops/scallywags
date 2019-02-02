@@ -32,3 +32,13 @@
 	box-shadow:0px 0px 3px #444;
 	margin:15px 0px;
 }
+.favourite-wrapper {
+	color:#999;
+	padding:15px;
+}
+.favourite-wrapper.favourited {
+	color:#A33;
+}
+.favourite-wrapper > i:hover {
+	text-shadow:0px 0px 3px black;
+}

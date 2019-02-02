@@ -24,6 +24,8 @@ Route::get('/forum/{category}/{thread}','ThreadsController@show');
 Route::get('/forum/{category}','ThreadsController@index');
 Route::post('/favourite/thread/{thread}','FavouriteController@storeThread');
 Route::post('/favourite/reply/{reply}','FavouriteController@storeReply');
+Route::post('/unfavourite/thread/{thread}','FavouriteController@destroyThread');
+Route::post('/unfavourite/reply/{reply}','FavouriteController@destroyReply');
 
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/dashboard/{game}','DashboardController@editGame');

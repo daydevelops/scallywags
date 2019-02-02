@@ -31,6 +31,17 @@ class FavouriteTest extends TestCase
 	}
 
 	/** @test */
+	public function a_user_can_unfavourite_a_thread() {
+		// given that we have an authenticated user and a thread
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		// when the user sends a request to "favourite" that thread
+		$response = $this->post('favourite/thread/'.$thread->id);
+		$response = $this->post('unfavourite/thread/'.$thread->id);
+		$this->assertCount(0,\App\Thread::find($thread->id)->favourites);
+	}
+
+	/** @test */
 	public function a_user_can_favourite_a_reply() {
 		// given that we have an authenticated user and a reply
 		$this->signIn();
@@ -40,6 +51,17 @@ class FavouriteTest extends TestCase
 		// dd(\App\Favourite::all());
 		// the reply should have one favourite count
 		$this->assertCount(1,$reply->favourites);
+	}
+
+	/** @test */
+	public function a_user_can_unfavourite_a_reply() {
+		// given that we have an authenticated user and a thread
+		$this->signIn();
+		$reply = factory('App\ThreadReply')->create();
+		// when the user sends a request to "favourite" that thread
+		$response = $this->post('favourite/reply/'.$reply->id);
+		$response = $this->post('unfavourite/reply/'.$reply->id);
+		$this->assertCount(0,\App\ThreadReply::find($reply->id)->favourites);
 	}
 
 	/** @test */
@@ -56,4 +78,5 @@ class FavouriteTest extends TestCase
 		$response = $this->post('favourite/thread/'.$thread->id);//->assertSee('You have already favourited this reply');
 		$this->assertCount(1,$thread->favourites);
 	}
+
 }

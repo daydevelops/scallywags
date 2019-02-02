@@ -12,10 +12,17 @@ class FavouriteController extends Controller
 	public function __construct() {
 		$this->middleware('auth');
 	}
-    public function storeThread(Thread $thread) {
+	public function storeThread(Thread $thread) {
 		$thread->favourite();
 	}
 	public function storeReply(ThreadReply $reply) {
 		$reply->favourite();
+	}
+
+	public function destroyThread(Thread $thread) {
+		$thread->unfavourite();
+	}
+	public function destroyReply(ThreadReply $reply) {
+		$reply->unfavourite();
 	}
 }

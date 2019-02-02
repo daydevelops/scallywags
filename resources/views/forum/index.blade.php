@@ -12,12 +12,17 @@
 					<div class="thread panel" onclick='window.location="{{$t->getPath()}}"'>
 						<div class="row thread-header">
 							<div class="col-8 text-left">
+								<p class='thread-user'>
+									<a href='user/{{$t->user->id}}'>{{$t->user->name}}</a>
+									<span class='thread-date'><small><em>{{$t->created_at->diffForHumans()}}</em></small></span>
+								</p>
 								<h2 class='thread-title'>{{$t->title}}</h2>
 							</div>
 							<div class="col-4 text-right">
-								<h4 class='thread-user'><a href='user/{{$t->user->id}}'>{{$t->user->name}}</a></h4>
-								<p class='thread-date'><small><em>{{$t->created_at->diffForHumans()}}</em></small></p>
 								<p class='thread-reply-count'><small><em>{{$t->replies_count}} {{str_plural('comment',$t->replies_count)}}</em></small></p>
+								@auth
+									<p id ='thread-{{$t->id}}' class='favourite-wrapper {{$r->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("thread",{{$t->id}})'></i></p>
+								@endauth
 							</div>
 						</div>
 						<hr>
