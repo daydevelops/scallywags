@@ -13,10 +13,10 @@ class DashboardController extends Controller
     }
     function index() {
         // show dashboard view with users information, scheduled games, and payment status
-        $user = auth()->user();
-        $games = $user->games;
+        $user = auth()->user()->load('threads','replies','games');
+        // $games = $user->games;
         $users = User::all(); // give list of users so the user can invite others to games
-        // dd($games);
+        // dd($user);
         return view('users/dashboard',compact('user','games','users'));
     }
 
