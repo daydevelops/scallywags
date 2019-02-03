@@ -20,7 +20,11 @@
 							<div class="col-4 text-right">
 								<p class='thread-reply-count'><small><em>{{$thread->replies_count}} {{str_plural('comment',$thread->replies_count)}}</em></small></p>
 								@auth
-									<p id='thread-{{$thread->id}}' class='favourite-wrapper  {{$thread->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("thread",{{$thread->id}})'></i></p>
+									@if($thread->user->id !== auth()->id())
+										<p id='thread-{{$thread->id}}' class='favourite-wrapper  {{$thread->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("thread",{{$thread->id}})'></i></p>
+									@else
+										<p><i class="fas fa-trash-alt" onclick='showAYSM("delete","thread",{{$thread->id}},"{{$thread->getPath()}}")'></i></p>
+									@endif
 								@endauth
 							</div>
 						</div>
@@ -72,7 +76,13 @@
 								</div>
 								<div class="col-4 text-right">
 									@auth
-										<p id='reply-{{$r->id}}' class='favourite-wrapper {{$r->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("reply",{{$r->id}})'></i></p>
+										@if(!$r->deleted)
+											@if($r->user->id !== auth()->id())
+												<p id='reply-{{$r->id}}' class='favourite-wrapper {{$r->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("reply",{{$r->id}})'></i></p>
+											@else
+												<p><i class="fas fa-trash-alt" onclick='showAYSM("delete","reply",{{$r->id}},"/forum/reply/{{$r->id}}")'></i></p>
+											@endif
+										@endif
 									@endauth
 								</div>
 							</div>
@@ -105,6 +115,9 @@
 				</div>
 			</div> <!-- row -->
 		</div>
+
+		@include('components.areYouSureModal')
+
 	@endsection
 
 	@section('javascript')

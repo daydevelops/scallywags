@@ -88,8 +88,9 @@ class ThreadReplyController extends Controller
      * @param  \App\ThreadReply  $threadReply
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ThreadReply $threadReply)
+    public function destroy(ThreadReply $reply)
     {
-        //
+		$reply->clear();
+		return response()->json(array('status'=>1,'fb'=>'Reply Deleted'));
     }
 }

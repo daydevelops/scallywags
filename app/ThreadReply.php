@@ -47,4 +47,8 @@ class ThreadReply extends Model
 	public function isFavourited() {
 		return $this->favourites()->where(['user_id'=>auth()->id()])->exists();
 	}
+
+	public function clear() {
+		$this->update(['body'=>'Reply deleted','deleted'=>1]);
+	}
 }

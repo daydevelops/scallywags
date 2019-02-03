@@ -71,6 +71,59 @@ class ParticipateInForumTest extends TestCase
 		$this->publishReply(['body'=>null])->assertSessionHasErrors('body');
 	}
 
+	/** @test */
+	public function a_user_can_delete_their_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$this->json('DELETE',$thread->getPath());
+		$this->assertDatabaseMissing('threads',['id'=>$thread->id]);
+		$this->assertDatabaseMissing('thread_replies',['id'=>$reply->id]);
+	}
+	/** @test */
+	public function a_user_can_delete_their_reply() {
+		$this->signIn();
+		$reply = factory('App\ThreadReply')->create(['user_id'=>auth()->id()]);
+		// dd($reply);
+		$this->json('DELETE','/forum/reply/'.$reply->id);
+		$this->assertDatabaseHas('thread_replies',['id'=>$reply->id,'body'=>'Reply deleted']);
+	}
+
+	/** @test */
+	public function a_guest_can_not_delete_a_thread() {
+		$this->withExceptionHandling()->json('DELETE','/forum/foobar/1')->assertStatus(401);
+	}
+	/** @test */
+	public function a_guest_can_not_delete_a_reply() {
+		$this->withExceptionHandling()->json('DELETE','/forum/reply/1')->assertStatus(401);
+	}
+
+	// /** @test */
+	// public function a_user_can_not_delete_another_users_thread() {
+	// 	$this->signIn();
+	// 	$thread = factory('App\Thread')->create(['user_id'=>auth()->id()+1]);
+	// 	$this->json('DELETE',$thread->getPath());
+	// 	$this->assertDatabasehas('threads',['id'=>$thread->id]);
+	// }
+
+
+
+	// /** @test */
+	// public function a_user_can_not_delete_another_users_thread() {
+	// 	$this->signIn();
+	// 	$thread = factory('App\Thread')->create(['user_id'=>auth()->id()+1]);
+	// 	$this->json('DELETE',$thread->getPath());
+	// 	$this->assertDatabasehas('threads',['id'=>$thread->id]);
+	// }
+
+
+
+
+
+
+
+
+
 	public function publishThread($overrides=[]) {
 		$this->signIn();
 		$thread = factory('App\Thread')->make($overrides);

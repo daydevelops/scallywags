@@ -16,12 +16,16 @@ Route::get('/home', 'HomeController@home')->name('home');
 Route::get('/contact', 'HomeController@contact');
 Route::get('/about', 'HomeController@about');
 
-Route::get('/forum', 'ThreadsController@index');
+Route::get('/forum', 'ThreadsController@index')->name('forum');
 Route::get('/forum/new', 'ThreadsController@create');
 Route::post('/forum', 'ThreadsController@store');
 Route::post('/forum/{category}/{thread}/reply','ThreadReplyController@store');
 Route::get('/forum/{category}/{thread}','ThreadsController@show');
 Route::get('/forum/{category}','ThreadsController@index');
+Route::delete('/forum/reply/{reply}','ThreadReplyController@destroy');
+Route::delete('/forum/{category}/{thread}', 'ThreadsController@destroy');
+
+
 Route::post('/favourite/thread/{thread}','FavouriteController@storeThread');
 Route::post('/favourite/reply/{reply}','FavouriteController@storeReply');
 Route::post('/unfavourite/thread/{thread}','FavouriteController@destroyThread');
