@@ -9,6 +9,17 @@ class ThreadReply extends Model
 
 	protected $guarded = [];
 
+	protected static function boot() {
+		parent::boot();
+		static::addGlobalScope('favourites', function ($builder) {
+			$builder->with('favourites');
+		});
+		static::addGlobalScope('user', function ($builder) {
+			$builder->with('user');
+		});
+	}
+
+
 	public function user() {
 		return $this->belongsTo(User::class);
 	}

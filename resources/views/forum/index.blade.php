@@ -21,7 +21,7 @@
 							<div class="col-4 text-right">
 								<p class='thread-reply-count'><small><em>{{$t->replies_count}} {{str_plural('comment',$t->replies_count)}}</em></small></p>
 								@auth
-									<p id ='thread-{{$t->id}}' class='favourite-wrapper {{$r->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("thread",{{$t->id}})'></i></p>
+									<p id ='thread-{{$t->id}}' class='favourite-wrapper {{$t->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("thread",{{$t->id}})'></i></p>
 								@endauth
 							</div>
 						</div>

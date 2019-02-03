@@ -11,8 +11,17 @@ class Thread extends Model
 
 	protected static function boot() {
 		parent::boot();
-		static::addGlobalScope('replyCount', function ($builder) {
+		static::addGlobalScope('replies_count', function ($builder) {
 			$builder->withCount('replies');
+		});
+		static::addGlobalScope('category', function ($builder) {
+			$builder->with('category');
+		});
+		static::addGlobalScope('favourites', function ($builder) {
+			$builder->with('favourites');
+		});
+		static::addGlobalScope('user', function ($builder) {
+			$builder->with('user');
 		});
 	}
 
@@ -45,7 +54,7 @@ class Thread extends Model
 		}
 	}
 	public function isFavourited() {
-		return $this->favourites()->where(['user_id'=>auth()->id()])->exists();
+		return $this->favourites->where(['user_id'=>auth()->id()])->count() > 0;
 	}
 	public function getPath() {
 		return "/forum/".$this->category->slug."/".$this->id;

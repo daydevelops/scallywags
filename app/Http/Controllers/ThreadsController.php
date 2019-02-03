@@ -25,14 +25,14 @@ class ThreadsController extends Controller
 		} else {
 			$threads = Thread::filter($filters)->paginate(10);
 		}
-		
 
 		$categories = Category::all();
 
 		if (request()->wantsJson()) {
 			return $threads;
 		}
-
+		// echo json_encode($threads);
+		// return null;
 		return view('forum/index',compact('threads','categories'));
 	}
 
