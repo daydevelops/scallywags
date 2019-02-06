@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class ThreadReply extends Model
 {
-
+	use RecordsActivity;
+	
 	protected $guarded = [];
 
 	protected static function boot() {

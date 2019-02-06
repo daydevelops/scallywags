@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Thread extends Model
 {
 
+	use RecordsActivity;
+	
 	protected $guarded = [];
 
 	protected static function boot() {
@@ -27,7 +29,9 @@ class Thread extends Model
 		static::deleting(function($thread) {
 			$thread->replies()->delete();
 		});
+
 	}
+
 
 	public function replies() {
 		return $this->hasMany(ThreadReply::class);
