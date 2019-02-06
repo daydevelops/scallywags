@@ -98,23 +98,21 @@ class ParticipateInForumTest extends TestCase
 		$this->withExceptionHandling()->json('DELETE','/forum/reply/1')->assertStatus(401);
 	}
 
-	// /** @test */
-	// public function a_user_can_not_delete_another_users_thread() {
-	// 	$this->signIn();
-	// 	$thread = factory('App\Thread')->create(['user_id'=>auth()->id()+1]);
-	// 	$this->json('DELETE',$thread->getPath());
-	// 	$this->assertDatabasehas('threads',['id'=>$thread->id]);
-	// }
+	/** @test */
+	public function a_user_can_not_delete_another_users_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()+1]);
+		$this->withExceptionHandling()->json('DELETE',$thread->getPath())->assertStatus(403);
+		$this->assertDatabasehas('threads',['id'=>$thread->id]);
+	}
 
-
-
-	// /** @test */
-	// public function a_user_can_not_delete_another_users_thread() {
-	// 	$this->signIn();
-	// 	$thread = factory('App\Thread')->create(['user_id'=>auth()->id()+1]);
-	// 	$this->json('DELETE',$thread->getPath());
-	// 	$this->assertDatabasehas('threads',['id'=>$thread->id]);
-	// }
+	/** @test */
+	public function a_user_can_not_delete_another_users_reply() {
+		$this->signIn();
+		$reply = factory('App\ThreadReply')->create(['user_id'=>auth()->id()+1]);
+		$this->withExceptionHandling()->json('DELETE','/forum/reply/'.$reply->id);
+		$this->assertDatabaseMissing('thread_replies',['id'=>$reply->id,'body'=>'Reply deleted']);
+	}
 
 
 

@@ -111,9 +111,8 @@ class ThreadsController extends Controller
 	*/
 	public function destroy($category, Thread $thread)
 	{
-		// if ($thread->user->id == auth()->id()) {
-			$thread->delete();
-	        return response()->json(array('status'=>1,'fb'=>'Thread Deleted'));
-		// }
+		$this->authorize('update',$thread);
+		$thread->delete();
+		return response()->json(array('status'=>1,'fb'=>'Thread Deleted'));
 	}
 }
