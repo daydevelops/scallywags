@@ -52,5 +52,8 @@ class UserTest extends TestCase
 		$this->assertInstanceOf('App\ThreadReply',$this->user->replies[0]);
 	}
 
+	public function it_can_have_activities() {
+
+	}
 
 }
