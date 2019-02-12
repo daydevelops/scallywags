@@ -53,6 +53,10 @@ class User extends Authenticatable
 		return $this->hasMany(ThreadReply::class)->withoutGlobalScopes();
 	}
 
+	public function activities() {
+		return $this->hasMany(ForumActivity::class);
+	}
+
 	public static function allPublic() {
 		return User::select('id','name','skill','image')->get();
 	}

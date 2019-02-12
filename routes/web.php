@@ -25,6 +25,7 @@ Route::get('/forum/{category}','ThreadsController@index');
 Route::delete('/forum/reply/{reply}','ThreadReplyController@destroy');
 Route::delete('/forum/{category}/{thread}', 'ThreadsController@destroy');
 
+Route::get('/profile/{user}','ProfileController@show');
 
 Route::post('/favourite/thread/{thread}','FavouriteController@storeThread');
 Route::post('/favourite/reply/{reply}','FavouriteController@storeReply');

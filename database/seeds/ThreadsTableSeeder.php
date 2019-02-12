@@ -18,6 +18,10 @@ class ThreadsTableSeeder extends Seeder
 		$threads = factory('App\Thread',5)->create();
 		$threads->each(function ($thread) {
 			factory('App\ThreadReply',5)->create(['thread_id'=>$thread->id]);
+			factory('App\ThreadReply',1)->create([
+				'thread_id'=>$thread->id,
+				'user_id'=>1
+			]);
 		});
     }
 }
