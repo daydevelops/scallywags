@@ -79,4 +79,15 @@ class FavouriteTest extends TestCase
 		$this->assertCount(1,$thread->favourites);
 	}
 
+	/** @test */
+	public function a_favourite_records_activity() {
+		$this->signin();
+		$thread = factory('App\Thread')->create();
+		$thread->favourite();
+		$this->assertDatabaseHas('forum_activities',[
+			'subject_id'=>$thread->favourites[0]->id,
+			'subject_type'=>get_class($thread->favourites[0])
+		]);
+	}
+
 }

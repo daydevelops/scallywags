@@ -12,7 +12,7 @@
 					<div class="row thread-header">
 						<div class="col-8 text-left">
 							<p class='thread-user'>
-								<small><a href='user/{{$thread->user->id}}'>{{$thread->user->name}}</a> |
+								<small><a href='/profile/{{$thread->user->id}}'>{{$thread->user->name}}</a> |
 									<span class='thread-date'>{{$thread->created_at->diffForHumans()}} | {{$thread->category->name}}</span></small>
 								</p>
 								<h2 class='thread-title'>{{$thread->title}}</h2>
@@ -68,10 +68,10 @@
 					</div>
 					<br>
 					@foreach($replies as $r)
-						<div class="reply">
+						<div class="reply" id='reply-{{$r->id}}'>
 							<div class="row reply-header">
 								<div class="col-8">
-									<b><small>{{$r->user->name}} | {{$r->created_at->diffForHumans()}}</small></b>
+									<b><small><a href='/profile/{{$r->thread->user->id}}'>{{$r->user->name}}</a> | {{$r->created_at->diffForHumans()}}</small></b>
 								</div>
 								<div class="col-4 text-right">
 									@auth

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ThreadReply extends Model
 {
 	use RecordsActivity;
-	
+
 	protected $guarded = [];
 
 	protected static function boot() {
@@ -17,6 +17,9 @@ class ThreadReply extends Model
 		});
 		static::addGlobalScope('user', function ($builder) {
 			$builder->with('user');
+		});
+		static::addGlobalScope('thread', function ($builder) {
+			$builder->with('thread');
 		});
 	}
 

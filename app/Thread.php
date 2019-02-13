@@ -8,7 +8,7 @@ class Thread extends Model
 {
 
 	use RecordsActivity;
-	
+
 	protected $guarded = [];
 
 	protected static function boot() {
@@ -27,7 +27,7 @@ class Thread extends Model
 		});
 
 		static::deleting(function($thread) {
-			$thread->replies()->delete();
+			$thread->replies->each->delete();
 		});
 
 	}

@@ -12,7 +12,7 @@ class ProfileController extends Controller
 		$this->middleware('auth');
 	}
     public function show(User $user) {
-		$activities = $user->activities()->latest()->with('subject')->get();
+		$activities = $user->activities()->with('subject')->latest()->get();
 		// return $activities;
 		return view('users/profile',compact('user','activities'));
 	}

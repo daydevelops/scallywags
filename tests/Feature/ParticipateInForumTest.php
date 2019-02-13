@@ -79,6 +79,14 @@ class ParticipateInForumTest extends TestCase
 		$this->json('DELETE',$thread->getPath());
 		$this->assertDatabaseMissing('threads',['id'=>$thread->id]);
 		$this->assertDatabaseMissing('thread_replies',['id'=>$reply->id]);
+		$this->assertDatabaseMissing('forum_activities',[
+			'subject_id'=>$thread->id,
+			'subject_type'=>get_class($thread)
+		]);
+		$this->assertDatabaseMissing('forum_activities',[
+			'subject_id'=>$reply->id,
+			'subject_type'=>get_class($reply)
+		]);
 	}
 	/** @test */
 	public function a_user_can_delete_their_reply() {

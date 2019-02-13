@@ -31,18 +31,34 @@ class ProfileTest extends TestCase
 	}
 
 	/** @test */
-	public function a_profile_contains_the_users_forum_activity() {
+	public function a_profile_contains_the_users_created_threads() {
 		$this->signIn();
 
 		$threads = factory('App\Thread',2)->create();
-		$reply = factory('App\ThreadReply')->create([
-			'user_id'=>$threads[0]->user_id,
-			'thread_id'=>$threads[1]->id
-		]);
 
 		$this->get('profile/'.$threads[0]->user_id)
 		->assertSee($threads[0]->title)
 		->assertDontSee($threads[1]->body);
+	}
+
+	/** @test */
+	public function a_profile_contains_the_users_created_replies() {
+		$this->signIn();
+
+		$reply = factory('App\ThreadReply')->create();
+
+		$this->get('profile/'.$reply->user_id)
+		->assertSee($reply->body);
+	}
+
+	/** @test */
+	public function a_profile_contains_the_users_favourited_items() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$thread->favourite();
+		$this->get('profile/'.auth()->id())
+		->assertSee("favourited a thread")
+		->assertSee($thread->title);
 	}
 
 

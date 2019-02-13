@@ -8,6 +8,10 @@ trait RecordsActivity {
 		static::created(function($item) {
 			$item->recordActivity('created');
 		});
+
+		static::deleted(function($model) {
+			$model->activity()->delete();
+		});
 	}
 
 	public function recordActivity($event) {
