@@ -82,6 +82,6 @@ class ThreadPolicy
     }
 
 	public function favourite(User $user, Thread $thread) {
-		return $thread->user_id !== $user->id && auth()->check();
+		return auth()->check();
 	}
 }

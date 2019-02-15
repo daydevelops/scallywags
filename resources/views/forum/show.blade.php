@@ -22,15 +22,19 @@
 								@can('favourite',$thread)
 									<p id='thread-{{$thread->id}}' class='favourite-wrapper  {{$thread->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("thread",{{$thread->id}})'></i></p>
 								@endcan
-								@can('update',$thread)
-									<p><i class="fas fa-trash-alt" onclick='showAYSM("delete","thread",{{$thread->id}},"{{$thread->getPath()}}")'></i></p>
-								@endcan
 							</div>
 						</div>
 						<hr>
 						<div class="row">
 							<div class="col-12">
 								<p class='thread-body'>{{$thread->body}}</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 level">
+								@can('update',$thread)
+									<button class='btn btn-danger' onclick='showAYSM("delete","thread",{{$thread->id}},"{{$thread->getPath()}}")'>Delete</button>
+								@endcan
 							</div>
 						</div>
 					</div>
@@ -79,9 +83,6 @@
 											@can('favourite',$r)
 												<p id='reply-{{$r->id}}' class='favourite-wrapper {{$r->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("reply",{{$r->id}})'></i></p>
 											@endcan
-											@can('update',$r)
-												<p><i class="fas fa-trash-alt" onclick='showAYSM("delete","reply",{{$r->id}},"/forum/reply/{{$r->id}}")'></i></p>
-											@endcan
 										@endif
 									@endauth
 								</div>
@@ -89,6 +90,14 @@
 							<div class='row reply-body'>
 								<div class="col">
 									{{$r->body}}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-12 level">
+									@can('update',$r)
+										<button class='btn btn-danger' onclick='showAYSM("delete","reply",{{$r->id}},"/forum/reply/{{$r->id}}")'>Delete</button>
+										<button class="btn btn-secondary">Edit</button>
+									@endcan
 								</div>
 							</div>
 						</div>

@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
             'email_verified_at' => now(),
             'skill' => 'A',
             'image' => 'NA',
-			'is_admin'=>1
+			'is_admin'=>0
         ]);
         factory(App\User::class,10)->create();
     }
