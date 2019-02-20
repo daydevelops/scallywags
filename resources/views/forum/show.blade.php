@@ -2,6 +2,9 @@
 
 @section('css')
 	<link rel='stylesheet' href="{{ asset('css/thread.css') }}">
+	<style>
+	[v-cloak] {display:none}
+	</style>
 @endsection
 
 @section('content')
@@ -72,35 +75,7 @@
 					</div>
 					<br>
 					@foreach($replies as $r)
-						<div class="reply" id='reply-{{$r->id}}'>
-							<div class="row reply-header">
-								<div class="col-8">
-									<b><small><a href='/profile/{{$r->thread->user->id}}'>{{$r->user->name}}</a> | {{$r->created_at->diffForHumans()}}</small></b>
-								</div>
-								<div class="col-4 text-right">
-									@auth
-										@if(!$r->deleted)
-											@can('favourite',$r)
-												<p id='reply-{{$r->id}}' class='favourite-wrapper {{$r->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("reply",{{$r->id}})'></i></p>
-											@endcan
-										@endif
-									@endauth
-								</div>
-							</div>
-							<div class='row reply-body'>
-								<div class="col">
-									{{$r->body}}
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-12 level">
-									@can('update',$r)
-										<button class='btn btn-danger' onclick='showAYSM("delete","reply",{{$r->id}},"/forum/reply/{{$r->id}}")'>Delete</button>
-										<button class="btn btn-secondary">Edit</button>
-									@endcan
-								</div>
-							</div>
-						</div>
+						@include('components.threadReply')
 					@endforeach
 					{{ $replies->links() }}
 				</div>

@@ -67,7 +67,6 @@ class ThreadReplyController extends Controller
      */
     public function edit(ThreadReply $threadReply)
     {
-        //
     }
 
     /**
@@ -77,9 +76,13 @@ class ThreadReplyController extends Controller
      * @param  \App\ThreadReply  $threadReply
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ThreadReply $threadReply)
+    public function update(Request $request, ThreadReply $reply)
     {
-        //
+		$this->authorize('update',$reply);
+		$data = request()->validate([
+            'body'=>'required'
+        ]);
+		$reply->update($data);
     }
 
     /**

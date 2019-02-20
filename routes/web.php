@@ -24,6 +24,7 @@ Route::get('/forum/{category}/{thread}','ThreadsController@show');
 Route::get('/forum/{category}','ThreadsController@index');
 Route::delete('/forum/reply/{reply}','ThreadReplyController@destroy');
 Route::delete('/forum/{category}/{thread}', 'ThreadsController@destroy');
+Route::patch('/forum/reply/{reply}','ThreadReplyController@update');
 
 Route::get('/profile/{user}','ProfileController@show');
 

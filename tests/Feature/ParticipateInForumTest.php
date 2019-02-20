@@ -122,6 +122,23 @@ class ParticipateInForumTest extends TestCase
 		$this->assertDatabaseMissing('thread_replies',['id'=>$reply->id,'body'=>'Reply deleted']);
 	}
 
+	/** @test */
+	public function a_user_can_edit_their_reply() {
+		$this->signIn();
+		$reply = factory('App\ThreadReply')->create(['user_id'=>auth()->id()]);
+		$response = $this->patch('/forum/reply/'.$reply->id,['body'=>'foobar']);
+		$this->assertDatabaseHas('thread_replies',['id'=>$reply->id,'body'=>'foobar']);
+	}
+
+	/** @test */
+	public function a_user_can_not_edit_someone_elses_reply() {
+		$this->signIn();
+		$reply = factory('App\ThreadReply')->create(['user_id'=>auth()->id()+1]);
+		$response = $this->withExceptionHandling()->patch('/forum/reply/'.$reply->id,['body'=>'foobar']);
+		$this->assertDatabaseMissing('thread_replies',['id'=>$reply->id,'body'=>'foobar']);
+
+	}
+
 
 
 
