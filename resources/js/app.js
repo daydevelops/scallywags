@@ -31,6 +31,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 Vue.component('reply',require('./components/Reply.vue'));
+Vue.component('favourite',require('./components/Favourite.vue'));
 const app = new Vue({
     el: '#app',
 });

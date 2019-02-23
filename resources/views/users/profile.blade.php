@@ -13,9 +13,11 @@
 		</div>
 		<div class='row'>
 			<div class='col-12'>
-				@foreach ($activities as $act)
+				@forelse ($activities as $act)
 					@include ('users/activities/'.$act->type)
-				@endforeach
+				@empty
+					<p class='text-center'>This user does not yet have any activity</p>
+				@endforelse
 			</div>
 		</div> <!-- row -->
 	</div>

@@ -30,8 +30,8 @@ Route::get('/profile/{user}','ProfileController@show');
 
 Route::post('/favourite/thread/{thread}','FavouriteController@storeThread');
 Route::post('/favourite/reply/{reply}','FavouriteController@storeReply');
-Route::post('/unfavourite/thread/{thread}','FavouriteController@destroyThread');
-Route::post('/unfavourite/reply/{reply}','FavouriteController@destroyReply');
+Route::delete('/favourite/thread/{thread}','FavouriteController@destroyThread');
+Route::delete('/favourite/reply/{reply}','FavouriteController@destroyReply');
 
 Route::get('/dashboard', 'DashboardController@index');
 Route::get('/dashboard/{game}','DashboardController@editGame');

@@ -8,6 +8,7 @@ class Thread extends Model
 {
 
 	use RecordsActivity;
+	use Favourable;
 
 	protected $guarded = [];
 
@@ -19,13 +20,9 @@ class Thread extends Model
 		static::addGlobalScope('category', function ($builder) {
 			$builder->with('category');
 		});
-		static::addGlobalScope('favourites', function ($builder) {
-			$builder->with('favourites');
-		});
 		static::addGlobalScope('user', function ($builder) {
 			$builder->with('user');
 		});
-
 		static::deleting(function($thread) {
 			$thread->replies->each->delete();
 		});
@@ -42,28 +39,11 @@ class Thread extends Model
 	public function category() {
 		return $this->belongsTo(Category::class);
 	}
-	public function favourites() {
-		return $this->morphMany(Favourite::class,'favourited');
-	}
 
 	public function addReply($reply) {
 		$this->replies()->create($reply);
 	}
-	public function favourite() {
-		$attributes = ['user_id'=>auth()->id()];
-		if (! $this->favourites()->where($attributes)->exists()) {
-			$this->favourites()->create($attributes);
-		}
-	}
-	public function unfavourite() {
-		$attributes = ['user_id'=>auth()->id()];
-		if ($this->favourites()->where($attributes)->exists()) {
-			$this->favourites()->where($attributes)->delete();
-		}
-	}
-	public function isFavourited() {
-		return $this->favourites->where(['user_id'=>auth()->id()])->count() > 0;
-	}
+
 	public function getPath() {
 		return "/forum/".$this->category->slug."/".$this->id;
 	}

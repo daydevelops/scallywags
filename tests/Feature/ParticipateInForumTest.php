@@ -94,7 +94,7 @@ class ParticipateInForumTest extends TestCase
 		$reply = factory('App\ThreadReply')->create(['user_id'=>auth()->id()]);
 		// dd($reply);
 		$this->json('DELETE','/forum/reply/'.$reply->id);
-		$this->assertDatabaseHas('thread_replies',['id'=>$reply->id,'body'=>'Reply deleted']);
+		$this->assertDatabaseMissing('thread_replies',['id'=>$reply->id]);
 	}
 
 	/** @test */

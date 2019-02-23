@@ -10,9 +10,9 @@ class Favourite extends Model
 
 	protected static function boot() {
 		parent::boot();
-		static::addGlobalScope('favourited', function ($builder) {
-			$builder->with('favourited');
-		});
+		// static::addGlobalScope('favourited', function ($builder) {
+		// 	$builder->with('favourited');
+		// });
 	}
     protected $guarded = [];
 

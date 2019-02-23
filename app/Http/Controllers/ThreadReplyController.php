@@ -94,7 +94,7 @@ class ThreadReplyController extends Controller
     public function destroy(ThreadReply $reply)
     {
 		$this->authorize('update',$reply);
-		$reply->clear();
+		$body = $reply->delete();
 		return response()->json(array('status'=>1,'fb'=>'Reply Deleted'));
     }
 }

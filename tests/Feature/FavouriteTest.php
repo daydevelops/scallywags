@@ -37,7 +37,7 @@ class FavouriteTest extends TestCase
 		$thread = factory('App\Thread')->create();
 		// when the user sends a request to "favourite" that thread
 		$response = $this->post('favourite/thread/'.$thread->id);
-		$response = $this->post('unfavourite/thread/'.$thread->id);
+		$response = $this->delete('favourite/thread/'.$thread->id);
 		$this->assertCount(0,\App\Thread::find($thread->id)->favourites);
 	}
 
@@ -60,7 +60,7 @@ class FavouriteTest extends TestCase
 		$reply = factory('App\ThreadReply')->create();
 		// when the user sends a request to "favourite" that thread
 		$response = $this->post('favourite/reply/'.$reply->id);
-		$response = $this->post('unfavourite/reply/'.$reply->id);
+		$response = $this->delete('favourite/reply/'.$reply->id);
 		$this->assertCount(0,\App\ThreadReply::find($reply->id)->favourites);
 	}
 
@@ -87,6 +87,38 @@ class FavouriteTest extends TestCase
 		$this->assertDatabaseHas('forum_activities',[
 			'subject_id'=>$thread->favourites[0]->id,
 			'subject_type'=>get_class($thread->favourites[0])
+		]);
+	}
+
+	/** @test */
+	public function activity_is_destroyed_when_user_unfavourites() {
+		$this->signin();
+		$thread = factory('App\Thread')->create();
+		$thread->favourite();
+		$thread->unfavourite();
+		$this->assertDatabaseMissing('forum_activities',[
+			'subject_id'=>$thread->id,
+			'type'=>'created_favourite'
+		]);
+
+		$reply = factory('App\ThreadReply')->create();
+		$reply->favourite();
+		$reply->unfavourite();
+		$this->assertDatabaseMissing('forum_activities',[
+			'subject_id'=>$reply->id,
+			'type'=>'created_favourite'
+		]);
+	}
+
+	/** @test */
+	public function favourites_are_destroyed_when_its_subject_is_destroyed() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$thread->favourite();
+		$this->json('DELETE',$thread->getPath());
+		$this->assertDatabaseMissing('favourites',[
+			'favourited_id'=>$thread->id,
+			'favourited_type'=>'App\Thread'
 		]);
 	}
 

@@ -42,7 +42,7 @@ class ThreadReplyPolicy
      */
     public function update(User $user, ThreadReply $threadReply)
     {
-        return $user->id == $threadReply->user_id;
+        return $user->id == $threadReply->user_id && $threadReply->deleted==0;
     }
 
     /**

@@ -76,7 +76,9 @@ class ThreadsController extends Controller
 	*/
 	public function show($category_id, Thread $thread)
 	{
+		// dd($thread);
 		$replies = $thread->replies()->paginate(10);
+		// return [$thread,$replies];
 		return view('forum/show',compact('thread','replies'));
 	}
 
