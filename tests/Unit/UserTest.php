@@ -52,8 +52,15 @@ class UserTest extends TestCase
 		$this->assertInstanceOf('App\ThreadReply',$this->user->replies[0]);
 	}
 
+	/** @test */
 	public function it_can_have_activities() {
-
+		factory('App\Thread')->create(['user_id'=>$this->user->id]);
+		$this->assertInstanceOf('App\ForumActivity',$this->user->activities[0]);
 	}
+
+	// /** @test */
+	// public function it_has_thread_subscriptions() {
+	//
+	// }
 
 }
