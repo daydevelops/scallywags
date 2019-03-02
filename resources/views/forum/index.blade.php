@@ -21,7 +21,8 @@
 							<div class="col-4 text-right">
 								<p class='thread-reply-count'><small><em>{{$t->replies_count}} {{str_plural('comment',$t->replies_count)}}</em></small></p>
 								@can('favourite',$t)
-									<p id ='thread-{{$t->id}}' class='favourite-wrapper {{$t->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("thread",{{$t->id}})'></i></p>
+									<favourite :item="{{$t}}" :type="'thread'" class='favourite-wrapper'></favourite>
+									{{-- <p id ='thread-{{$t->id}}' class='favourite-wrapper {{$t->isFavourited()?'favourited':' '}}'><i class="fas fa-heart" onclick='toggleFavourite("thread",{{$t->id}})'></i></p> --}}
 								@endcan
 							</div>
 						</div>

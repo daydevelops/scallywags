@@ -11,74 +11,44 @@
 	<div class="container">
 		<div class='row'>
 			<div class='col-9'>
-				<div class="thread">
-					<div class="row thread-header">
-						<div class="col-8 text-left">
-							<p class='thread-user'>
-								<small><a href='/profile/{{$thread->user->id}}'>{{$thread->user->name}}</a> |
-									<span class='thread-date'>{{$thread->created_at->diffForHumans()}} | {{$thread->category->name}}</span></small>
-								</p>
-								<h2 class='thread-title'>{{$thread->title}}</h2>
+				<thread :initial_replies_count="{{$thread->replies_count}}" inline-template>
+					<div>
+						<div class="thread">
+							<div class="row thread-header">
+								<div class="col-8 text-left">
+									<p class='thread-user'>
+										<small><a href='/profile/{{$thread->user->id}}'>{{$thread->user->name}}</a> |
+											<span class='thread-date'>{{$thread->created_at->diffForHumans()}} | {{$thread->category->name}}</span></small>
+										</p>
+										<h2 class='thread-title'>{{$thread->title}}</h2>
+									</div>
+									<div class="col-4 text-right">
+										<p class='thread-reply-count'><small><em v-text="replies_count">{{str_plural('comment',$thread->replies_count)}}</em></small></p>
+										@can('favourite',$thread)
+											<favourite :item="{{$thread}}" :type="'thread'" class='favourite-wrapper'></favourite>
+										@endcan
+									</div>
+								</div>
+								<hr>
+								<div class="row">
+									<div class="col-12">
+										<p class='thread-body'>{{$thread->body}}</p>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 level">
+										@can('update',$thread)
+											<button class='btn btn-danger' onclick='showAYSM("delete","thread",{{$thread->id}},"{{$thread->getPath()}}")'>Delete</button>
+										@endcan
+									</div>
+								</div>
 							</div>
-							<div class="col-4 text-right">
-								<p class='thread-reply-count'><small><em>{{$thread->replies_count}} {{str_plural('comment',$thread->replies_count)}}</em></small></p>
-								@can('favourite',$thread)
-									<favourite :item="{{$thread}}" :type="'thread'" class='favourite-wrapper'></favourite>
-								@endcan
-							</div>
-						</div>
-						<hr>
-						<div class="row">
-							<div class="col-12">
-								<p class='thread-body'>{{$thread->body}}</p>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-12 level">
-								@can('update',$thread)
-									<button class='btn btn-danger' onclick='showAYSM("delete","thread",{{$thread->id}},"{{$thread->getPath()}}")'>Delete</button>
-								@endcan
-							</div>
-						</div>
-					</div>
-					@auth
-						<div id='new-reply-btn' class="row">
-							<div class="col-12">
-								<button class="{{count($errors)?'hidden':'d-block'}} btn btn-primary m-auto" onclick='showReplyForm()'>New Reply</button>
-							</div>
-						</div>
-					@endauth
 
-					@guest
-						<p class='text-center'>Please <a href='/login'>sign in</a> to comment</p>
-					@endguest
-					<div id="new-reply-wrap" class='{{count($errors)?"":"hidden"}}'>
-						@include('components.error')
-						<form method='POST' action="/forum/{{$thread->category->slug}}/{{$thread->id}}/reply">
-							@csrf
-							<div class="row">
-								<div class="col-8 offset-2">
-									<div class="form-group">
-										<textarea class='form-control' name="body" id="new-reply" rows="5" placeholder="Have something to say?" value="{{old('body')}}" required></textarea>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-8 offset-2 text-right">
-									<div class='form-group'>
-										<button type='submit' class="btn btn-primary d-inline m-auto">Submit</button>
-										<button type='button' class="btn btn-danger d-inline m-auto" onClick='hideReplyForm()'>Cancel</button>
-									</div>
-								</div>
-							</div>
-						</form>
+							<replies :page="{{$page}}" @add="replies_count++" @removed="replies_count--"></replies>
+
+						</div>
 					</div>
-					<br>
-					@foreach($replies as $r)
-						@include('components.threadReply')
-					@endforeach
-					{{ $replies->links() }}
-				</div>
+				</thread>
 				<div class="col-3">
 					<div id="sidebar" class='panel'>
 						<h3 class='text-center'>Welcome to the RballNL Forum!</h3>
@@ -97,7 +67,7 @@
 						</small>
 					</div>
 				</div>
-			</div> <!-- row -->
+			</div>
 		</div>
 
 		@include('components.areYouSureModal')

@@ -33,9 +33,10 @@ class ReadThreadsTest extends TestCase
 
 	/** @test */
 	public function a_user_can_see_replies_to_a_thread() {
+		$this->signOut();
 		// given we have a thread with replies
 		// when we visit the thread
-		$response = $this->get($this->thread->getPath());
+		$response = $this->get($this->thread->getPath()."/replies");
 		// we should see the replies
 		$response->assertSee($this->replies[0]->body);
 	}

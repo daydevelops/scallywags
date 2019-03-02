@@ -23,10 +23,7 @@ class ParticipateInForumTest extends TestCase
 		$reply = factory('App\ThreadReply')->make();
 		$this->post($thread->getPath().'/reply',$reply->toArray());
 
-		$this->assertInstanceOf('App\ThreadReply',$thread->replies()->first());
-		// the reply should be visible on the thread page
-		$response = $this->get($thread->getPath());
-		$response->assertSee($reply->body);
+		$this->assertDatabaseHas('thread_replies',['body'=>$reply->body]);
 	}
 
 	/** @test */

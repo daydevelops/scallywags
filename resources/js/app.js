@@ -8,7 +8,12 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-
+window.Vue.prototype.authorize = function (handler) {
+	if (! window.App.user) {
+		return false;
+	}
+	return handler(window.app.user);
+}
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -30,8 +35,9 @@ window.Vue = require('vue');
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.component('reply',require('./components/Reply.vue'));
+Vue.component('thread',require('./pages/Thread.vue'));
 Vue.component('favourite',require('./components/Favourite.vue'));
+Vue.component('paginator',require('./components/Paginator.vue'));
 const app = new Vue({
     el: '#app',
 });

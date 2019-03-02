@@ -74,12 +74,12 @@ class ThreadsController extends Controller
 	* @param  \App\Thread  $thread
 	* @return \Illuminate\Http\Response
 	*/
-	public function show($category_id, Thread $thread)
+	public function show(Request $request, $category_id, Thread $thread)
 	{
-		// dd($thread);
-		$replies = $thread->replies()->paginate(10);
+		$page = $request->page?$request->page:1;
+		// $replies = $thread->replies()->paginate(10);
 		// return [$thread,$replies];
-		return view('forum/show',compact('thread','replies'));
+		return view('forum/show',compact('thread','page'));
 	}
 
 	/**

@@ -22,6 +22,7 @@ Route::post('/forum', 'ThreadsController@store');
 Route::post('/forum/{category}/{thread}/reply','ThreadReplyController@store');
 Route::get('/forum/{category}/{thread}','ThreadsController@show');
 Route::get('/forum/{category}','ThreadsController@index');
+Route::get('/forum/{category}/{thread}/replies','ThreadReplyController@show');
 Route::delete('/forum/reply/{reply}','ThreadReplyController@destroy');
 Route::delete('/forum/{category}/{thread}', 'ThreadsController@destroy');
 Route::patch('/forum/reply/{reply}','ThreadReplyController@update');

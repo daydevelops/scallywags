@@ -82,6 +82,6 @@ class ThreadReplyPolicy
     }
 
 	public function favourite(User $user, ThreadReply $reply) {
-		return $reply->user_id !== $user->id && auth()->check();
+		return auth()->check();
 	}
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ThreadReply;
 use App\Thread;
+use App\Category;
 use Illuminate\Http\Request;
 
 class ThreadReplyController extends Controller
@@ -44,7 +45,11 @@ class ThreadReplyController extends Controller
         ]);
 		$data['user_id'] = auth()->user()->id;
 
-        $thread->addReply($data);
+        $reply = $thread->addReply($data);
+
+		if (request()->expectsJson()) {
+			return $reply->load('user');
+		}
 		return back();
     }
 
@@ -54,9 +59,9 @@ class ThreadReplyController extends Controller
      * @param  \App\ThreadReply  $threadReply
      * @return \Illuminate\Http\Response
      */
-    public function show(ThreadReply $threadReply)
+    public function show(Category $category, Thread $thread)
     {
-        //
+        return $thread->replies()->paginate(10);
     }
 
     /**
