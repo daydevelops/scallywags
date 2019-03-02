@@ -9,7 +9,7 @@ use App\User;
 
 class ThreadFilter extends Filter {
 
-	protected $filters = ['u','popular','favourites'];
+	protected $filters = ['u','popular','favourites','unanswered'];
 
 	public function u($user_id) {
 		return $this->builder->where('user_id',$user_id);
@@ -21,6 +21,10 @@ class ThreadFilter extends Filter {
 
 	public function favourites() {
 		// $this->builder->where('');
+	}
+
+	public function unanswered() {
+		$this->builder->doesntHave('replies');
 	}
 
 }

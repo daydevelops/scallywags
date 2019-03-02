@@ -89,4 +89,19 @@ class ReadThreadsTest extends TestCase
 		$this->assertEquals([10,3,2],array_column($response['data'],'replies_count'));
 	}
 
+	/** @test */
+	public function a_user_can_sort_threads_by_unanswered() {
+		// given that we have many threads with random amount of replies
+		$t1 = factory('App\Thread')->create();
+		$t2 = factory('App\Thread')->create();
+
+		factory('App\ThreadReply',2)->create(['thread_id'=>$t1->id]);
+		// when we sort those threads by the number of replies
+		$response = $this->get('/forum?unanswered=1');
+		// dd($response);
+		// the user should see the threads sorted
+		$response->assertSee($t2->body);
+		$response->assertDontSee($t1->body);
+	}
+
 }

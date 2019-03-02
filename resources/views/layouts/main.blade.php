@@ -43,6 +43,7 @@
 								<a class="dropdown-item" href="/forum?favourites=1">My Favourites</a>
 							@endauth
 							<a class="dropdown-item" href="/forum?popular=1">Popular</a>
+							<a class="dropdown-item" href="/forum?unanswered=1">Unanswered</a>
 						</div>
 					</li>
 					<li class="nav-item">
