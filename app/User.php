@@ -57,6 +57,10 @@ class User extends Authenticatable
 		return $this->hasMany(ForumActivity::class);
 	}
 
+	public function subscriptions() {
+		return $this->hasMany(ThreadSubscription::class);
+	}
+
 	public static function allPublic() {
 		return User::select('id','name','skill','image')->get();
 	}

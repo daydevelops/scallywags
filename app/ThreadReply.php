@@ -9,7 +9,7 @@ class ThreadReply extends Model
 	use RecordsActivity;
 	use Favourable;
 
-	protected $guarded = [];
+	protected $fillable = ['thread_id','user_id','body'];
 	protected $appends = array('is_favourited');
 
 	protected static function boot() {

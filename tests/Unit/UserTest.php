@@ -60,7 +60,14 @@ class UserTest extends TestCase
 
 	// /** @test */
 	// public function it_has_thread_subscriptions() {
+	// 	$thread = factory('App\Thread')->create(['user_id'=>999]);
+	// 	$this->signIn();
+	// 	$thread->subscribe();
+	// 	$this->user->subscriptions;
+	// 	dd($this->user);//->subscriptions->where(['thread_id'=>$thread->id])->get());
+	// 	// dd(\App\ThreadSubscription::where(['user_id'=>auth()->id()])->get());
 	//
+	// 	$this->assertInstanceOf('App\ThreadSubscription',$this->user->subscriptions[0]);
 	// }
 
 }

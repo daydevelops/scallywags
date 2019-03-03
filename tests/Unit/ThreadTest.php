@@ -47,4 +47,21 @@ class ThreadTest extends TestCase
 	public function a_thread_has_a_path_with_category_slug() {
 		$this->assertEquals($this->thread->getPath(),'/forum/'.$this->thread->category->slug.'/'.$this->thread->id);
 	}
+
+	/** @test */
+	public function a_thread_has_subscribed_users() {
+		$thread = factory('App\Thread')->create();
+		$this->signIn();
+		$thread->subscribe();
+		$this->assertCount(1,$thread->subscriptions()->where('user_id',auth()->id())->get());
+	}
+
+	/** @test */
+	public function a_thread_can_be_subscribed_and_unsubscribed_to() {
+		$this->signIn();
+		$this->thread->subscribe();
+		$this->assertCount(1,$this->thread->subscriptions()->where(['user_id'=>auth()->id()])->get());
+		$this->thread->unsubscribe();
+		$this->assertCount(0,$this->thread->subscriptions);
+	}
 }

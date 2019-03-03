@@ -64,7 +64,7 @@ class ThreadsController extends Controller
 		$data['user_id'] = auth()->user()->id;
 
 		$thread = Thread::create($data);
-
+		$thread->subscribe();
 		return redirect($thread->getPath());
 	}
 

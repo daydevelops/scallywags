@@ -19,6 +19,8 @@ Route::get('/about', 'HomeController@about');
 Route::get('/forum', 'ThreadsController@index')->name('forum');
 Route::get('/forum/new', 'ThreadsController@create');
 Route::post('/forum', 'ThreadsController@store');
+Route::post('/forum/{category}/{thread}/subscribe','ThreadSubscriptionController@store');
+Route::delete('/forum/{category}/{thread}/unsubscribe','ThreadSubscriptionController@destroy');
 Route::post('/forum/{category}/{thread}/reply','ThreadReplyController@store');
 Route::get('/forum/{category}/{thread}','ThreadsController@show');
 Route::get('/forum/{category}','ThreadsController@index');

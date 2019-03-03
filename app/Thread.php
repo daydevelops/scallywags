@@ -39,9 +39,21 @@ class Thread extends Model
 	public function category() {
 		return $this->belongsTo(Category::class);
 	}
+	public function subscriptions() {
+		return $this->hasMany(ThreadSubscription::class);
+	}
 
 	public function addReply($reply) {
 		return $this->replies()->create($reply);
+	}
+	public function subscribe() {
+		$attributes = ['user_id' => auth()->id()];
+		if (! $this->subscriptions()->where($attributes)->exists()) {
+			return $this->subscriptions()->create($attributes);
+		}
+	}
+	public function unsubscribe() {
+		return $this->subscriptions()->where(['user_id' => auth()->id()])->delete();
 	}
 
 	public function getPath() {
