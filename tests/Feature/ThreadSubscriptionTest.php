@@ -55,8 +55,22 @@ class ThreadSubscriptionTest extends TestCase
 		$reply = factory('App\ThreadReply')->make();
 		$thread->addReply($reply->toArray());
 		$this->assertDatabaseHas('notifications',[
-			'notifiable_tyle'=>'App\User',
-			'type'=>'App\Notifications\newReply',
+			'notifiable_type'=>'App\User',
+			'type'=>'App\Notifications\ThreadRepliedTo',
+			'notifiable_id'=>auth()->id()
+		]);
+	}
+
+	/** @test */
+	public function users_are_not_notified_when_leaving_their_own_reply() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread->subscribe();
+		$reply = factory('App\ThreadReply')->make(['user_id'=>auth()->id()]);
+		$thread->addReply($reply->toArray());
+		$this->assertDatabaseMissing('notifications',[
+			'notifiable_type'=>'App\User',
+			'type'=>'App\Notifications\ThreadRepliedTo',
 			'notifiable_id'=>auth()->id()
 		]);
 	}

@@ -78,7 +78,7 @@ class ThreadsController extends Controller
 	{
 		$page = $request->page?$request->page:1;
 		// $replies = $thread->replies()->paginate(10);
-		// return [$thread,$replies];
+		// return $thread;
 		return view('forum/show',compact('thread','page'));
 	}
 

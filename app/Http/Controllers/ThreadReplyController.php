@@ -59,7 +59,7 @@ class ThreadReplyController extends Controller
      * @param  \App\ThreadReply  $threadReply
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category, Thread $thread)
+    public function show($category, Thread $thread)
     {
         return $thread->replies()->paginate(10);
     }

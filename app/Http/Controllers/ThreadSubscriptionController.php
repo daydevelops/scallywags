@@ -37,7 +37,7 @@ class ThreadSubscriptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Category $category, Thread $thread)
+    public function store($category, Thread $thread)
     {
         return $thread->subscribe();
     }
@@ -82,7 +82,7 @@ class ThreadSubscriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category, Thread $thread)
+    public function destroy($category, Thread $thread)
     {
         return $thread->unsubscribe();
     }

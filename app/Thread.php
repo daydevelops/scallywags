@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Notifications\ThreadRepliedTo;
 
 class Thread extends Model
 {
@@ -11,6 +12,7 @@ class Thread extends Model
 	use Favourable;
 
 	protected $guarded = [];
+	protected $appends = array('is_subscribed');
 
 	protected static function boot() {
 		parent::boot();
@@ -44,7 +46,12 @@ class Thread extends Model
 	}
 
 	public function addReply($reply) {
-		return $this->replies()->create($reply);
+		$reply = $this->replies()->create($reply);
+		foreach($this->subscriptions as $sub) {
+			if ($reply->user_id !== auth()->id()) { //no need to notify the user leaving the reply
+				$sub->user->notify(new ThreadRepliedTo($this,$reply));
+			}
+		}
 	}
 	public function subscribe() {
 		$attributes = ['user_id' => auth()->id()];
@@ -62,6 +69,26 @@ class Thread extends Model
 
 	public function scopeFilter($query, $filters) {
 		return $filters->apply($query);
+	}
+
+
+	/**
+	* Determine if the current reply has been favourited.
+	*
+	* @return boolean
+	*/
+	public function isSubscribed()
+	{
+		return ! ! $this->subscriptions->where('user_id', auth()->id())->count();
+	}
+	/**
+	* Fetch the favourited status as a property.
+	*
+	* @return bool
+	*/
+	public function getIsSubscribedAttribute()
+	{
+		return $this->isSubscribed();
 	}
 
 }

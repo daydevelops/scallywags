@@ -38,6 +38,7 @@ window.Vue.prototype.authorize = function (handler) {
 Vue.component('thread',require('./pages/Thread.vue'));
 Vue.component('favourite',require('./components/Favourite.vue'));
 Vue.component('paginator',require('./components/Paginator.vue'));
+Vue.component('subscribe-button',require('./components/subscribe-button.vue'));
 const app = new Vue({
     el: '#app',
 });

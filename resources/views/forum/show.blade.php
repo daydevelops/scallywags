@@ -25,7 +25,10 @@
 									<div class="col-4 text-right">
 										<p class='thread-reply-count'><small><em v-text="replies_count">{{str_plural('comment',$thread->replies_count)}}</em></small></p>
 										@can('favourite',$thread)
-											<favourite :item="{{$thread}}" :type="'thread'" class='favourite-wrapper'></favourite>
+											<favourite :item="{{$thread}}" :type="'thread'" class='favourite-wrapper d-inline'></favourite>
+										@endcan
+										@can('subscribe',$thread)
+											<subscribe-button :init_subscribed={{$thread->is_subscribed ? "1" : "0"}} class='d-inline'></subscribe-button>
 										@endcan
 									</div>
 								</div>

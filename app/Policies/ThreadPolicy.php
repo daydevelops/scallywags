@@ -84,4 +84,8 @@ class ThreadPolicy
 	public function favourite(User $user, Thread $thread) {
 		return auth()->check();
 	}
+
+	public function subscribe(User $user, Thread $thread) {
+		return auth()->check();
+	}
 }

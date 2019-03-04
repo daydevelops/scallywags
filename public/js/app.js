@@ -14079,6 +14079,7 @@ window.Vue.prototype.authorize = function (handler) {
 Vue.component('thread', __webpack_require__(70));
 Vue.component('favourite', __webpack_require__(42));
 Vue.component('paginator', __webpack_require__(214));
+Vue.component('subscribe-button', __webpack_require__(220));
 var app = new Vue({
   el: '#app'
 });
@@ -66549,6 +66550,125 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-59656db6", module.exports)
+  }
+}
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(11)
+/* script */
+var __vue_script__ = __webpack_require__(221)
+/* template */
+var __vue_template__ = __webpack_require__(222)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/subscribe-button.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-39efd8e0", Component.options)
+  } else {
+    hotAPI.reload("data-v-39efd8e0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 221 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: ['init_subscribed'],
+	data: function data() {
+		return {
+			subscribed: this.init_subscribed
+		};
+	},
+
+	methods: {
+		toggleSubscribed: function toggleSubscribed() {
+			this.subscribed ? this.unsubscribe() : this.subscribe();
+		},
+		subscribe: function subscribe() {
+			var _this = this;
+
+			axios.post(location.pathname + '/subscribe').then(function (response) {
+				_this.subscribed = 1;
+			});
+		},
+		unsubscribe: function unsubscribe() {
+			var _this2 = this;
+
+			axios.delete(location.pathname + '/unsubscribe').then(function (response) {
+				_this2.subscribed = 0;
+			});
+		}
+	}
+});
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("button", {
+    staticClass: "btn",
+    class: _vm.subscribed ? "btn-warning" : "btn-primary",
+    domProps: {
+      textContent: _vm._s(_vm.subscribed ? "unsubscribe" : "subscribe")
+    },
+    on: { click: _vm.toggleSubscribed }
+  })
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-39efd8e0", module.exports)
   }
 }
 
