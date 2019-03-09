@@ -48,3 +48,7 @@ Route::post('/game/{game}/invite/{user}','GamesController@invite');
 Route::post('/game/{game}/leave','GamesController@leave');
 Route::post('/game/{game}/join','GamesController@join');
 Auth::routes();
+
+Route::get('/notifications','UserNotificationController@index');
+Route::delete('/notifications/all','UserNotificationController@destroyAll');
+Route::delete('/notifications/{notification}','UserNotificationController@destroy');

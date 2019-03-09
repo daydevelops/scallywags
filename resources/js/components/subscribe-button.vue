@@ -1,7 +1,7 @@
 <template>
 	<button
 	class="btn"
-	:class="subscribed?'btn-warning':'btn-primary'"
+	:class="subscribed?'btn-secondary':'btn-primary'"
 	@click="toggleSubscribed"
 	v-text="subscribed?'unsubscribe':'subscribe'">
 	</button>

@@ -57,7 +57,9 @@ class ThreadRepliedTo extends Notification
     public function toArray($notifiable)
     {
         return [
-            'thread_id'=>$this->thread->id
+            'thread_id'=>$this->thread->id,
+			'description'=>"New reply to thread: ".$this->thread->title,
+			'url'=>$this->thread->getPath()
         ];
     }
 }
