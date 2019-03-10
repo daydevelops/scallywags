@@ -11,6 +11,7 @@ class ThreadReply extends Model
 
 	protected $fillable = ['thread_id','user_id','body'];
 	protected $appends = array('is_favourited');
+	protected $touches = ['Thread'];
 
 	protected static function boot() {
 		parent::boot();
@@ -20,6 +21,15 @@ class ThreadReply extends Model
 		static::addGlobalScope('thread', function ($builder) {
 			$builder->with('thread');
 		});
+		static::deleting(function($thread) {
+			auth()->user()->read($thread->id);
+		});
+		static::saving(function($thread) {
+			auth()->user()->read($thread->id);
+		});
+		// static::updating(function($thread) {
+		// 	auth()->user()->read($thread->id);
+		// });
 	}
 
 	public function user() {

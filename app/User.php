@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -63,5 +64,14 @@ class User extends Authenticatable
 
 	public static function allPublic() {
 		return User::select('id','name','skill','image')->get();
+	}
+
+	public function read($thread_id) {
+		$key = $this->visitedThreadCachedKey($thread_id);
+		cache()->forever($key,Carbon::now());
+	}
+
+	public function visitedThreadCachedKey($thread_id) {
+		return sprintf("user.%s.visits.%s",auth()->id(),$thread_id);
 	}
 }

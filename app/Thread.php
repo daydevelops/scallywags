@@ -52,6 +52,7 @@ class Thread extends Model
 				$sub->user->notify(new ThreadRepliedTo($this,$reply));
 			}
 		}
+		return $reply;
 	}
 	public function subscribe() {
 		$attributes = ['user_id' => auth()->id()];
@@ -89,6 +90,12 @@ class Thread extends Model
 	public function getIsSubscribedAttribute()
 	{
 		return $this->isSubscribed();
+	}
+
+	public function hasBeenUpdated() {
+		if (!auth()->check()) return false;
+		$key = auth()->user()->visitedThreadCachedKey($this->id);
+		return cache($key) < $this->updated_at;
 	}
 
 }

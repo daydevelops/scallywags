@@ -6,6 +6,7 @@ use App\Thread;
 use App\Category;
 use App\Filters\ThreadFilter;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ThreadsController extends Controller
 {
@@ -76,9 +77,10 @@ class ThreadsController extends Controller
 	*/
 	public function show(Request $request, $category_id, Thread $thread)
 	{
+		if (auth()->check()) {
+			auth()->user()->read($thread->id);
+		}
 		$page = $request->page?$request->page:1;
-		// $replies = $thread->replies()->paginate(10);
-		// return $thread;
 		return view('forum/show',compact('thread','page'));
 	}
 

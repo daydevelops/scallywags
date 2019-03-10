@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Carbon\Carbon;
 
 class ThreadTest extends TestCase
 {
@@ -65,10 +66,21 @@ class ThreadTest extends TestCase
 		$this->assertCount(0,$this->thread->subscriptions);
 	}
 
+	/** @test */
 	public function it_knows_if_a_user_is_subscribed() {
 		$this->signIn();
 		$this->assertTrue(!$this->thread->is_subscribed);
 		$this->thread->subscribe();
-		$this->assertTrue($this->thread->is_subscribed);
+		$this->assertTrue($this->thread->refresh()->is_subscribed);
 	}
+
+	/** @test */
+	public function a_thread_checks_if__it_has_been_updated_since_the_users_last_visit() {
+		$this->signIn();
+		$this->assertTrue($this->thread->hasBeenUpdated());
+		auth()->user()->read($this->thread->id);
+		$this->assertFalse($this->thread->hasBeenUpdated());
+	}
+
+
 }
