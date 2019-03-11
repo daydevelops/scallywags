@@ -39,4 +39,8 @@ class ThreadReply extends Model
 		return $this->belongsTo(Thread::class);
 	}
 
+	public function wasJustPublished() {
+		return $this->created_at->gt(\Carbon\Carbon::now()->subSeconds(30));
+	}
+
 }

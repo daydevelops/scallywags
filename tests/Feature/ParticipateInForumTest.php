@@ -170,11 +170,6 @@ class ParticipateInForumTest extends TestCase
 
 
 
-
-
-
-
-
 	public function publishThread($overrides=[]) {
 		$this->signIn();
 		$thread = factory('App\Thread')->make($overrides);

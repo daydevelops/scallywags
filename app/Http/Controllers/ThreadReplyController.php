@@ -41,6 +41,8 @@ class ThreadReplyController extends Controller
 	public function store(Request $request, $category_id, Thread $thread)
 	{
 		try {
+
+			$this->authorize('create',new ThreadReply);
 			$data = request()->validate([
 				'body'=>'required|spamfree'
 			]);

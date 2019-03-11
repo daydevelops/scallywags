@@ -54,6 +54,10 @@ class User extends Authenticatable
 		return $this->hasMany(ThreadReply::class)->withoutGlobalScopes();
 	}
 
+	public function lastReply() {
+		return $this->hasOne(ThreadReply::class)->latest();
+	}
+
 	public function activities() {
 		return $this->hasMany(ForumActivity::class);
 	}

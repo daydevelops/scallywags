@@ -58,6 +58,16 @@ class UserTest extends TestCase
 		$this->assertInstanceOf('App\ForumActivity',$this->user->activities[0]);
 	}
 
+	/** @test */
+	public function it_can_get_its_last_thread_reply() {
+		factory('App\ThreadReply')->create([
+			'user_id'=>$this->user->id,
+			'created_at'=>\Carbon\Carbon::yesterday()
+		]);
+		$reply = factory('App\ThreadReply')->create(['user_id'=>$this->user->id]);
+		$this->assertEquals($reply->id,$this->user->lastReply->id);
+	}
+
 	// /** @test */
 	// public function it_has_thread_subscriptions() {
 	// 	$thread = factory('App\Thread')->create(['user_id'=>999]);
