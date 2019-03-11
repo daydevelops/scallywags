@@ -63,10 +63,10 @@ class ParticipateInForumTest extends TestCase
 		$this->publishThread(['category_id'=>999999])->assertSessionHasErrors('category_id');
 	}
 
-	/** @test */
-	public function a_reply_requires_a_body() {
-		$this->publishReply(['body'=>null])->assertSessionHasErrors('body');
-	}
+	// /** @test */
+	// public function a_reply_requires_a_body() {
+	// 	$this->publishReply(['body'=>null])->assertSessionHasErrors('body');
+	// }
 
 	/** @test */
 	public function a_user_can_delete_their_thread() {
@@ -134,6 +134,37 @@ class ParticipateInForumTest extends TestCase
 		$response = $this->withExceptionHandling()->patch('/forum/reply/'.$reply->id,['body'=>'foobar']);
 		$this->assertDatabaseMissing('thread_replies',['id'=>$reply->id,'body'=>'foobar']);
 
+	}
+
+	/** @test */
+	public function a_user_can_not_add_a_reply_if_spam_is_detected() {
+
+		// given we have an authenticated user,
+		$this->signIn();
+
+		// and we have a thread they can read
+		$thread = factory('App\Thread')->create();
+
+		// when the user replies to the thread
+		$reply = factory('App\ThreadReply')->make([
+			'body'=>'Yahoo Customer Support'
+		]);
+		// $this->expectException();
+		$this->withExceptionHandling()->post($thread->getPath().'/reply',$reply->toArray());
+
+		$this->assertDatabaseMissing('thread_replies',['body'=>$reply->body]);
+	}
+
+	/** @test */
+	public function user_can_only_reply_once_per_30_seconds() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$reply1 = factory('App\ThreadReply')->make();
+		$reply2 = factory('App\ThreadReply')->make();
+		$this->post($thread->getPath().'/reply',$reply1->toArray());
+		$response = $this->post($thread->getPath().'/reply',$reply2->toArray());
+		$this->assertDatabaseHas('thread_replies',['body'=>$reply1->body]);
+		$this->assertDatabaseMissing('thread_replies',['body'=>$reply2->body]);
 	}
 
 

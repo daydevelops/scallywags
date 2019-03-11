@@ -24,9 +24,9 @@ class ThreadReply extends Model
 		static::deleting(function($thread) {
 			auth()->user()->read($thread->id);
 		});
-		static::saving(function($thread) {
-			auth()->user()->read($thread->id);
-		});
+		// static::saving(function($thread) {
+		// 	auth()->user()->read($thread->id);
+		// });
 		// static::updating(function($thread) {
 		// 	auth()->user()->read($thread->id);
 		// });

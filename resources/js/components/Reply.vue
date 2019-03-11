@@ -10,9 +10,10 @@
 		</div>
 		<div class="row">
 			<div class="col-12">
-				<div v-if='editing && !deleted'>
+				<div v-if='editing'>
 					<div class="form-group">
-					<textarea class='form-control' v-model='body'></textarea>
+						<p class="text-center" v-text="errors"></p>
+						<textarea class='form-control' v-model='body'></textarea>
 						<button class="btn btn-primary" @click='update'>Update</button>
 						<button class="btn btn-secondary" @click='cancelEdit'>Cancel</button>
 					</div>
@@ -31,48 +32,51 @@
 
 <script>
 import moment from 'moment';
-	export default {
-		props: ['data'],
-		data() {
-			return {
-				editing:false,
-				body:this.data.body
-			}
+export default {
+	props: ['data'],
+	data() {
+		return {
+			editing:false,
+			body:this.data.body,
+			errors:""
+		}
+	},
+	computed: {
+		signedIn() {
+			return window.App.signedIn
 		},
-		computed: {
-			signedIn() {
-				return window.App.signedIn
-			},
-			ago() {
-				return moment(this.data.created_at+'z').fromNow();
-			}
+		ago() {
+			return moment(this.data.created_at+'z').fromNow();
+		}
+	},
+	methods: {
+		update() {
+			axios.patch('/forum/reply/'+this.data.id,{body: this.body})
+			.then(
+				(response) => {
+					console.log(response.data)
+				},
+				(error) => {
+					this.errors = error.response.data;
+				}
+			)
 		},
-		methods: {
-			update() {
-				axios.patch('/forum/reply/'+this.data.id,{body: this.body}).bind(this)
-				.then(response => {
-					console.log(response);
-				})
-				.catch(errors => {
-					console.log(errors);
-				})
-			},
-			destroy() {
-				axios.delete('/forum/reply/'+this.data.id)
-				.then(response => {
-					this.$emit('deleted',this.data.id);
-				})
-				.catch(errors => {
-					console.log(errors);
-				})
-			},
-			cancelEdit() {
-				this.body = this.data.body;
-				this.editing = false;
-			},
-			canEdit() {
-				return this.authorize(user => this.data.user_id == window.App.user.id);
-			}
+		destroy() {
+			axios.delete('/forum/reply/'+this.data.id)
+			.then(response => {
+				this.$emit('deleted',this.data.id);
+			})
+			.catch(errors => {
+				console.log(errors);
+			})
+		},
+		cancelEdit() {
+			this.body = this.data.body;
+			this.editing = false;
+		},
+		canEdit() {
+			return this.authorize(user => this.data.user_id == window.App.user.id);
 		}
 	}
+}
 </script>

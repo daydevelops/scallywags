@@ -58,8 +58,8 @@ class ThreadsController extends Controller
 	{
 		// dd($request);
 		$data = request()->validate([
-			'title'=>'required',
-			'body'=>'required',
+			'title'=>'required|spamfree',
+			'body'=>'required|spamfree',
 			'category_id'=>'required|exists:categories,id'
 		]);
 		$data['user_id'] = auth()->user()->id;

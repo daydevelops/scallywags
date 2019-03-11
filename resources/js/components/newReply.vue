@@ -7,9 +7,8 @@
 				</div>
 				<br><br>
 			</div>
-			<div id="new-reply-wrap" v-if="is_visible"> <!-- class='{{count($errors)?"":"hidden"}}'> -->
-				<!-- @include('components.error') -->
-				<!-- <form method='POST' action="/forum/{{$thread->category->slug}}/{{$thread->id}}/reply"> -->
+			<div id="new-reply-wrap" v-if="is_visible">
+				<p class="text-center" v-text="errors"></p>
 				<div class="row">
 					<div class="col-8 offset-2">
 						<div class="form-group">
@@ -44,7 +43,8 @@ export default {
 		return {
 			body:"",
 			endpoint:location.pathname+'/reply',
-			is_visible:false
+			is_visible:false,
+			errors:""
 		}
 	},
 	computed: {
@@ -55,12 +55,19 @@ export default {
 	methods: {
 		addReply() {
 			axios.post(this.endpoint,{body:this.body})
-			.then(response => {
-				this.body = "",
-				// console.log(response.data)
-				this.$emit('created',response.data)
-				this.is_visible = false;
-			})
+			.then(
+				(response) => {
+					this.body = "",
+					// console.log(response.data)
+					this.$emit('created',response.data)
+					this.is_visible = false;
+					this.errors = ""; 
+				},
+				(error) => {
+					// debugger
+					this.errors = error.response.data;
+				}
+			)
 		}
 	}
 }

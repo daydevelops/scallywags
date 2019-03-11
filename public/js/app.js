@@ -65602,6 +65602,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -65609,7 +65610,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			editing: false,
-			body: this.data.body
+			body: this.data.body,
+			errors: ""
 		};
 	},
 
@@ -65623,17 +65625,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 	methods: {
 		update: function update() {
-			axios.patch('/forum/reply/' + this.data.id, { body: this.body }).bind(this).then(function (response) {
-				console.log(response);
-			}).catch(function (errors) {
-				console.log(errors);
+			var _this = this;
+
+			axios.patch('/forum/reply/' + this.data.id, { body: this.body }).then(function (response) {
+				console.log(response.data);
+			}, function (error) {
+				_this.errors = error.response.data;
 			});
 		},
 		destroy: function destroy() {
-			var _this = this;
+			var _this2 = this;
 
 			axios.delete('/forum/reply/' + this.data.id).then(function (response) {
-				_this.$emit('deleted', _this.data.id);
+				_this2.$emit('deleted', _this2.data.id);
 			}).catch(function (errors) {
 				console.log(errors);
 			});
@@ -65643,10 +65647,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			this.editing = false;
 		},
 		canEdit: function canEdit() {
-			var _this2 = this;
+			var _this3 = this;
 
 			return this.authorize(function (user) {
-				return _this2.data.user_id == window.App.user.id;
+				return _this3.data.user_id == window.App.user.id;
 			});
 		}
 	}
@@ -65971,9 +65975,14 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-12" }, [
-          _vm.editing && !_vm.deleted
+          _vm.editing
             ? _c("div", [
                 _c("div", { staticClass: "form-group" }, [
+                  _c("p", {
+                    staticClass: "text-center",
+                    domProps: { textContent: _vm._s(_vm.errors) }
+                  }),
+                  _vm._v(" "),
                   _c("textarea", {
                     directives: [
                       {
@@ -66150,14 +66159,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	data: function data() {
 		return {
 			body: "",
 			endpoint: location.pathname + '/reply',
-			is_visible: false
+			is_visible: false,
+			errors: ""
 		};
 	},
 
@@ -66175,6 +66184,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 				// console.log(response.data)
 				_this.$emit('created', response.data);
 				_this.is_visible = false;
+				_this.errors = "";
+			}, function (error) {
+				// debugger
+				_this.errors = error.response.data;
 			});
 		}
 	}
@@ -66219,6 +66232,11 @@ var render = function() {
           _vm._v(" "),
           _vm.is_visible
             ? _c("div", { attrs: { id: "new-reply-wrap" } }, [
+                _c("p", {
+                  staticClass: "text-center",
+                  domProps: { textContent: _vm._s(_vm.errors) }
+                }),
+                _vm._v(" "),
                 _c("div", { staticClass: "row" }, [
                   _c("div", { staticClass: "col-8 offset-2" }, [
                     _c("div", { staticClass: "form-group" }, [
