@@ -63,10 +63,10 @@ class ParticipateInForumTest extends TestCase
 		$this->publishThread(['category_id'=>999999])->assertSessionHasErrors('category_id');
 	}
 
-	// /** @test */
-	// public function a_reply_requires_a_body() {
-	// 	$this->publishReply(['body'=>null])->assertSessionHasErrors('body');
-	// }
+	/** @test */
+	public function a_reply_requires_a_body() {
+		$this->publishReply(['body'=>null])->assertStatus(422);
+	}
 
 	/** @test */
 	public function a_user_can_delete_their_thread() {
