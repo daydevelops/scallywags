@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Notifications\ThreadRepliedTo;
+use App\Events\ThreadReplyCreated;
 
 class Thread extends Model
 {
@@ -47,11 +47,7 @@ class Thread extends Model
 
 	public function addReply($reply) {
 		$reply = $this->replies()->create($reply);
-		foreach($this->subscriptions as $sub) {
-			if ($reply->user_id !== auth()->id()) { //no need to notify the user leaving the reply
-				$sub->user->notify(new ThreadRepliedTo($this,$reply));
-			}
-		}
+		event(new ThreadReplyCreated($reply));
 		return $reply;
 	}
 	public function subscribe() {

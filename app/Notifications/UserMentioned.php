@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class ThreadRepliedTo extends Notification
+class UserMentioned extends Notification
 {
     use Queueable;
 	protected $reply;
@@ -18,8 +18,8 @@ class ThreadRepliedTo extends Notification
      */
     public function __construct($reply)
     {
-		$this->reply = $reply;
-	    $this->thread = $reply->thread;
+        $this->reply = $reply;
+		// dd('con');
     }
 
     /**
@@ -30,6 +30,7 @@ class ThreadRepliedTo extends Notification
      */
     public function via($notifiable)
     {
+		// dd("via");
         return ['database'];
     }
 
@@ -55,10 +56,10 @@ class ThreadRepliedTo extends Notification
      */
     public function toArray($notifiable)
     {
+		// dd('here');
         return [
-            'thread_id'=>$this->thread->id,
-			'description'=>"New reply to thread: ".$this->thread->title,
-			'url'=>$this->thread->getPath()
+			'description'=>$this->reply->user->name." mentioned you in a post.",
+			'url'=>$this->reply->thread->getPath()
         ];
     }
 }

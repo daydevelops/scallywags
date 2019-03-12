@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ThreadReply;
 use App\Thread;
 use App\Category;
+use App\User;
 use Illuminate\Http\Request;
 
 class ThreadReplyController extends Controller
@@ -29,7 +30,6 @@ class ThreadReplyController extends Controller
 	*/
 	public function create()
 	{
-		//
 	}
 
 	/**
@@ -49,6 +49,7 @@ class ThreadReplyController extends Controller
 			$data['user_id'] = auth()->user()->id;
 
 			$reply = $thread->addReply($data);
+			
 
 			if (request()->expectsJson()) {
 				return $reply->load('user');
