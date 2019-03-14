@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Thread;
-use App\ThreadReply;
 class NotificationsTableSeeder extends Seeder
 {
 	/**

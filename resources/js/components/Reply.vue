@@ -2,6 +2,7 @@
 	<div class="reply" :id="'reply'+data.id">
 		<div class="row reply-header">
 			<div class="col-8">
+				<img :src="'/storage/'+data.user.image" class='user-thumbnail'>
 				<b><small><a :href="'/profile/'+data.user.id" v-text="data.user.name"></a> | <span v-text="ago"></span></small></b>
 			</div>
 			<div class="col-4 text-right" v-if="signedIn">

@@ -40,6 +40,7 @@ Vue.component('thread',require('./pages/Thread.vue'));
 Vue.component('favourite',require('./components/Favourite.vue'));
 Vue.component('paginator',require('./components/Paginator.vue'));
 Vue.component('subscribe-button',require('./components/subscribe-button.vue'));
+Vue.component('avatar-form',require('./components/AvatarForm.vue'));
 const app = new Vue({
     el: '#app',
 });

@@ -31226,6 +31226,7 @@ Vue.component('thread', __webpack_require__(176));
 Vue.component('favourite', __webpack_require__(190));
 Vue.component('paginator', __webpack_require__(195));
 Vue.component('subscribe-button', __webpack_require__(198));
+Vue.component('avatar-form', __webpack_require__(221));
 var app = new Vue({
   el: '#app'
 });
@@ -65603,6 +65604,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -65946,6 +65948,11 @@ var render = function() {
     [
       _c("div", { staticClass: "row reply-header" }, [
         _c("div", { staticClass: "col-8" }, [
+          _c("img", {
+            staticClass: "user-thumbnail",
+            attrs: { src: "/storage/" + _vm.data.user.image }
+          }),
+          _vm._v(" "),
           _c("b", [
             _c("small", [
               _c("a", {
@@ -68543,6 +68550,154 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(222)
+/* template */
+var __vue_template__ = __webpack_require__(223)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/AvatarForm.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-296473e8", Component.options)
+  } else {
+    hotAPI.reload("data-v-296473e8", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 222 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: ['user'],
+	data: function data() {
+		return {
+			path: '/storage/' + this.user.image
+		};
+	},
+
+	methods: {
+		uploadImage: function uploadImage() {
+			var _this = this;
+
+			var input_elem = document.querySelector('#new-user-img');
+			if (!input_elem.files.length) return;
+
+			var avatar = input_elem.files[0];
+
+			var data = new FormData();
+			data.append('avatar', avatar);
+			axios.post('/profile/avatar', data).then(function (response) {
+				_this.path = '/storage/' + response.data;
+			}, function (error) {
+				console.log(error);
+			});
+		},
+		testing: function testing() {
+			console.log('hay');
+		}
+	}
+});
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", {}, [
+    _c("input", {
+      attrs: {
+        id: "new-user-img",
+        type: "file",
+        name: "avatar",
+        accept: "image/*"
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "button",
+      { attrs: { type: "submit" }, on: { click: _vm.uploadImage } },
+      [_vm._v("upload")]
+    ),
+    _vm._v(" "),
+    _c("img", {
+      attrs: { id: "user-image", src: _vm.path },
+      on: { mouseover: _vm.showButton, mouseleave: _vm.hideButton }
+    })
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-296473e8", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

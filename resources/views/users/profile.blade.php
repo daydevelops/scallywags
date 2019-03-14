@@ -7,6 +7,11 @@
 @section('content')
 	<div class="container">
 		<div class="row">
+			<div class="col-6 offset-3" id="user-img-wrap">
+				
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-12" id="header">
 				<h1 class='text-center'>{{$user->name}}</h1>
 			</div>

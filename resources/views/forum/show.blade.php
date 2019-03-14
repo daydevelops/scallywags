@@ -18,6 +18,7 @@
 							<div class="row thread-header">
 								<div class="col-8 text-left">
 									<p class='thread-user'>
+										<img src='/storage/{{$thread->user->image}}' class='user-thumbnail'>
 										<small><a href='/profile/{{$thread->user->id}}'>{{$thread->user->name}}</a> |
 											<span class='thread-date'>{{$thread->created_at->diffForHumans()}} | {{$thread->category->name}}</span></small>
 										</p>

@@ -13,6 +13,7 @@
 						<div class="row thread-header">
 							<div class="col-8 text-left">
 								<p class='thread-user'>
+									<img src='/storage/{{$t->user->image}}' class='user-thumbnail'>
 									<a href='profile/{{$t->user->id}}'>{{$t->user->name}}</a>
 									<span class='thread-date'><small><em>{{$t->created_at->diffForHumans()}}</em></small></span>
 								</p>

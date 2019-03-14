@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileTest extends TestCase
 {
@@ -61,5 +63,30 @@ class ProfileTest extends TestCase
 		->assertSee($thread->title);
 	}
 
+	/** @test */
+	public function a_guest_cannot_upload_avatars() {
+		$this->expectException('Illuminate\Auth\AuthenticationException');
+		$this->post('/profile/avatar',[]);
+	}
+
+	/** @test */
+	public function an_invalid_avatar_is_not_uploaded() {
+		$this->signIn();
+		$this->withExceptionHandling()->json('post','/profile/avatar',[
+			'avatar' => 'not-an-image'
+		])->assertStatus(422);
+	}
+
+	/** @test */
+	public function a_user_can_upload_an_avatar() {
+		$this->signIn();
+		$avatar = UploadedFile::fake()->image('avatar.jpg');
+		Storage::fake('public');
+		$this->withExceptionHandling()->json('post','/profile/avatar',[
+			'avatar' => $avatar
+		])->assertStatus(200);
+		Storage::disk('public')->assertExists('avatars/'.$avatar->hashName());
+		$this->assertEquals('avatars/'.$avatar->hashName(),auth()->user()->image);
+	}
 
 }

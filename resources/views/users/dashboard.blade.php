@@ -17,7 +17,13 @@
 		<div class='container-fluid'>
 			<div class='row'>
 				<div class='col-sm-6' id='profile-image-wrapper'>
-					<img id='user-image' src='{{$user->image}}'>
+					<avatar-form :user="{{$user}}"></avatar-form>
+					{{-- <form method='POST' action="/profile/avatar" enctype="multipart/form-data">
+						@csrf
+						<input type="file" name="avatar">
+						<button type='submit'>upload</button>
+					</form>
+					<img id='user-image' src='/storage/{{$user->image}}'> --}}
 				</div>
 				<div class='col-sm-6' id='personal-info'>
 					<p id='user-name'><b>Name:</b> {{$user->name}}</p>

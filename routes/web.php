@@ -29,6 +29,7 @@ Route::delete('/forum/reply/{reply}','ThreadReplyController@destroy');
 Route::delete('/forum/{category}/{thread}', 'ThreadsController@destroy');
 Route::patch('/forum/reply/{reply}','ThreadReplyController@update');
 
+Route::post('/profile/avatar','Api\AvatarController@store');
 Route::get('/profile/{user}','ProfileController@show');
 
 Route::post('/favourite/thread/{thread}','FavouriteController@storeThread');

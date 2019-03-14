@@ -11656,3 +11656,9 @@ body {
   background-color: #3490dc;
 }
 
+.user-thumbnail {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
