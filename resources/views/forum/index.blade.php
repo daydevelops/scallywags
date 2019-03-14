@@ -70,6 +70,9 @@
 							<li>Be friendly</li>
 						</ol>
 					</small>
+					<hr>
+					<h4 class='text-center'>Trending Thread</h4>
+					<p>{{$trending_thread->title}}</p>
 				</div>
 			</div>
 		</div>

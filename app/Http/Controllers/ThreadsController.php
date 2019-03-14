@@ -7,6 +7,7 @@ use App\Category;
 use App\Filters\ThreadFilter;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redis;
 
 class ThreadsController extends Controller
 {
@@ -29,12 +30,14 @@ class ThreadsController extends Controller
 
 		$categories = Category::all();
 
+		$trending_thread = $this->getTrending();
+
 		if (request()->wantsJson()) {
 			return $threads;
 		}
 		// echo json_encode($threads);
 		// return null;
-		return view('forum/index',compact('threads','categories'));
+		return view('forum/index',compact('threads','categories','trending_thread'));
 	}
 
 	/**
@@ -80,8 +83,13 @@ class ThreadsController extends Controller
 		if (auth()->check()) {
 			auth()->user()->read($thread->id);
 		}
+		Redis::zincrby('trending_threads',1,json_encode([
+			'title'=>$thread->title,
+			'path'=>$thread->getPath()
+		]));
+		$trending_thread = $this->getTrending();
 		$page = $request->page?$request->page:1;
-		return view('forum/show',compact('thread','page'));
+		return view('forum/show',compact('thread','page','trending_thread'));
 	}
 
 	/**
@@ -118,5 +126,10 @@ class ThreadsController extends Controller
 		$this->authorize('update',$thread);
 		$thread->delete();
 		return response()->json(array('status'=>1,'fb'=>'Thread Deleted'));
+	}
+
+	protected function getTrending() {
+		$threads = Redis::zrevrange('trending_threads',0,-1);
+		return json_decode($threads[0]);
 	}
 }
