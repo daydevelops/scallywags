@@ -1,13 +1,13 @@
 <template>
 	<div>
 		<div v-if="signedIn">
-			<div v-if="!is_visible" id='new-reply-btn' class="row">
+			<!-- <div v-if="!is_visible" id='new-reply-btn' class="row">
 				<div class="col-12">
 					<button class="btn btn-primary m-auto d-block" @click='is_visible=true'>New Reply</button>
 				</div>
 				<br><br>
-			</div>
-			<div id="new-reply-wrap" v-if="is_visible">
+			</div> -->
+			<div id="new-reply-wrap">
 				<p class="text-center" v-text="errors"></p>
 				<div class="row">
 					<div class="col-8 offset-2">
@@ -15,7 +15,7 @@
 							<textarea
 							class='form-control'
 							name="body"
-							id="new-reply"
+							id="body"
 							rows="5"
 							placeholder="Have something to say?"
 							v-model="body"
@@ -38,12 +38,15 @@
 </template>
 
 <script>
+import 'jquery.caret';
+import 'at.js';
+
 export default {
 	data() {
 		return {
 			body:"",
 			endpoint:location.pathname+'/reply',
-			is_visible:false,
+			is_visible:true,
 			errors:""
 		}
 	},
@@ -51,6 +54,19 @@ export default {
 		signedIn() {
 			return window.App.signedIn
 		}
+	},
+	mounted() {
+		$('#body').atwho({
+			at:'@',
+			delay:750,
+			callbacks: {
+				remoteFilter: function(query, callback) {
+					$.getJSON("/api/users",{name: query}, function(usernames) {
+						callback(usernames);
+					})
+				}
+			}
+		});
 	},
 	methods: {
 		addReply() {
@@ -61,7 +77,7 @@ export default {
 					// console.log(response.data)
 					this.$emit('created',response.data)
 					this.is_visible = false;
-					this.errors = ""; 
+					this.errors = "";
 				},
 				(error) => {
 					// debugger

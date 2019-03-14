@@ -28,7 +28,7 @@ class NotifyMentionedUsers
 	{
 		$reply = $event->reply;
 		// check for any mentioned users
-		preg_match_all('/\@([^\s\.]+)/',$reply->body,$matches);
+		preg_match_all('/@([\w\-]+)/',$reply->body,$matches);
 		$names = $matches[1];
 		// for each user, send notification
 		foreach ($names as $n) {

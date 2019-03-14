@@ -78,4 +78,8 @@ class User extends Authenticatable
 	public function visitedThreadCachedKey($thread_id) {
 		return sprintf("user.%s.visits.%s",auth()->id(),$thread_id);
 	}
+
+	public function getPath() {
+		return "/profile/".$this->id;
+	}
 }

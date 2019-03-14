@@ -52,3 +52,5 @@ Auth::routes();
 Route::get('/notifications','UserNotificationController@index');
 Route::delete('/notifications/all','UserNotificationController@destroyAll');
 Route::delete('/notifications/{notification}','UserNotificationController@destroy');
+
+Route::get('/api/users','Api\UsersController@index');

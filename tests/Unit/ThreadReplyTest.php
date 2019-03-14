@@ -29,4 +29,16 @@ class ThreadReplyTest extends TestCase
 		$reply = factory('App\ThreadReply')->create(['created_at'=>\Carbon\Carbon::now()->subSeconds(31)]);
 		$this->assertFalse($reply->wasJustPublished());
 	}
+
+	/** @test */
+	public function it_wraps_user_mentions_with_an_anchor_tag() {
+		$this->signIn();
+		$user = factory('App\User')->create(['name'=>'alice-day']);
+		// $user = factory('App\User')->create(['name'=>'alice']);
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->make(['body'=>"hello @bob and @alice-day."]);
+		$this->post($thread->getPath().'/reply',$reply->toArray());
+
+		$this->assertContains('<a href="'.$user->getPath().'">@alice-day</a>',$reply->refresh()->body);
+	}
 }

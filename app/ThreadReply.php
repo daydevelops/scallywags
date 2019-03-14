@@ -43,4 +43,17 @@ class ThreadReply extends Model
 		return $this->created_at->gt(\Carbon\Carbon::now()->subSeconds(30));
 	}
 
+	public function setBodyAttribute($body) {
+		$reg = '/@([\w\-]+)/';
+		preg_match_all($reg,$body,$matches);
+		$names = $matches[1];
+		foreach($names as $n) {
+			$user = User::where(['name'=>$n])->first();
+			if ($user) {
+				$body = preg_replace($reg,'<a href="'.$user->getPath().'">$0</a>',$body);
+			}
+		}
+		$this->attributes['body'] = $body;
+	}
+
 }

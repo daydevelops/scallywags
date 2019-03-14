@@ -24,4 +24,13 @@ class MentioningUsersTest extends TestCase
 			'notifiable_id'=>$user->id
 		]);
 	}
+
+	/** @test */
+	public function user_names_can_be_fetched_for_mention_autocomplete() {
+		factory('App\User')->create(['name'=>'adamday']);
+		factory('App\User')->create(['name'=>'johndoe']);
+		$response = $this->json('GET','/api/users',['name'=>'adam']);
+		$this->assertContains('adamday',json_encode($response));
+		$this->assertNotContains('johndoe',json_encode($response));
+	}
 }

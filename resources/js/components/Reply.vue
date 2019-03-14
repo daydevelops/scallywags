@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class='reply-body' v-else>
-					<p v-text='body'></p>
+					<p v-html='body'></p>
 					<div class="level" v-if='canEdit()'>
 						<button class="btn btn-secondary" @click='editing = true'>Edit</button>
 						<button class='btn btn-danger' @click='destroy' >Delete</button>
