@@ -12,16 +12,16 @@ class TrendingThreadsTest extends TestCase
 
 	public function setup() {
 		parent::setup();
-		Redis::del('trending_threads');
+		Redis::del('trending_threads_test');
 	}
 
 	/** @test */
 	public function it_increments_a_thread_score_when_visited()
 	{
-		$this->assertEmpty(Redis::zrevrange('trending_threads',0,-1));
+		$this->assertEmpty(Redis::zrevrange('trending_threads_test',0,-1));
 		$thread = factory('App\Thread')->create();
 		$this->call('GET',$thread->getPath());
-		$trending = Redis::zrevrange('trending_threads',0,-1);
+		$trending = Redis::zrevrange('trending_threads_test',0,-1);
 		$this->assertEquals($thread->title,json_decode($trending[0])->title);
 	}
 

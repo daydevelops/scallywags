@@ -72,7 +72,11 @@
 						</small>
 						<hr>
 						<h4 class='text-center'>Trending Thread</h4>
-						<p class='text-center'><a href="{{$trending_thread->path}}">{{$trending_thread->title}}</a></p>
+						<ul>
+							@foreach ($trending_threads as $tt)
+								<li class='text-center'><a href="{{$tt->path}}">{{$tt->title}}</a></li>
+							@endforeach
+						</ul>
 					</div>
 				</div>
 			</div>
