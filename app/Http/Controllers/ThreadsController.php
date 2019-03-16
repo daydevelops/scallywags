@@ -66,7 +66,7 @@ class ThreadsController extends Controller
 			'category_id'=>'required|exists:categories,id'
 		]);
 		$data['user_id'] = auth()->user()->id;
-
+		$thread = Thread::create($data);
 		$thread->subscribe();
 		return redirect($thread->getPath());
 	}
@@ -82,7 +82,10 @@ class ThreadsController extends Controller
 		if (auth()->check()) {
 			auth()->user()->read($thread->id);
 		}
+
 		Trending::push($thread);
+		$thread->increment('visits');
+
 		$trending_threads = Trending::get();
 		$page = $request->page?$request->page:1;
 		return view('forum/show',compact('thread','page','trending_threads'));
@@ -122,9 +125,5 @@ class ThreadsController extends Controller
 		$this->authorize('update',$thread);
 		$thread->delete();
 		return response()->json(array('status'=>1,'fb'=>'Thread Deleted'));
-	}
-
-	protected function getTrending() {
-
 	}
 }

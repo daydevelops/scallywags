@@ -104,4 +104,12 @@ class ReadThreadsTest extends TestCase
 		$response->assertDontSee($t1->body);
 	}
 
+	/** @test */
+	public function it_logs_a_visit() {
+		$thread = factory('App\Thread')->create();
+		$this->assertEquals(0,$thread->visits);
+		$this->call('GET',$thread->getPath());
+		$this->assertEquals(1,$thread->refresh()->visits);
+	}
+
 }
