@@ -13,14 +13,13 @@ class UsersTableSeeder extends Seeder
 	*/
 	public function run()
 	{
-		if (!User::find(1)->exists()) {
+		if (!User::find(1)) {
 			User::create([
 				'name'=>'Adam Day',
 				'email'=>'adamday1618@gmail.com',
 				'password'=>Hash::make('adam'),
 				'email_verified_at' => now(),
 				'skill' => 'A',
-				'image' => 'NA',
 				'is_admin'=>0
 			]);
 		}

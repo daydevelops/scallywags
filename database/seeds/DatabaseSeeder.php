@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
             UsersTableSeeder::class,
             GamesTableSeeder::class,
 			ThreadsTableSeeder::class,
-			NotificationsTableSeeder::class,
+			// NotificationsTableSeeder::class,
         ]);
     }
 }
