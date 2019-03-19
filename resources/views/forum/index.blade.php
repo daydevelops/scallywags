@@ -46,41 +46,9 @@
 				@endforeach
 				{{ $threads->links() }}
 			</div>
+
 			<div class="col-3">
-				<div id="sidebar" class='panel'>
-					<h3 class='text-center'>Welcome to the RballNL Forum!</h3>
-					<p class='text-center'><small>Here you can ask general questions to other users, share tips, provide updates, etc.</small></p>
-					<hr>
-					<a class='btn btn-primary btn-lrg d-block' href='/forum/new'>Submit New Post</a>
-					<hr>
-					<div class="nav-item dropdown" id='categories-dropdown'>
-						<a class="nav-link dropdown-toggle text-center" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Categories
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-							@foreach ($categories as $c)
-								<a class="dropdown-item text-center" href="/forum/{{$c->slug}}">{{$c->name}}</a>
-							@endforeach
-						</div>
-					</div>
-					<hr>
-					<h4 class='text-center'><b>Rules</b></h4>
-					<small>
-						<ol>
-							<li>Profanity prohibited</li>
-							<li>Do not share scoring details without your competetors consent</li>
-							<li>Do not post spam or marketing links unless explicitly asked</li>
-							<li>Be friendly</li>
-						</ol>
-					</small>
-					<hr>
-					<h4 class='text-center'>Trending Thread</h4>
-					<ul>
-						@foreach ($trending_threads as $tt)
-							<li class='text-center'><a href="{{$tt->path}}">{{$tt->title}}</a></li>
-						@endforeach
-					</ul>
-				</div>
+				@include('particals/sidebar')
 			</div>
 		</div>
 
