@@ -38,7 +38,7 @@ class GamesController extends Controller
         }
         $events = Event::all();
 		$users = User::allPublic();
-        return json_encode(compact('games','events','users'));
+        return compact('games','events','users');
     }
 
     public function show(Game $game) {
@@ -57,7 +57,6 @@ class GamesController extends Controller
             'gamedate'=>'required'
         ]);
         $data['admin-created'] = auth()->user()->is_admin;
-        // echo json_encode($data);
         // return null;
         // try to book the court
         $event_id = Event::bookCourt($data['gamedate']); // 0 -> all booked out, int>0 -> event_id

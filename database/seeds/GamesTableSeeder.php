@@ -13,7 +13,7 @@ class GamesTableSeeder extends Seeder
     {
 
         // create 2 events with 2 games each, with 2 users each
-        for ($num_events=1;$num_events<3;$num_events++) {
+        for ($num_events=0;$num_events<15;$num_events++) {
             $randDay = rand(1,3)*60*60*24;
             $randHour = rand(-10,10)*60*60; // converted to seconds
             $randtime = date('c',time()+$randDay+$randHour);
