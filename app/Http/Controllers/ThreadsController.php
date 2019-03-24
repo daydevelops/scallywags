@@ -65,6 +65,7 @@ class ThreadsController extends Controller
 			'category_id'=>'required|exists:categories,id'
 		]);
 		$data['user_id'] = auth()->user()->id;
+		$data['slug'] = request('title');
 		$thread = Thread::create($data);
 		$thread->subscribe();
 		return redirect($thread->getPath());

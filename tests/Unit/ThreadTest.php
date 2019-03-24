@@ -46,7 +46,7 @@ class ThreadTest extends TestCase
 
 	/** @test */
 	public function a_thread_has_a_path_with_category_slug() {
-		$this->assertEquals($this->thread->getPath(),'/forum/'.$this->thread->category->slug.'/'.$this->thread->id);
+		$this->assertEquals($this->thread->getPath(),'/forum/'.$this->thread->category->slug.'/'.$this->thread->slug);
 	}
 
 	/** @test */

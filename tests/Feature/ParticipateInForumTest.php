@@ -64,6 +64,14 @@ class ParticipateInForumTest extends TestCase
 	}
 
 	/** @test */
+	public function a_thread_must_have_a_unique_slug() {
+		$this->publishThread(['title'=>'my title']);
+		$this->publishThread(['title'=>'my title']);
+		$this->assertCount(2,\App\Thread::all());
+		$this->assertCount(1,\App\Thread::where(['slug'=>'my-title'])->get());
+	}
+
+	/** @test */
 	public function a_reply_requires_a_body() {
 		$this->publishReply(['body'=>null])->assertStatus(422);
 	}

@@ -24,7 +24,7 @@ class FavouriteTest extends TestCase
 		$this->signIn();
 		$thread = factory('App\Thread')->create();
 		// when the user sends a request to "favourite" that thread
-		$response = $this->post('favourite/thread/'.$thread->id);
+		$response = $this->post('favourite/thread/'.$thread->slug);
 		// dd(\App\Favourite::all());
 		// the thread should have one favourite count
 		$this->assertCount(1,$thread->favourites);
@@ -36,8 +36,8 @@ class FavouriteTest extends TestCase
 		$this->signIn();
 		$thread = factory('App\Thread')->create();
 		// when the user sends a request to "favourite" that thread
-		$response = $this->post('favourite/thread/'.$thread->id);
-		$response = $this->delete('favourite/thread/'.$thread->id);
+		$response = $this->post('favourite/thread/'.$thread->slug);
+		$response = $this->delete('favourite/thread/'.$thread->slug);
 		$this->assertCount(0,\App\Thread::find($thread->id)->favourites);
 	}
 
@@ -74,8 +74,8 @@ class FavouriteTest extends TestCase
 		$response = $this->post('favourite/reply/'.$reply->id);//->assertSee('You have already favourited this reply');
 		$this->assertCount(1,$reply->favourites);
 
-		$response = $this->post('favourite/thread/'.$thread->id);
-		$response = $this->post('favourite/thread/'.$thread->id);//->assertSee('You have already favourited this reply');
+		$response = $this->post('favourite/thread/'.$thread->slug);
+		$response = $this->post('favourite/thread/'.$thread->slug);//->assertSee('You have already favourited this reply');
 		$this->assertCount(1,$thread->favourites);
 	}
 
