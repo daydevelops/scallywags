@@ -89,7 +89,7 @@
 
 
 		@yield('content')
-
+		<flash message="{{session('message')}}" class="{{session('alert-type')}}"></flash>
 	</div>
 	<script src="{{ asset('js/app.js') }}"></script>
 	@yield('javascript')
