@@ -167,6 +167,21 @@ class ParticipateInForumTest extends TestCase
 		$this->assertDatabaseMissing('thread_replies',['body'=>$reply2->body]);
 	}
 
+	/** @test */
+	public function a_user_must_confirm_their_email_before_creating_a_thread() {
+		$this->signIn();
+		auth()->user()->update(['email_verified_at'=>null]);
+		$this->withExceptionHandling()->get('/forum/new')
+		->assertRedirect()
+		->assertSessionHas('message','You must first confirm your email address before contributing to the forum');
+
+		$thread = factory('App\Thread')->make();
+		$this->withExceptionHandling()->post('/forum/',$thread->toArray())
+		->assertRedirect()
+		->assertSessionHas('message','You must first confirm your email address before contributing to the forum');
+
+	}
+
 
 
 
