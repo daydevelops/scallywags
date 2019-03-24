@@ -17,8 +17,8 @@ Route::get('/contact', 'HomeController@contact');
 Route::get('/about', 'HomeController@about');
 
 Route::get('/forum', 'ThreadsController@index')->name('forum');
-Route::get('/forum/new', 'ThreadsController@create')->middleware('user-email-verified');
-Route::post('/forum', 'ThreadsController@store')->middleware('user-email-verified');
+Route::get('/forum/new', 'ThreadsController@create')->middleware('verified');
+Route::post('/forum', 'ThreadsController@store')->middleware('verified');
 Route::post('/forum/{category}/{thread}/subscribe','ThreadSubscriptionController@store');
 Route::delete('/forum/{category}/{thread}/unsubscribe','ThreadSubscriptionController@destroy');
 Route::post('/forum/{category}/{thread}/reply','ThreadReplyController@store');
@@ -48,7 +48,7 @@ Route::post('/game/{game}/toggleprivate','GamesController@togglePrivate');
 Route::post('/game/{game}/invite/{user}','GamesController@invite');
 Route::post('/game/{game}/leave','GamesController@leave');
 Route::post('/game/{game}/join','GamesController@join');
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/notifications','UserNotificationController@index');
 Route::delete('/notifications/all','UserNotificationController@destroyAll');

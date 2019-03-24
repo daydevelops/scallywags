@@ -172,13 +172,11 @@ class ParticipateInForumTest extends TestCase
 		$this->signIn();
 		auth()->user()->update(['email_verified_at'=>null]);
 		$this->withExceptionHandling()->get('/forum/new')
-		->assertRedirect()
-		->assertSessionHas('message','You must first confirm your email address before contributing to the forum');
+		->assertRedirect('/email/verify');
 
 		$thread = factory('App\Thread')->make();
 		$this->withExceptionHandling()->post('/forum/',$thread->toArray())
-		->assertRedirect()
-		->assertSessionHas('message','You must first confirm your email address before contributing to the forum');
+		->assertRedirect('/email/verify');
 
 	}
 
