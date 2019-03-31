@@ -41,4 +41,21 @@ class ThreadReplyTest extends TestCase
 
 		$this->assertContains('<a href="'.$user->getPath().'">@alice-day</a>',$reply->refresh()->body);
 	}
+
+	/** @test */
+	public function it_knows_if_it_is_the_best_reply() {
+		$thread = factory('App\Thread')->create();
+		$best_reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$thread->update(['best_reply_id'=>$best_reply->id]);
+		$this->assertTrue($best_reply->isBest());
+	}
+
+	/** @test */
+	public function it_can_be_marked_as_the_best_reply() {
+		$best_reply = factory('App\ThreadReply')->create();
+		$best_reply->markAsBest();
+		$this->assertTrue($best_reply->refresh()->isBest());
+	}
+
+
 }

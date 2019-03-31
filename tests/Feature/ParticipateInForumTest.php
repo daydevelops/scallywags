@@ -188,6 +188,37 @@ class ParticipateInForumTest extends TestCase
 
 	}
 
+	/** @test */
+	public function a_user_can_mark_the_best_reply_for_their_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$this->post('/forum/reply/'.$reply->id.'/best');
+		$this->assertTrue($reply->refresh()->isBest());
+	}
+
+	/** @test */
+	public function a_user_can_not_mark_the_best_reply_for_someone_elses_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$this->withExceptionHandling()->post('/forum/reply/'.$reply->id.'/best');
+		$this->assertFalse($reply->refresh()->isBest());
+	}
+
+	/** @test */
+	public function only_one_reply_can_be_best() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$replies = factory('App\ThreadReply',2)->create(['thread_id'=>$thread->id]);
+		$this->post('/forum/reply/'.$replies[0]->id.'/best');
+		$this->post('/forum/reply/'.$replies[1]->id.'/best');
+		$this->assertTrue($replies[0]->isBest());
+		$this->assertFalse($replies[1]->isBest());
+	}
+
+
+
 
 
 

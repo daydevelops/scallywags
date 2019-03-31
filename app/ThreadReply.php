@@ -56,4 +56,19 @@ class ThreadReply extends Model
 		$this->attributes['body'] = $body;
 	}
 
+	public function markAsBest() {
+		$thread = $this->thread;
+		if (!$thread->best_reply_id) {
+			$thread->update(['best_reply_id'=>$this->id]);
+			return true;
+		}
+		return false;
+	}
+
+	public function isBest() {
+		// echo json_encode('best: '.$this->thread->best_reply_id.' compared: '.$this->id);
+		// echo json_encode('      returning: '.json_encode($this->thread->best_reply_id == $this->id));
+		return $this->thread->best_reply_id == $this->id;
+	}
+
 }

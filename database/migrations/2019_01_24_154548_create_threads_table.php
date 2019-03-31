@@ -17,6 +17,7 @@ class CreateThreadsTable extends Migration
             $table->increments('id');
 			$table->unsignedInteger('user_id');
 			$table->unsignedInteger('category_id');
+			$table->unsignedInteger('best_reply_id')->nullable();
 			$table->string('title');
 			$table->string('slug')->unique();
 			$table->text('body');

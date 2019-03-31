@@ -75,12 +75,21 @@ class ThreadTest extends TestCase
 	}
 
 	/** @test */
-	public function a_thread_checks_if__it_has_been_updated_since_the_users_last_visit() {
+	public function a_thread_checks_if_it_has_been_updated_since_the_users_last_visit() {
 		$this->signIn();
 		$this->assertTrue($this->thread->hasBeenUpdated());
 		auth()->user()->read($this->thread->id);
 		$this->assertFalse($this->thread->hasBeenUpdated());
 	}
+
+	/** @test */
+	// public function a_thread_has_a_best_reply() {
+	// 	$thread = factory('App\Thread')->create();
+	// 	$reply = factory('App\ThreadReply')->create();
+	// 	$best_reply = factory('App\ThreadReply')->create();
+	// 	$best_reply->markAsBest();
+	// 	$this->assertEquals($best_reply->id,$thread->refresh()->bestReply()->id);
+	// }
 
 
 }
