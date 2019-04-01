@@ -48,7 +48,7 @@
 							</div>
 						</div>
 
-						<replies :page="{{$page}}" @add="replies_count++" @removed="replies_count--"></replies>
+						<replies :page="{{$page}}" :best_id='{{$thread->best_reply_id?$thread->best_reply_id:0}}' @add="replies_count++" @removed="replies_count--"></replies>
 
 					</div>
 				</div>
@@ -66,4 +66,7 @@
 @section('javascript')
 	<script src='{{ asset("js/forum.js") }}'></script>
 	<script src='{{ asset("js/thread.js") }}'></script>
+	<script>
+		window.isThreadOwner = {{$thread->user->id == auth()->id() ? 1 : 0}};
+	</script>
 @endsection

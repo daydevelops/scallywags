@@ -2,7 +2,7 @@
 	<div>
 		<newReply @created="add"></newReply>
 		<div v-for="(reply, index) in items" :key='reply.id'>
-			<reply :data="reply" @deleted="remove(index)"></reply>
+			<reply :data="reply" :best_id="best_id" @deleted="remove(index)"></reply>
 		</div>
 		<paginator :data="data" @newPage="fetch"></paginator>
 	</div>
@@ -12,7 +12,7 @@
 import reply from './Reply.vue';
 import newReply from './newReply.vue';
 export default {
-	props:['page'],
+	props:['page','best_id'],
 	components: {reply, newReply},
 	data() {
 		return {

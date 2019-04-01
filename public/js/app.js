@@ -65653,7 +65653,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	props: ['page'],
+	props: ['page', 'best_id'],
 	components: { reply: __WEBPACK_IMPORTED_MODULE_0__Reply_vue___default.a, newReply: __WEBPACK_IMPORTED_MODULE_1__newReply_vue___default.a },
 	data: function data() {
 		return {
@@ -65779,15 +65779,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	props: ['data'],
+	props: ['data', 'best_id'],
 	data: function data() {
 		return {
 			editing: false,
 			body: this.data.body,
-			errors: ""
+			errors: "",
+			is_best: 0
 		};
 	},
 
@@ -65799,6 +65805,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			return __WEBPACK_IMPORTED_MODULE_0_moment___default()(this.data.created_at + 'z').fromNow();
 		}
 	},
+	created: function created() {
+		this.is_best = this.best_id == this.data.id;
+	},
+
 	methods: {
 		update: function update() {
 			var _this = this;
@@ -65828,6 +65838,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			return this.authorize(function (user) {
 				return _this3.data.user_id == window.App.user.id;
 			});
+		},
+		markAsBest: function markAsBest() {
+			$('.mark-as-best-btn').addClass('hidden');
+			this.is_best = 1;
+			axios.post('/forum/reply/' + this.data.id + '/best').then(function (response) {}, function (error) {
+				console.log(error);
+			});
+		},
+		canMarkAsBest: function canMarkAsBest() {
+			return this.best_id == 0 && window.isThreadOwner;
 		}
 	}
 });
@@ -66118,7 +66138,10 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "reply", attrs: { id: "reply" + _vm.data.id } },
+    {
+      class: _vm.is_best ? "best-reply reply" : "reply",
+      attrs: { id: "reply" + _vm.data.id }
+    },
     [
       _c("div", { staticClass: "row reply-header" }, [
         _c("div", { staticClass: "col-8" }, [
@@ -66207,31 +66230,46 @@ var render = function() {
             : _c("div", { staticClass: "reply-body" }, [
                 _c("p", { domProps: { innerHTML: _vm._s(_vm.body) } }),
                 _vm._v(" "),
-                _vm.canEdit()
-                  ? _c("div", { staticClass: "level" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-secondary",
-                          on: {
-                            click: function($event) {
-                              _vm.editing = true
+                _c("div", { staticClass: "level" }, [
+                  _vm.canEdit()
+                    ? _c("span", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-secondary",
+                            on: {
+                              click: function($event) {
+                                _vm.editing = true
+                              }
                             }
-                          }
-                        },
-                        [_vm._v("Edit")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          on: { click: _vm.destroy }
-                        },
-                        [_vm._v("Delete")]
-                      )
-                    ])
-                  : _vm._e()
+                          },
+                          [_vm._v("Edit")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger",
+                            on: { click: _vm.destroy }
+                          },
+                          [_vm._v("Delete")]
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.canMarkAsBest()
+                    ? _c("span", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-success mark-as-best-btn",
+                            on: { click: _vm.markAsBest }
+                          },
+                          [_vm._v("Mark As Best")]
+                        )
+                      ])
+                    : _vm._e()
+                ])
               ])
         ])
       ])
@@ -68186,7 +68224,7 @@ var render = function() {
           { key: reply.id },
           [
             _c("reply", {
-              attrs: { data: reply },
+              attrs: { data: reply, best_id: _vm.best_id },
               on: {
                 deleted: function($event) {
                   _vm.remove(index)
