@@ -23,6 +23,11 @@ class CreateThreadsTable extends Migration
 			$table->text('body');
 			$table->unsignedInteger('visits')->default(0);
             $table->timestamps();
+
+			$table->foreign('best_reply_id')
+			->references('id')
+			->on('thread_replies')
+			->onDelete('set null');
         });
     }
 

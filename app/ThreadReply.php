@@ -22,6 +22,7 @@ class ThreadReply extends Model
 			$builder->with('thread');
 		});
 		static::deleting(function($thread) {
+			// dont alert the user that this thread was updated since they are the one updating it
 			auth()->user()->read($thread->id);
 		});
 		// static::saving(function($thread) {
@@ -66,8 +67,6 @@ class ThreadReply extends Model
 	}
 
 	public function isBest() {
-		// echo json_encode('best: '.$this->thread->best_reply_id.' compared: '.$this->id);
-		// echo json_encode('      returning: '.json_encode($this->thread->best_reply_id == $this->id));
 		return $this->thread->best_reply_id == $this->id;
 	}
 

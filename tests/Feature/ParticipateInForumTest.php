@@ -217,6 +217,16 @@ class ParticipateInForumTest extends TestCase
 		$this->assertFalse($replies[1]->isBest());
 	}
 
+	/** @test */
+	public function if_a_best_reply_is_deleted_the_thread_is_updated() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$reply->markAsBest();
+		$reply->delete();
+		$this->assertEquals(null,$thread->refresh()->best_reply_id);
+	}
+
 
 
 
