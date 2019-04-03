@@ -65649,11 +65649,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	props: ['page', 'best_id'],
+	props: ['page', 'best_id', 'locked'],
 	components: { reply: __WEBPACK_IMPORTED_MODULE_0__Reply_vue___default.a, newReply: __WEBPACK_IMPORTED_MODULE_1__newReply_vue___default.a },
 	data: function data() {
 		return {
@@ -65847,7 +65852,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			});
 		},
 		canMarkAsBest: function canMarkAsBest() {
-			return this.best_id == 0 && window.isThreadOwner;
+			return this.best_id == 0 && window.is_thread_owner;
 		}
 	}
 });
@@ -68216,7 +68221,17 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("newReply", { on: { created: _vm.add } }),
+      !_vm.locked
+        ? _c("div", [_c("newReply", { on: { created: _vm.add } })], 1)
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.locked
+        ? _c("div", [
+            _c("p", { staticClass: "alert-warning alert text-center" }, [
+              _vm._v("This thread has been locked")
+            ])
+          ])
+        : _vm._e(),
       _vm._v(" "),
       _vm._l(_vm.items, function(reply, index) {
         return _c(
