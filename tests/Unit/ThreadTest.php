@@ -83,13 +83,24 @@ class ThreadTest extends TestCase
 	}
 
 	/** @test */
-	// public function a_thread_has_a_best_reply() {
-	// 	$thread = factory('App\Thread')->create();
-	// 	$reply = factory('App\ThreadReply')->create();
-	// 	$best_reply = factory('App\ThreadReply')->create();
-	// 	$best_reply->markAsBest();
-	// 	$this->assertEquals($best_reply->id,$thread->refresh()->bestReply()->id);
-	// }
+	public function a_thread_has_a_best_reply() {
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$best_reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$best_reply->markAsBest();
+		$this->assertEquals($best_reply->id,$thread->refresh()->bestReply()->id);
+	}
+
+	/** @test */
+	public function a_thread_can_be_locked_and_unlocked() {
+		$thread = factory('App\Thread')->create();
+		$thread->lock();
+		$this->assertEquals(1,$thread->fresh()->is_locked);
+		$thread->unlock();
+		$this->assertEquals(0,$thread->fresh()->is_locked);
+	}
+
+
 
 
 }

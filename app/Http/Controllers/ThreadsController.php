@@ -126,4 +126,22 @@ class ThreadsController extends Controller
 		$thread->delete();
 		return response()->json(array('status'=>1,'fb'=>'Thread Deleted'));
 	}
+
+	/**
+	* Lock the thread
+	*
+	* @param  \App\Thread  $thread
+	*/
+	public function lock($category, Thread $thread) {
+		$thread->lock();
+	}
+
+	/**
+	* Unlock the thread
+	*
+	* @param  \App\Thread  $thread
+	*/
+	public function unlock($category, Thread $thread) {
+		$thread->unlock();
+	}
 }

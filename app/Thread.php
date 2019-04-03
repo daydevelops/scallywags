@@ -113,4 +113,16 @@ class Thread extends Model
 		}
 		$this->attributes['slug'] = $new_slug;
 	}
+
+	public function bestReply() {
+		return ThreadReply::find($this->best_reply_id);
+	}
+
+	public function lock() {
+		$this->update(['is_locked'=>1]);
+	}
+
+	public function unlock() {
+		$this->update(['is_locked'=>0]);
+	}
 }

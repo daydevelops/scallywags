@@ -22,6 +22,7 @@ class CreateThreadsTable extends Migration
 			$table->string('slug')->unique();
 			$table->text('body');
 			$table->unsignedInteger('visits')->default(0);
+			$table->boolean('is_locked')->default(false);
             $table->timestamps();
 
 			$table->foreign('best_reply_id')
