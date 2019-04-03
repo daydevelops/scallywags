@@ -44,11 +44,17 @@
 									@can('subscribe',$thread)
 										<subscribe-button :init_subscribed={{$thread->is_subscribed ? "1" : "0"}} class='d-inline'></subscribe-button>
 									@endcan
+									@if(auth()->check() && auth()->user()->is_admin)
+										<form class='d-inline' method='post' action='{{$thread->getPath()}}{{$thread->is_locked?"/unlock":"/lock"}}'>
+											@csrf
+											<button class='btn btn-warning' id="lock-btn">{{$thread->is_locked?"Unlock":"Lock"}}</button>
+										</form>
+									@endif
 								</div>
 							</div>
 						</div>
 
-						<replies :page="{{$page}}" :best_id='{{$thread->best_reply_id?$thread->best_reply_id:0}}' @add="replies_count++" @removed="replies_count--"></replies>
+						<replies :locked="{{$thread->is_locked}}" :page="{{$page}}" :best_id='{{$thread->best_reply_id?$thread->best_reply_id:0}}' @add="replies_count++" @removed="replies_count--"></replies>
 
 					</div>
 				</div>
@@ -67,6 +73,6 @@
 	<script src='{{ asset("js/forum.js") }}'></script>
 	<script src='{{ asset("js/thread.js") }}'></script>
 	<script>
-		window.isThreadOwner = {{$thread->user->id == auth()->id() ? 1 : 0}};
+		window.is_thread_owner = {{$thread->user->id == auth()->id() ? 1 : 0}};
 	</script>
 @endsection

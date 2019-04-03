@@ -134,6 +134,7 @@ class ThreadsController extends Controller
 	*/
 	public function lock($category, Thread $thread) {
 		$thread->lock();
+		return back();
 	}
 
 	/**
@@ -143,5 +144,6 @@ class ThreadsController extends Controller
 	*/
 	public function unlock($category, Thread $thread) {
 		$thread->unlock();
+		return back();
 	}
 }

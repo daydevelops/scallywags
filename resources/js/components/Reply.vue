@@ -101,7 +101,7 @@ export default {
 			);
 		},
 		canMarkAsBest() {
-			return this.best_id==0 && window.isThreadOwner;
+			return this.best_id==0 && window.is_thread_owner;
 		}
 	}
 }

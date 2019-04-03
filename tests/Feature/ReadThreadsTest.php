@@ -112,4 +112,17 @@ class ReadThreadsTest extends TestCase
 		$this->assertEquals(1,$thread->refresh()->visits);
 	}
 
+	/** @test */
+	public function only_admin_can_see_the_lock_btn() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$response = $this->get($thread->getPath());
+		$response->assertDontSee('id="lock-btn"');
+		$this->signIn(factory('App\User')->create(['is_admin'=>1]));
+		$response = $this->get($thread->getPath());
+		$response->assertSee('id="lock-btn"');
+	}
+
+
+
 }
