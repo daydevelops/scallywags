@@ -33,7 +33,9 @@ class ThreadSubscriptionTest extends TestCase
 	public function a_user_is_auto_subscribed_to_their_thread() {
 		$this->signIn();
 		$thread = factory('App\Thread')->make(['user_id'=>auth()->id()]);
-		$this->post('/forum/',$thread->toArray());
+		$post_data= $thread->toArray();
+		$post_data['g-recaptcha-response'] = 'test';
+		$this->post('/forum/',$post_data);
 		$thread = \App\Thread::first();
 		$this->assertTrue(auth()->id() == $thread->subscriptions[0]->user_id);
 	}

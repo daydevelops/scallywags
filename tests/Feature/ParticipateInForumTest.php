@@ -3,12 +3,14 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+Use App\Rules\Recaptcha;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ParticipateInForumTest extends TestCase
 {
 	use DatabaseMigrations;
+
 
 	/** @test */
 	public function an_authenticated_user_can_reply_to_a_thread()
@@ -38,14 +40,15 @@ class ParticipateInForumTest extends TestCase
 		// given we have a user who is signed in
 		$this->signIn();
 
-		// when a user submits a post request to add a thread
 		$thread = factory('App\Thread')->make();
-		$this->post('/forum/',$thread->toArray());
+		$thread= $thread->toArray();
+		$thread['g-recaptcha-response'] = 'test';
+		$this->withExceptionHandling()->post('/forum/',$thread);
 
 		// the reply should be visible on the thread page
 		$response = $this->get('/forum/');
-		$response->assertSee($thread->title);
-		$response->assertSee($thread->body);
+		$response->assertSee($thread['title']);
+		$response->assertSee($thread['body']);
 	}
 
 	/** @test */
@@ -74,6 +77,18 @@ class ParticipateInForumTest extends TestCase
 	/** @test */
 	public function a_reply_requires_a_body() {
 		$this->publishReply(['body'=>null])->assertStatus(422);
+	}
+
+	/** @test */
+	public function a_thread_requires_a_recaptcha() {
+
+		unset(app()[Recaptcha::class]);
+
+		$this->signIn();
+		$thread = factory('App\Thread')->make();
+		$thread= $thread->toArray();
+		$thread['g-recaptcha-response'] = 'test';
+		$this->withExceptionHandling()->post('/forum/',$thread)->assertSessionHasErrors('g-recaptcha-response');
 	}
 
 	/** @test */
@@ -235,7 +250,9 @@ class ParticipateInForumTest extends TestCase
 	public function publishThread($overrides=[]) {
 		$this->signIn();
 		$thread = factory('App\Thread')->make($overrides);
-		return $this->withExceptionHandling()->post('/forum/',$thread->toArray());
+		$thread= $thread->toArray();
+		$thread['g-recaptcha-response'] = 'test';
+		return $this->withExceptionHandling()->post('/forum/',$thread);
 	}
 	public function publishReply($overrides=[]) {
 		$this->signIn();

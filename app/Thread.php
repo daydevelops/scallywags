@@ -11,7 +11,7 @@ class Thread extends Model
 	use RecordsActivity;
 	use Favourable;
 
-	protected $guarded = [];
+	protected $guarded = ['g-recaptcha-response'];
 	protected $appends = array('is_subscribed');
 
 	protected static function boot() {

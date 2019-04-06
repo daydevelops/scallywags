@@ -66387,6 +66387,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -68154,9 +68158,13 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-8 offset-2 text-right" }, [
-                _c("div", { staticClass: "form-group" }, [
+                _c("div", { staticClass: "form-group text-center" }, [
                   _c(
                     "button",
                     {
@@ -68200,7 +68208,19 @@ var render = function() {
       : _vm._e()
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", {
+        staticClass: "g-recaptcha m-auto",
+        attrs: { "data-sitekey": "6LclT5wUAAAAAG37bPVBJ_YPkIatwsoiRS-paG4k" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

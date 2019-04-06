@@ -27,6 +27,9 @@
 			<div class="form-group">
 				<textarea  class="form-control" name='body' id="body" placeholder="..." rows="10" value="{{old('body')}}" required></textarea>
 			</div>
+			<div class='row form-group'>
+				<div class="g-recaptcha m-auto" data-sitekey="6LclT5wUAAAAAG37bPVBJ_YPkIatwsoiRS-paG4k"></div>
+			</div>
 			<div class='form-group'>
 				<button type='submit' class="btn btn-primary d-inline m-auto">Submit</button>
 				<button class="btn btn-danger d-inline m-auto" onClick='window.location="/forum"'>Cancel</button>

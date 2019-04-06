@@ -3,6 +3,7 @@
 namespace Tests;
 
 use App\Exceptions\Handler;
+Use App\Rules\Recaptcha;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,13 @@ abstract class TestCase extends BaseTestCase
 	protected function setUp() {
 		parent::setUp();
 		$this->disableExceptionHandling();
+
+
+		app()->singleton(Recaptcha::class,function() {
+			$m = \Mockery::mock(Recaptcha::class);
+			$m->shouldReceive('passes')->andReturn(true);
+			return $m;
+		});
 	}
 	protected function disableExceptionHandling() {
 		$this->oldExceptionHandler = $this->app->make(ExceptionHandler::class);

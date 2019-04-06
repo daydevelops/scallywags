@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Thread;
 use App\Trending;
 use App\Category;
+use App\Rules\Recaptcha;
 use App\Filters\ThreadFilter;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -57,12 +58,13 @@ class ThreadsController extends Controller
 	* @param  \Illuminate\Http\Request  $request
 	* @return \Illuminate\Http\Response
 	*/
-	public function store(Request $request)
+	public function store(Request $request, Recaptcha $recaptcha)
 	{
 		$data = request()->validate([
 			'title'=>'required|spamfree',
 			'body'=>'required|spamfree',
-			'category_id'=>'required|exists:categories,id'
+			'category_id'=>'required|exists:categories,id',
+			'g-recaptcha-response' => ['required',$recaptcha]
 		]);
 		$data['user_id'] = auth()->user()->id;
 		$data['slug'] = request('title');
