@@ -75,6 +75,54 @@ class ParticipateInForumTest extends TestCase
 	}
 
 	/** @test */
+	public function a_user_can_edit_their_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$this->json('patch',$thread->getPath(),[
+			'title'=>'foobar',
+			'body'=>'foobar'
+		]);
+		$this->assertEquals($thread->fresh()->title,'foobar');
+	}
+
+	/** @test */
+	public function an_unauth_user_cannot_edit_a_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$this->withExceptionHandling()->json('patch',$thread->getPath())->assertStatus(403);
+		$this->assertNotEquals($thread->fresh()->title,'foobar');
+	}
+
+	/** @test */
+	public function a_guest_cannot_edit_a_thread() {
+		$thread = factory('App\Thread')->create();
+		$this->withExceptionHandling()->json('patch',$thread->getPath(),['title'=>'foobar'])->assertStatus(401);
+	}
+
+	/** @test */
+	public function a_locked_thread_cannot_be_updated() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$thread->lock();
+		$this->withExceptionHandling()->json('patch',$thread->getPath())->assertStatus(403);
+		$this->assertNotEquals($thread->fresh()->title,'foobar');
+	}
+
+	/** @test */
+	public function an_admin_can_update_any_thread() {
+		$user = factory('App\User')->create(['is_admin'=>1]);
+		$this->signIn($user);
+		auth()->user()->update(['is_admin'=>1]);
+		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread->lock();
+		$this->json('patch',$thread->getPath(),[
+			'title'=>'foobar',
+			'body'=>'foobar'
+		]);
+		$this->assertEquals($thread->fresh()->title,'foobar');
+	}
+
+	/** @test */
 	public function a_reply_requires_a_body() {
 		$this->publishReply(['body'=>null])->assertStatus(422);
 	}

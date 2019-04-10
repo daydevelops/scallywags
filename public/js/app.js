@@ -65573,12 +65573,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-	props: ['initial_replies_count'],
+	props: ['initial_replies_count', 'thread'],
 	components: { replies: __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue___default.a },
 	data: function data() {
 		return {
-			replies_count: this.initial_replies_count
+			replies_count: this.initial_replies_count,
+			editing: false,
+			form_data: {
+				title: this.thread.title,
+				body: this.thread.body
+			}
 		};
+	},
+
+	methods: {
+		updateThread: function updateThread() {
+			var _this = this;
+
+			axios.patch('/forum/' + this.thread.category.slug + '/' + this.thread.slug, this.form_data).then(function (response) {
+				console.log(response.data);
+				location.reload();
+			}, function (error) {
+				_this.errors = error.response.data;
+			});
+		}
 	}
 });
 
@@ -66348,10 +66366,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery_caret___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery_caret__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_at_js__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_at_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_at_js__);
-//
-//
-//
-//
 //
 //
 //
@@ -68158,13 +68172,9 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _vm._m(0),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
             _c("div", { staticClass: "row" }, [
               _c("div", { staticClass: "col-8 offset-2 text-right" }, [
-                _c("div", { staticClass: "form-group text-center" }, [
+                _c("div", { staticClass: "form-group" }, [
                   _c(
                     "button",
                     {
@@ -68208,19 +68218,7 @@ var render = function() {
       : _vm._e()
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", {
-        staticClass: "g-recaptcha m-auto",
-        attrs: { "data-sitekey": "6LclT5wUAAAAAG37bPVBJ_YPkIatwsoiRS-paG4k" }
-      })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
