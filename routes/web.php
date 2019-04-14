@@ -21,7 +21,7 @@ Route::get('/forum', 'ThreadsController@index')->name('forum');
 Route::get('/forum/new', 'ThreadsController@create')->middleware('verified');
 Route::get('/forum/{category}/{thread}','ThreadsController@show');
 Route::get('/forum/{category}','ThreadsController@index');
-Route::get('/forum/{category}/{thread}/replies','ThreadReplyController@show');
+Route::get('/forum/{category}/{thread}/replies','ThreadReplyController@show'); //TODO: restrict to admin
 
 Route::post('/forum', 'ThreadsController@store')->middleware('verified');
 Route::post('/forum/{category}/{thread}/subscribe','ThreadSubscriptionController@store');

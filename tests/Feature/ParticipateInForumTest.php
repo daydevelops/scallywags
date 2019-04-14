@@ -290,6 +290,30 @@ class ParticipateInForumTest extends TestCase
 		$this->assertEquals(null,$thread->refresh()->best_reply_id);
 	}
 
+	/** @test */
+	public function a_thread_body_is_automatically_sanatized() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create([
+			'body'=>'<h3>HELLO <a href="#" onClick="foobar">click me</a><script>foobar</script></h3>'
+		]);
+		$response = $this->get($thread->getPath());
+		$response->assertSee('<h3>HELLO <a href="#">click me</a></h3>');
+	}
+
+	/** @test */
+	public function a_reply_body_is_automatically_sanatized() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->create([
+			'body'=>'<h3>HELLO <a href="#" onClick="foobar">click me</a><script>foobar</script></h3>',
+			'thread_id'=>$thread->id
+		]);
+		$response = $this->get($thread->getPath()."/replies");
+		$response->assertSee('<h3>HELLO');
+	}
+
+
+
 
 
 

@@ -97,6 +97,10 @@ class Thread extends Model
 		return cache($key) < $this->updated_at;
 	}
 
+	public function getBodyAttribute($body) {
+		return \Purify::clean($body);
+	}
+
 	public function setSlugAttribute($value) {
 		$slug = str_slug($value);
 		$count = Thread::where(['slug'=>$slug])->count();
