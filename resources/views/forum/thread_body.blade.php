@@ -14,7 +14,7 @@
 	<hr>
 	<div class="row">
 		<div class="col-12">
-			<p class='thread-body'>{{$thread->body}}</p>
+			<p class='thread-body'>{!! $thread->body !!}</p>
 		</div>
 	</div>
 	<div class="row">

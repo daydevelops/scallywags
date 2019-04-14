@@ -1,6 +1,7 @@
 @extends('layouts/main')
 
 @section('css')
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/trix/1.1.0/trix.css'>
 	<link rel='stylesheet' href="{{ asset('css/vendor/jquery.atwho.min.css') }}">
 	<link rel='stylesheet' href="{{ asset('css/thread.css') }}">
 	<style>

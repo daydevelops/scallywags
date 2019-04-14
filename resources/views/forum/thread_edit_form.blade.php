@@ -7,7 +7,8 @@
 		</div>
 	</div>
 	<div class="form-group">
-		<textarea class="form-control" name='body' id="body" rows="10" v-model="form_data.body"></textarea>
+		<wysiwyg :name="'body'" :initial_content="form_data.body" v-model="form_data.body"></wysiwyg>
+		{{-- <textarea class="form-control" name='body' id="body" rows="10" v-model="form_data.body"></textarea> --}}
 	</div>
 	<div class='form-group'>
 		<button type='submit' class="btn btn-primary d-inline m-auto" @click="updateThread()">Save</button>

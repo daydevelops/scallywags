@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<div v-if="!locked">
-			<newReply @created="add"></newReply>
-		</div>
 		<div v-if="locked">
 			<p class='alert-warning alert text-center'>This thread has been locked</p>
 		</div>
 		<div v-for="(reply, index) in items" :key='reply.id'>
 			<reply :data="reply" :best_id="best_id" @deleted="remove(index)"></reply>
+		</div>
+		<div v-if="!locked">
+			<newReply @created="add"></newReply>
 		</div>
 		<paginator :data="data" @newPage="fetch"></paginator>
 	</div>

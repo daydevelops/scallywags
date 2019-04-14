@@ -29,7 +29,7 @@
 						<hr>
 						<div class="row">
 							<div class="col-12">
-								<p class='thread-body'>{{$t->body}}</p>
+								<p class='thread-body'>{!!$t->body!!}</p>
 							</div>
 						</div>
 						<div class="row">

@@ -2,13 +2,14 @@
 
 @section('css')
 	<link rel='stylesheet' href="{{ asset('css/forum.css') }}">
+	<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/trix/1.1.0/trix.css'>
 @endsection
 
 @section('content')
 	<div class="container">
 		<h2 class='text-center'>Add a new discussion...</h2>
 		@include('components.error')
-		<form action='/forum' method='POST'>
+		<form id='new-thread-form' action='/forum' method='POST'>
 			@csrf
 			<div class="form-group">
 				<div class="row">
@@ -25,7 +26,8 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<textarea  class="form-control" name='body' id="body" placeholder="..." rows="10" value="{{old('body')}}" required></textarea>
+				<wysiwyg :content="'Something to say?'" :name="'body'"></wysiwyg>
+				{{-- <textarea  class="form-control" name='body' id="body" placeholder="..." rows="10" value="{{old('body')}}" required></textarea> --}}
 			</div>
 			<div class='row form-group'>
 				<div class="g-recaptcha m-auto" data-sitekey="6LclT5wUAAAAAG37bPVBJ_YPkIatwsoiRS-paG4k"></div>

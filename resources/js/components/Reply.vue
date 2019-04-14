@@ -14,7 +14,8 @@
 				<div v-if='editing'>
 					<div class="form-group">
 						<p class="text-center" v-text="errors"></p>
-						<textarea class='form-control' v-model='body'></textarea>
+						<wysiwyg ref='edit_reply_wysiwyg' v-model="body" :initial_content="body" :name="'body'"></wysiwyg>
+						<!-- <textarea class='form-control' v-model='body'></textarea> -->
 						<button class="btn btn-primary" @click='update'>Update</button>
 						<button class="btn btn-secondary" @click='cancelEdit'>Cancel</button>
 					</div>
@@ -65,6 +66,8 @@ export default {
 			.then(
 				(response) => {
 					console.log(response.data)
+					this.editing = false;
+					this.data.body = this.body;
 				},
 				(error) => {
 					this.errors = error.response.data;
