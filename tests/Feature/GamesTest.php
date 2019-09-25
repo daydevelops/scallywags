@@ -55,7 +55,7 @@ class GamesTest extends TestCase
 			'gamedate'=>date('c'),
 			'private'=>0
 		]);
-		dd(Game::all());
+		// dd(Game::all());
 
 	}
 
