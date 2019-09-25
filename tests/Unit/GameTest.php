@@ -42,12 +42,6 @@ class GameTest extends TestCase
 		$this->assertCount(0,$game->users);
 	}
 
-	/** @test  */
-	// public function it_registers_an_event_upon_creation() {
-	// 	$game = factory('App\Game')->create();
-	// 	$this->assertInstanceOf('App\Event',$game->event);
-	// }
-
 	/** @test */
 	public function it_has_an_event() {
 		$game = factory('App\Game')->create();

@@ -42,7 +42,7 @@ class ThreadPolicy
      */
     public function update(User $user, Thread $thread)
     {
-        return $user->id == $thread->user_id;
+        return auth()->user()->is_admin || ($user->id == $thread->user_id && !$thread->is_locked);
     }
 
     /**

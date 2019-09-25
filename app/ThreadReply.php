@@ -22,6 +22,7 @@ class ThreadReply extends Model
 			$builder->with('thread');
 		});
 		static::deleting(function($thread) {
+			// dont alert the user that this thread was updated since they are the one updating it
 			auth()->user()->read($thread->id);
 		});
 		// static::saving(function($thread) {
@@ -54,6 +55,23 @@ class ThreadReply extends Model
 			}
 		}
 		$this->attributes['body'] = $body;
+	}
+
+	public function markAsBest() {
+		$thread = $this->thread;
+		if (!$thread->best_reply_id) {
+			$thread->update(['best_reply_id'=>$this->id]);
+			return true;
+		}
+		return false;
+	}
+
+	public function isBest() {
+		return $this->thread->best_reply_id == $this->id;
+	}
+
+	public function getBodyAttribute($body) {
+		return \Purify::clean($body);
 	}
 
 }

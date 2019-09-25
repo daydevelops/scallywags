@@ -17,6 +17,7 @@
 		'user' => Auth::user()
 		]) !!};
 		</script>
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	</head>
 	<body>
 		<div id="app">
@@ -89,7 +90,7 @@
 
 
 		@yield('content')
-
+		<flash message="{{session('message')}}" class="{{session('alert-type')}}"></flash>
 	</div>
 	<script src="{{ asset('js/app.js') }}"></script>
 	@yield('javascript')

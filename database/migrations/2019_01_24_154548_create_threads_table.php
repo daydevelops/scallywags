@@ -17,10 +17,18 @@ class CreateThreadsTable extends Migration
             $table->increments('id');
 			$table->unsignedInteger('user_id');
 			$table->unsignedInteger('category_id');
+			$table->unsignedInteger('best_reply_id')->nullable();
 			$table->string('title');
+			$table->string('slug')->unique();
 			$table->text('body');
 			$table->unsignedInteger('visits')->default(0);
+			$table->boolean('is_locked')->default(false);
             $table->timestamps();
+
+			$table->foreign('best_reply_id')
+			->references('id')
+			->on('thread_replies')
+			->onDelete('set null');
         });
     }
 

@@ -35,12 +35,15 @@ window.Vue.prototype.authorize = function (handler) {
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+
+Vue.component('flash', require('./components/Flash.vue'));
 Vue.component('notification',require('./components/Notification.vue'));
 Vue.component('thread',require('./pages/Thread.vue'));
 Vue.component('favourite',require('./components/Favourite.vue'));
 Vue.component('paginator',require('./components/Paginator.vue'));
 Vue.component('subscribe-button',require('./components/subscribe-button.vue'));
 Vue.component('avatar-form',require('./components/AvatarForm.vue'));
+Vue.component('wysiwyg',require('./components/Wysiwyg.vue'));
 const app = new Vue({
     el: '#app',
 });

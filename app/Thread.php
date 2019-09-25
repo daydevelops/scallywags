@@ -11,7 +11,7 @@ class Thread extends Model
 	use RecordsActivity;
 	use Favourable;
 
-	protected $guarded = [];
+	protected $guarded = ['g-recaptcha-response'];
 	protected $appends = array('is_subscribed');
 
 	protected static function boot() {
@@ -31,6 +31,9 @@ class Thread extends Model
 
 	}
 
+	public function getRouteKeyName() {
+		return "slug";
+	}
 
 	public function replies() {
 		return $this->hasMany(ThreadReply::class);
@@ -61,7 +64,7 @@ class Thread extends Model
 	}
 
 	public function getPath() {
-		return "/forum/".$this->category->slug."/".$this->id;
+		return "/forum/".$this->category->slug."/".$this->slug;
 	}
 
 	public function scopeFilter($query, $filters) {
@@ -94,4 +97,36 @@ class Thread extends Model
 		return cache($key) < $this->updated_at;
 	}
 
+	public function getBodyAttribute($body) {
+		return \Purify::clean($body);
+	}
+
+	public function setSlugAttribute($value) {
+		$slug = str_slug($value);
+		$count = Thread::where(['slug'=>$slug])->count();
+		if ($count == 1 ) {
+			$found_slug = false;
+			while (!$found_slug) {
+				$new_slug = $slug."-".str_slug(substr(bcrypt($this->id),0,12));
+				if (!Thread::where(['slug'=>$new_slug])->exists()) {
+					$found_slug = true;
+				}
+			}
+		} else {
+			$new_slug = $slug;
+		}
+		$this->attributes['slug'] = $new_slug;
+	}
+
+	public function bestReply() {
+		return ThreadReply::find($this->best_reply_id);
+	}
+
+	public function lock() {
+		$this->update(['is_locked'=>1]);
+	}
+
+	public function unlock() {
+		$this->update(['is_locked'=>0]);
+	}
 }

@@ -41,7 +41,9 @@ class ThreadReplyController extends Controller
 	public function store(Request $request, $category_id, Thread $thread)
 	{
 		try {
-
+			if ($thread->is_locked) {
+				return response('Thread is locked.',422);
+			}
 			$this->authorize('create',new ThreadReply);
 			$data = request()->validate([
 				'body'=>'required|spamfree'
@@ -49,7 +51,7 @@ class ThreadReplyController extends Controller
 			$data['user_id'] = auth()->user()->id;
 
 			$reply = $thread->addReply($data);
-			
+
 
 			if (request()->expectsJson()) {
 				return $reply->load('user');

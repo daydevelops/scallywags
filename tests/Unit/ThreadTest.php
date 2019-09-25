@@ -46,7 +46,7 @@ class ThreadTest extends TestCase
 
 	/** @test */
 	public function a_thread_has_a_path_with_category_slug() {
-		$this->assertEquals($this->thread->getPath(),'/forum/'.$this->thread->category->slug.'/'.$this->thread->id);
+		$this->assertEquals($this->thread->getPath(),'/forum/'.$this->thread->category->slug.'/'.$this->thread->slug);
 	}
 
 	/** @test */
@@ -75,12 +75,32 @@ class ThreadTest extends TestCase
 	}
 
 	/** @test */
-	public function a_thread_checks_if__it_has_been_updated_since_the_users_last_visit() {
+	public function a_thread_checks_if_it_has_been_updated_since_the_users_last_visit() {
 		$this->signIn();
 		$this->assertTrue($this->thread->hasBeenUpdated());
 		auth()->user()->read($this->thread->id);
 		$this->assertFalse($this->thread->hasBeenUpdated());
 	}
+
+	/** @test */
+	public function a_thread_has_a_best_reply() {
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$best_reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$best_reply->markAsBest();
+		$this->assertEquals($best_reply->id,$thread->refresh()->bestReply()->id);
+	}
+
+	/** @test */
+	public function a_thread_can_be_locked_and_unlocked() {
+		$thread = factory('App\Thread')->create();
+		$thread->lock();
+		$this->assertEquals(1,$thread->fresh()->is_locked);
+		$thread->unlock();
+		$this->assertEquals(0,$thread->fresh()->is_locked);
+	}
+
+
 
 
 }

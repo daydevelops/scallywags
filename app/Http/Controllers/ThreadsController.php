@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Thread;
 use App\Trending;
 use App\Category;
+use App\Rules\Recaptcha;
 use App\Filters\ThreadFilter;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -57,15 +58,16 @@ class ThreadsController extends Controller
 	* @param  \Illuminate\Http\Request  $request
 	* @return \Illuminate\Http\Response
 	*/
-	public function store(Request $request)
+	public function store(Request $request, Recaptcha $recaptcha)
 	{
-		// dd($request);
 		$data = request()->validate([
 			'title'=>'required|spamfree',
 			'body'=>'required|spamfree',
-			'category_id'=>'required|exists:categories,id'
+			'category_id'=>'required|exists:categories,id',
+			'g-recaptcha-response' => ['required',$recaptcha]
 		]);
 		$data['user_id'] = auth()->user()->id;
+		$data['slug'] = request('title');
 		$thread = Thread::create($data);
 		$thread->subscribe();
 		return redirect($thread->getPath());
@@ -109,9 +111,14 @@ class ThreadsController extends Controller
 	* @param  \App\Thread  $thread
 	* @return \Illuminate\Http\Response
 	*/
-	public function update(Request $request, Thread $thread)
+	public function update(Request $request, $category, Thread $thread)
 	{
-		//
+		$this->authorize('update',$thread);
+		$data = request()->validate([
+			'title'=>'required|spamfree',
+			'body'=>'required|spamfree',
+		]);
+		$thread->update($data);
 	}
 
 	/**
@@ -125,5 +132,25 @@ class ThreadsController extends Controller
 		$this->authorize('update',$thread);
 		$thread->delete();
 		return response()->json(array('status'=>1,'fb'=>'Thread Deleted'));
+	}
+
+	/**
+	* Lock the thread
+	*
+	* @param  \App\Thread  $thread
+	*/
+	public function lock($category, Thread $thread) {
+		$thread->lock();
+		return back();
+	}
+
+	/**
+	* Unlock the thread
+	*
+	* @param  \App\Thread  $thread
+	*/
+	public function unlock($category, Thread $thread) {
+		$thread->unlock();
+		return back();
 	}
 }

@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
 				'password'=>Hash::make('adam'),
 				'email_verified_at' => now(),
 				'skill' => 'A',
-				'is_admin'=>0
+				'is_admin'=>1
 			]);
 		}
 		factory(App\User::class,10)->create();

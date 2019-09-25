@@ -3,12 +3,14 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+Use App\Rules\Recaptcha;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ParticipateInForumTest extends TestCase
 {
 	use DatabaseMigrations;
+
 
 	/** @test */
 	public function an_authenticated_user_can_reply_to_a_thread()
@@ -38,14 +40,15 @@ class ParticipateInForumTest extends TestCase
 		// given we have a user who is signed in
 		$this->signIn();
 
-		// when a user submits a post request to add a thread
 		$thread = factory('App\Thread')->make();
-		$this->post('/forum/',$thread->toArray());
+		$thread= $thread->toArray();
+		$thread['g-recaptcha-response'] = 'test';
+		$this->withExceptionHandling()->post('/forum/',$thread);
 
 		// the reply should be visible on the thread page
 		$response = $this->get('/forum/');
-		$response->assertSee($thread->title);
-		$response->assertSee($thread->body);
+		$response->assertSee($thread['title']);
+		$response->assertSee($thread['body']);
 	}
 
 	/** @test */
@@ -64,8 +67,76 @@ class ParticipateInForumTest extends TestCase
 	}
 
 	/** @test */
+	public function a_thread_must_have_a_unique_slug() {
+		$this->publishThread(['title'=>'my title']);
+		$this->publishThread(['title'=>'my title']);
+		$this->assertCount(2,\App\Thread::all());
+		$this->assertCount(1,\App\Thread::where(['slug'=>'my-title'])->get());
+	}
+
+	/** @test */
+	public function a_user_can_edit_their_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$this->json('patch',$thread->getPath(),[
+			'title'=>'foobar',
+			'body'=>'foobar'
+		]);
+		$this->assertEquals($thread->fresh()->title,'foobar');
+	}
+
+	/** @test */
+	public function an_unauth_user_cannot_edit_a_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$this->withExceptionHandling()->json('patch',$thread->getPath())->assertStatus(403);
+		$this->assertNotEquals($thread->fresh()->title,'foobar');
+	}
+
+	/** @test */
+	public function a_guest_cannot_edit_a_thread() {
+		$thread = factory('App\Thread')->create();
+		$this->withExceptionHandling()->json('patch',$thread->getPath(),['title'=>'foobar'])->assertStatus(401);
+	}
+
+	/** @test */
+	public function a_locked_thread_cannot_be_updated() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$thread->lock();
+		$this->withExceptionHandling()->json('patch',$thread->getPath())->assertStatus(403);
+		$this->assertNotEquals($thread->fresh()->title,'foobar');
+	}
+
+	/** @test */
+	public function an_admin_can_update_any_thread() {
+		$user = factory('App\User')->create(['is_admin'=>1]);
+		$this->signIn($user);
+		auth()->user()->update(['is_admin'=>1]);
+		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread->lock();
+		$this->json('patch',$thread->getPath(),[
+			'title'=>'foobar',
+			'body'=>'foobar'
+		]);
+		$this->assertEquals($thread->fresh()->title,'foobar');
+	}
+
+	/** @test */
 	public function a_reply_requires_a_body() {
 		$this->publishReply(['body'=>null])->assertStatus(422);
+	}
+
+	/** @test */
+	public function a_thread_requires_a_recaptcha() {
+
+		unset(app()[Recaptcha::class]);
+
+		$this->signIn();
+		$thread = factory('App\Thread')->make();
+		$thread= $thread->toArray();
+		$thread['g-recaptcha-response'] = 'test';
+		$this->withExceptionHandling()->post('/forum/',$thread)->assertSessionHasErrors('g-recaptcha-response');
 	}
 
 	/** @test */
@@ -167,13 +238,93 @@ class ParticipateInForumTest extends TestCase
 		$this->assertDatabaseMissing('thread_replies',['body'=>$reply2->body]);
 	}
 
+	/** @test */
+	public function a_user_must_confirm_their_email_before_creating_a_thread() {
+		$this->signIn();
+		auth()->user()->update(['email_verified_at'=>null]);
+		$this->withExceptionHandling()->get('/forum/new')
+		->assertRedirect('/email/verify');
+
+		$thread = factory('App\Thread')->make();
+		$this->withExceptionHandling()->post('/forum/',$thread->toArray())
+		->assertRedirect('/email/verify');
+
+	}
+
+	/** @test */
+	public function a_user_can_mark_the_best_reply_for_their_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$this->post('/forum/reply/'.$reply->id.'/best');
+		$this->assertTrue($reply->refresh()->isBest());
+	}
+
+	/** @test */
+	public function a_user_can_not_mark_the_best_reply_for_someone_elses_thread() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$this->withExceptionHandling()->post('/forum/reply/'.$reply->id.'/best');
+		$this->assertFalse($reply->refresh()->isBest());
+	}
+
+	/** @test */
+	public function only_one_reply_can_be_best() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
+		$replies = factory('App\ThreadReply',2)->create(['thread_id'=>$thread->id]);
+		$this->post('/forum/reply/'.$replies[0]->id.'/best');
+		$this->post('/forum/reply/'.$replies[1]->id.'/best');
+		$this->assertTrue($replies[0]->isBest());
+		$this->assertFalse($replies[1]->isBest());
+	}
+
+	/** @test */
+	public function if_a_best_reply_is_deleted_the_thread_is_updated() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->create(['thread_id'=>$thread->id]);
+		$reply->markAsBest();
+		$reply->delete();
+		$this->assertEquals(null,$thread->refresh()->best_reply_id);
+	}
+
+	/** @test */
+	public function a_thread_body_is_automatically_sanatized() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create([
+			'body'=>'<h3>HELLO <a href="#" onClick="foobar">click me</a><script>foobar</script></h3>'
+		]);
+		$response = $this->get($thread->getPath());
+		$response->assertSee('<h3>HELLO <a href="#">click me</a></h3>');
+	}
+
+	/** @test */
+	public function a_reply_body_is_automatically_sanatized() {
+		$this->signIn();
+		$thread = factory('App\Thread')->create();
+		$reply = factory('App\ThreadReply')->create([
+			'body'=>'<h3>HELLO <a href="#" onClick="foobar">click me</a><script>foobar</script></h3>',
+			'thread_id'=>$thread->id
+		]);
+		$response = $this->get($thread->getPath()."/replies");
+		$response->assertSee('<h3>HELLO');
+	}
+
+
+
+
+
 
 
 
 	public function publishThread($overrides=[]) {
 		$this->signIn();
 		$thread = factory('App\Thread')->make($overrides);
-		return $this->withExceptionHandling()->post('/forum/',$thread->toArray());
+		$thread= $thread->toArray();
+		$thread['g-recaptcha-response'] = 'test';
+		return $this->withExceptionHandling()->post('/forum/',$thread);
 	}
 	public function publishReply($overrides=[]) {
 		$this->signIn();

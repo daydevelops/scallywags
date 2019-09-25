@@ -10,24 +10,24 @@
 			<div id="new-reply-wrap">
 				<p class="text-center" v-text="errors"></p>
 				<div class="row">
-					<div class="col-8 offset-2">
+					<div class="col-12">
 						<div class="form-group">
-							<textarea
+							<wysiwyg ref='new_reply_wysiwyg' :name="'body'" v-model="body" :initial_content="''"></wysiwyg>
+							<!-- <textarea
 							class='form-control'
 							name="body"
 							id="body"
 							rows="5"
 							placeholder="Have something to say?"
 							v-model="body"
-							required></textarea>
+							required></textarea> -->
 						</div>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-8 offset-2 text-right">
-						<div class='form-group'>
-							<button type='button' class="btn btn-primary d-inline m-auto" @click="addReply()">Submit</button>
-							<button type='button' class="btn btn-danger d-inline m-auto" @click="is_visible=false">Cancel</button>
+						<div class='form-group text-center'>
+							<button type='button' class="btn btn-primary d-inline m-auto" @click="addReply()">Comment</button>
 						</div>
 					</div>
 				</div>
@@ -78,6 +78,7 @@ export default {
 					this.$emit('created',response.data)
 					this.is_visible = false;
 					this.errors = "";
+					this.$refs.new_reply_wysiwyg.$refs.trix.innerHTML="";
 				},
 				(error) => {
 					// debugger
