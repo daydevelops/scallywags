@@ -6,10 +6,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
+use App\Favourite;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
 	use Notifiable;
+	use Favourable;
 
 	/**
 	* The attributes that are mass assignable.
@@ -81,5 +83,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	public function getPath() {
 		return "/profile/".$this->id;
+	}
+
+	public function favourites() {
+		return $this->hasMany(Favourite::class)->with('favourited')->get();
 	}
 }

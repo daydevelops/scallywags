@@ -12,7 +12,7 @@ class Thread extends Model
 	use Favourable;
 
 	protected $guarded = ['g-recaptcha-response'];
-	protected $appends = array('is_subscribed');
+	protected $appends = array('is_subscribed','is_favourited');
 
 	protected static function boot() {
 		parent::boot();
@@ -77,15 +77,12 @@ class Thread extends Model
 	*
 	* @return boolean
 	*/
+
 	public function isSubscribed()
 	{
 		return ! ! $this->subscriptions->where('user_id', auth()->id())->count();
 	}
-	/**
-	* Fetch the favourited status as a property.
-	*
-	* @return bool
-	*/
+
 	public function getIsSubscribedAttribute()
 	{
 		return $this->isSubscribed();

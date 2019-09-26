@@ -13,8 +13,9 @@ export default {
 	},
 	methods: {
 		toggle() {
+			var identifier = this.type=='thread' ? this.item.slug : this.item.id;
 			if (this.favourited) {
-				axios.delete('/favourite/'+this.type+'/'+this.item.id)
+				axios.delete('/favourite/'+this.type+'/'+identifier)
 				.then(response => {
 					this.favourited = 0;
 				})
@@ -22,7 +23,7 @@ export default {
 					console.log(errors);
 				})
 			} else {
-				axios.post('/favourite/'+this.type+'/'+this.item.id)
+				axios.post('/favourite/'+this.type+'/'+identifier)
 				.then(response => {
 					this.favourited = 1;
 				})

@@ -68,6 +68,31 @@ class UserTest extends TestCase
 		$this->assertEquals($reply->id,$this->user->lastReply->id);
 	}
 
+	/** @test */
+	public function it_has_favourites() {
+		$this->SignIn();
+		// given that we have favourited some threads and replies
+		$t1 = factory('App\Thread')->create();
+		$t2 = factory('App\Thread')->create();
+		$r1 = factory('App\ThreadReply')->create(['thread_id'=>$t1->id]);
+		$r2 = factory('App\ThreadReply')->create(['thread_id'=>$t1->id]);
+		factory('App\Favourite')->create([
+			'user_id'=>auth()->id(),
+			'favourited_id'=>$t1->id,
+			'favourited_type'=>'App\Thread'
+		]);
+		factory('App\Favourite')->create([
+			'user_id'=>auth()->id(),
+			'favourited_id'=>$r1->id,
+			'favourited_type'=>'App\ThreadReply'
+		]);
+		// the user should own those items
+		$favs = auth()->user()->favourites();
+		// dd($favs);
+		$this->assertEquals($t1->title,$favs[0]->favourited()->get()[0]->title);
+		$this->assertEquals($r1->title,$favs[1]->favourited()->get()[0]->title);
+	}
+
 	// /** @test */
 	// public function it_has_thread_subscriptions() {
 	// 	$thread = factory('App\Thread')->create(['user_id'=>999]);

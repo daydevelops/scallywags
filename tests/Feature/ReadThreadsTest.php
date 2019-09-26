@@ -105,6 +105,27 @@ class ReadThreadsTest extends TestCase
 	}
 
 	/** @test */
+	public function a_user_can_sort_by_favourited() {
+		$this->signIn();
+		// given that we have many threads with random amount of replies
+		$t1 = factory('App\Thread')->create();
+		$t2 = factory('App\Thread')->create();
+		$r1 = factory('App\ThreadReply')->create(['thread_id'=>$t1->id]);
+		$r2 = factory('App\ThreadReply')->create(['thread_id'=>$t2->id]);
+
+		// and we favourite one thread and one reply
+		$this->post('favourite/thread/'.$t2->slug);
+		$this->post('favourite/reply/'.$r2->id);
+
+		$response = $this->get('/favourites');
+
+		$response->assertSee($t2->title);
+		$response->assertDontSee($t1->title);
+		$response->assertSee($r2->body);
+		$response->assertDontSee($r1->body);
+	}
+
+	/** @test */
 	public function it_logs_a_visit() {
 		$thread = factory('App\Thread')->create();
 		$this->assertEquals(0,$thread->visits);

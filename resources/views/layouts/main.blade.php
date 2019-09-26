@@ -41,7 +41,7 @@
 								<a class="dropdown-item" href="/forum">All</a>
 								@auth
 									<a class="dropdown-item" href="/forum?u={{auth()->id()}}">My Posts</a>
-									<a class="dropdown-item" href="/forum?favourites=1">My Favourites</a>
+									<a class="dropdown-item" href="/favourites">My Favourites</a>
 								@endauth
 								<a class="dropdown-item" href="/forum?popular=1">Popular</a>
 								<a class="dropdown-item" href="/forum?unanswered=1">Unanswered</a>

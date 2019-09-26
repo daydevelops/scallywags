@@ -12,6 +12,12 @@ class FavouriteController extends Controller
 	public function __construct() {
 		$this->middleware('auth');
 	}
+
+	public function index() {
+		$favourites = auth()->user()->favourites();
+		return view('users/favourites',compact('favourites'));
+	}
+
 	public function storeThread(Thread $thread) {
 		$thread->favourite();
 	}

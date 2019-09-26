@@ -37,6 +37,8 @@ Route::delete('/forum/{category}/{thread}/unsubscribe','ThreadSubscriptionContro
 Route::patch('/forum/reply/{reply}','ThreadReplyController@update');
 Route::patch('/forum/{category}/{thread}','ThreadsController@update');
 
+Route::get('/favourites','FavouriteController@index');
+
 Route::post('/favourite/thread/{thread}','FavouriteController@storeThread');
 Route::post('/favourite/reply/{reply}','FavouriteController@storeReply');
 
