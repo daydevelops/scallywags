@@ -13,7 +13,7 @@
 						<div class="row thread-header">
 							<div class="col-10 text-Center">
 								<p>
-									<img src='/storage/{{$t->user->image}}' class='user-thumbnail'>
+									<img src='{{$t->user->image}}' class='user-thumbnail'>
 									<a href='{{$t->user->getPath()}}'>{{$t->user->name}}</a>
 									<span> posted in: </span>{{$t->category->name}}
 								</p>

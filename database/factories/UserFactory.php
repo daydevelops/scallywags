@@ -14,13 +14,18 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+    $email = $faker->unique()->safeEmail;
+    $hash = md5(strtolower(trim($email)));
+    $image = "http://www.gravatar.com/avatar/$hash?d=wavatar";
+    
     return [
         'name' => $faker->unique()->name,
-        'email' => $faker->unique()->safeEmail,
+        'email' => $email,
         'email_verified_at' => now(),
         'skill' => 'A',
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
         'remember_token' => str_random(10),
-		'is_admin'=>0
+        'is_admin'=>0,
+        'image'=>$image
     ];
 });

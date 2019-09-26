@@ -12,7 +12,7 @@
 		@endcan
 		<div id="thread-title-wrap" class="col-12 text-left">
 			<p>
-				<img src='/storage/{{$thread->user->image}}' class='user-thumbnail'>
+				<img src='{{$thread->user->image}}' class='user-thumbnail'>
 				<a href='{{$thread->user->getPath()}}'>{{$thread->user->name}}</a>
 				<span> posted in: </span>{{$thread->category->name}}
 			</p>
