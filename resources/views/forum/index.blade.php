@@ -8,7 +8,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-9">
-				@foreach ($threads as $t)
+				@forelse ($threads as $t)
 					<div class="thread panel" onclick='window.location="{{$t->getPath()}}"'>
 						<div class="row thread-header">
 							<div class="col-10 text-Center">
@@ -42,8 +42,11 @@
 							</div>
 						</div>
 					</div>
-
-				@endforeach
+				@empty
+					<br><hr>
+					<h3 class='text-center'>Nothin' to see here folks</h3>
+					<hr>
+				@endforelse
 				{{ $threads->links() }}
 			</div>
 
