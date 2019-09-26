@@ -12,6 +12,11 @@
 					<div class="thread panel" onclick='window.location="{{$t->getPath()}}"'>
 						<div class="row thread-header">
 							<div class="col-10 text-Center">
+								<p>
+									<img src='/storage/{{$t->user->image}}' class='user-thumbnail'>
+									<a href='{{$t->user->getPath()}}'>{{$t->user->name}}</a>
+									<span> posted in: </span>{{$t->category->name}}
+								</p>
 								<h2 class='thread-title'>
 									@if ($t->hasBeenUpdated())
 										<b>{{$t->title}}</b>
@@ -34,8 +39,7 @@
 						</div>
 						<div class="row">
 							<div class='col-12 text-center'>
-								<img src='/storage/{{$t->user->image}}' class='user-thumbnail'>
-								<a href='{{$t->user->getPath()}}'>{{$t->user->name}}</a>&nbsp;,&nbsp;
+								
 								<i class="fas fa-clock"></i>{{ $t->created_at->diffForHumans() }}&nbsp;,&nbsp;
 								<i class="fas fa-comment"></i>{{$t->replies_count}}&nbsp;,&nbsp;
 								<i class="fas fa-eye"></i>{{ $t->visits }}
