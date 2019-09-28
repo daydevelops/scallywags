@@ -30,7 +30,7 @@
 				{{-- <textarea  class="form-control" name='body' id="body" placeholder="..." rows="10" value="{{old('body')}}" required></textarea> --}}
 			</div>
 			<div class='row form-group'>
-				<div class="g-recaptcha m-auto" data-sitekey="6LclT5wUAAAAAG37bPVBJ_YPkIatwsoiRS-paG4k"></div>
+				<div class="g-recaptcha m-auto" data-sitekey="6LdZ47oUAAAAADz9-BI-0B8ecrjz3S_kN4fvbmcm"></div>
 			</div>
 			<div class='form-group'>
 				<button type='submit' class="btn btn-primary d-inline m-auto">Submit</button>
