@@ -24,7 +24,8 @@
 
 			<nav class="navbar navbar-dark navbar-expand-md justify-content-center" id='main-nav'>
 				<a href="/forum" id='brand-name' class="navbar-brand d-flex mr-auto oleo">
-					<span class='capital'>S</span>cally<span class='capital'>W</span>ags</a>
+					<span class='capital'>S</span>cally<span class='capital'>W</span>ags
+				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar3">
 					<span class="navbar-toggler-icon"></span>
 				</button>
@@ -48,9 +49,6 @@
 									<a class="dropdown-item" href='{{"/forum/".$cat->slug}}'>{{$cat->name}}</a>
 									@endforeach
 								</div>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="/contact">Contact</a>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav ml-auto w-100 justify-content-end">
@@ -90,8 +88,11 @@
 
 		@yield('content')
 		<flash message="{{session('message')}}" class="{{session('alert-type')}}"></flash>
+
+		@include('particals/footer')
 	</div>
 	<script src="{{ asset('js/app.js') }}"></script>
 	@yield('javascript')
+
 </body>
 </html>
