@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Events\InvitedToGame;
 use App\Events\ThreadReplyCreated;
 use App\Listeners\NotifyInvitedUser;
 use Illuminate\Support\Facades\Event;
@@ -21,9 +20,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-		InvitedToGame::class => [
-			NotifyInvitedUser::class,
-		],
 		ThreadReplyCreated::class => [
 			\App\Listeners\NotifySubscribedUsers::class,
 			\App\Listeners\NotifyMentionedUsers::class

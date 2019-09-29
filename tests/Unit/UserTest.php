@@ -16,29 +16,7 @@ class UserTest extends TestCase
 		$this->user = factory('App\User')->create();
 	}
 
-	/** @test */
-	public function it_can_be_a_game_player()
-	{
-		$game = factory('App\Game')->create();
-		\App\GameUser::create([
-			'game_id'=>$game->id,
-			'user_id'=>$this->user->id,
-			'confirmed'=>1
-		]);
-		$this->assertInstanceOf('App\Game',$this->user->games[0]);
-	}
-
-	/** @test */
-	public function it_can_have_a_game_invite()
-	{
-		$game = factory('App\Game')->create();
-		\App\GameUser::create([
-			'game_id'=>$game->id,
-			'user_id'=>$this->user->id,
-			'confirmed'=>0
-		]);
-		$this->assertInstanceOf('App\Game',$this->user->invites[0]);
-	}
+	
 
 	/** @test */
 	public function it_owns_a_thread() {

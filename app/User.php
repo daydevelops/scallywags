@@ -31,15 +31,6 @@ class User extends Authenticatable implements MustVerifyEmail
 		'password', 'remember_token',
 	];
 
-
-	public function games() {
-		return $this->belongsToMany(Game::class)->wherePivot('confirmed','1');
-	}
-
-	public function invites() {
-		return $this->belongsToMany(Game::class)->wherePivot('confirmed','0');
-	}
-
 	public function threadsWithGS() {
 		return $this->hasMany(Thread::class);
 	}

@@ -50,16 +50,8 @@ Route::post('/profile/avatar','Api\AvatarController@store');
 Route::get('/profile/{user}','ProfileController@show');
 
 Route::get('/dashboard', 'DashboardController@index');
-Route::get('/dashboard/{game}','DashboardController@editGame');
 
 
-Route::get('/games','GamesController@index');
-Route::get('/game/schedule','GamesController@schedule');
-Route::post('/game','GamesController@store');
-Route::post('/game/{game}/toggleprivate','GamesController@togglePrivate');
-Route::post('/game/{game}/invite/{user}','GamesController@invite');
-Route::post('/game/{game}/leave','GamesController@leave');
-Route::post('/game/{game}/join','GamesController@join');
 Auth::routes(['verify' => true]);
 
 Route::get('/notifications','UserNotificationController@index');

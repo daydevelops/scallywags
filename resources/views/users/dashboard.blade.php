@@ -74,42 +74,7 @@
 		</div>
 	</section>
 	<hr>
-	<section 'games-section'>
-		<div class='container-fluid'>
-			<div class='row'>
-				<div class='col-md-6'>
-					<h3>Upcomming Games</h3>
-					<table id='ugames-table' class='table'>
-						<thead>
-							<tr>
-								<th scope='col'>Date</th>
-								<th scope='col'>Competition</th>
-								<th scope='col'>public/private</th>
-							</tr>
-						</thead>
-						<tbody>
-							@foreach ($user->games as $g)
-								<tr class='user-game' id='user-game-{{$g->id}}' onclick='showGameModal({{$g->id}})'>
-									<td scope='col' class='game-date'>{{$g->gamedate}}</td>
-									<td scope='col' class='game-comp'>
-										@if (sizeof($g->users)>1)
-											{{$g->users[0]->name}} and {{sizeof($g->users)-1}} other
-										@else
-											{{$g->users[0]->name}}
-										@endif
-									</td>
-									<td scope='col' class='game-type {{$g->private?"":"public-game"}}'>
-										{{$g->private?"private":"public"}}
-									</td>
-								</tr>
-							@endforeach
-						</tbody>
-					</table>
-
-				</div>
-			</div>
-		</div>
-	</section>
+	
 
 
 	<!-- Modal -->
@@ -155,66 +120,7 @@
 	</div>
 
 
-	<!-- Modal for User Games-->
-	<div class="modal fade" id="game-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-				<div class="modal-body">
-					<h3>Date: <span id='gm-date'></span></h3>
-					<p><i><small>To reschedule your game, visit the <a href='/games'>schedule</a></small></i></p>
-
-					<p><input id='gm-private-check' type='checkbox' onclick='toggleGamePrivate()'> This game is Private </p>
-					<div class='row'>
-						<div class='col col-6'>
-							<h4 class='text-left'>Players</h4>
-						</div>
-						<div class='col col-6 text-right'>
-							<button class='btn btn-danger' onclick='leaveGame()'>Leave Game</button></h4>
-						</div>
-					</div>
-					<div class='row'>
-						<div class='col col-12 text-center'>
-							<ol id='gm-players'>
-
-							</ol>
-						</div>
-					</div>
-					<div class='row'>
-						<div class='col col-6'>
-							<h4 class='text-left'>Invites</h4>
-						</div>
-						<div class='col col-6 text-right'>
-							<button class='btn btn-primary' onclick='toggleInviteInput()'>Invite</button>
-						</div>
-						<ol id='gm-invites'>
-
-						</ol>
-					</div>
-					<div class='row hidden' id='invite-player-row'>
-						<div class='col col-8'>
-							<div class="form-group">
-								<select class="form-control" id="invite-players-list">
-									@foreach ($users as $u)
-										@if (auth()->id() !== $u->id)
-											<option value='{{$u->id}}'>{{$u->name}}</option>
-										@endif
-									@endforeach
-								</select>
-							</div>
-						</div>
-						<div class='col col-4'>
-							<button class='btn btn-success' onclick='invitePlayer()'>Send Invite</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 @endsection
 
 @section('javascript')
