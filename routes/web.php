@@ -11,12 +11,8 @@
 |
 */
 
-Route::get('/', 'HomeController@home');
-Route::get('/home', 'HomeController@home')->name('home');
-Route::get('/contact', 'HomeController@contact');
-Route::get('/about', 'HomeController@about');
-
 ///// FORUM /////
+Route::get('/', 'ThreadsController@index');
 Route::get('/forum', 'ThreadsController@index')->name('forum');
 Route::get('/forum/new', 'ThreadsController@create')->middleware('verified');
 Route::get('/forum/{category}/{thread}','ThreadsController@show');

@@ -23,29 +23,20 @@
 		<div id="app">
 
 			<nav class="navbar navbar-light navbar-expand-md justify-content-center" id='main-nav'>
-				<a href="/home" class="navbar-brand d-flex mr-auto">RballNL</a>
+				<h3><a href="/forum" class="navbar-brand d-flex mr-auto">ScallyWags</a></h3>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar3">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="navbar-collapse collapse" id="collapsingNavbar3">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-							<a class="nav-link" href="/home">Home</a>
+							<a class="nav-link" href="/forum">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/about">About</a>
+							<a class="nav-link" href="/forum?popular=1">Popular</a>
 						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Forum</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<a class="dropdown-item" href="/forum">All</a>
-								@auth
-									<a class="dropdown-item" href="/forum?u={{auth()->id()}}">My Posts</a>
-									<a class="dropdown-item" href="/favourites">My Favourites</a>
-								@endauth
-								<a class="dropdown-item" href="/forum?popular=1">Popular</a>
-								<a class="dropdown-item" href="/forum?unanswered=1">Unanswered</a>
-							</div>
+						<li class="nav-item">
+							<a class="nav-link" href="/forum?unanswered=1">Unanswered</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/contact">Contact</a>
@@ -67,8 +58,8 @@
 								</a>
 
 								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-									<a class="dropdown-item" href="/dashboard">Dashboard</a>
-									<a class="dropdown-item" href="/messages">Messages</a>
+									<a class="dropdown-item" href="/forum?u={{auth()->id()}}">My posts</a>
+									<a class="dropdown-item" href="/favourites">My favourites</a>
 									<a class="dropdown-item" href="{{ route('logout') }}"
 									onclick="event.preventDefault();
 									document.getElementById('logout-form').submit();">
