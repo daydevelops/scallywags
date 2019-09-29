@@ -8,6 +8,7 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>@yield('title')</title>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet"> 
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	@yield('css')
 
@@ -22,8 +23,9 @@
 	<body>
 		<div id="app">
 
-			<nav class="navbar navbar-light navbar-expand-md justify-content-center" id='main-nav'>
-				<h3><a href="/forum" class="navbar-brand d-flex mr-auto">ScallyWags</a></h3>
+			<nav class="navbar navbar-dark navbar-expand-md justify-content-center" id='main-nav'>
+				<a href="/forum" id='brand-name' class="navbar-brand d-flex mr-auto oleo">
+					<span class='capital'>S</span>cally<span class='capital'>W</span>ags</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsingNavbar3">
 					<span class="navbar-toggler-icon"></span>
 				</button>
