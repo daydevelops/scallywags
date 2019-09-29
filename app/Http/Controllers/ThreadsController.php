@@ -29,7 +29,7 @@ class ThreadsController extends Controller
 			$threads = Thread::filter($filters)->paginate(10);
 		}
 
-		$categories = Category::all();
+		// $categories = Category::all();
 
 		$trending_threads = Trending::get();
 
@@ -38,7 +38,7 @@ class ThreadsController extends Controller
 		}
 		// echo json_encode($threads);
 		// return null;
-		return view('forum/index',compact('threads','categories','trending_threads'));
+		return view('forum/index',compact('threads','trending_threads'));
 	}
 
 	/**
@@ -48,8 +48,7 @@ class ThreadsController extends Controller
 	*/
 	public function create()
 	{
-		$categories = Category::all();
-		return view('forum/new',compact('categories'));
+		return view('forum/new');
 	}
 
 	/**

@@ -1,4 +1,3 @@
-<!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
 	<meta charset="utf-8">
@@ -39,6 +38,16 @@
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/forum?unanswered=1">Unanswered</a>
+						</li>
+						<li class="nav-item dropdown">
+								<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+									Categories <span class="caret"></span>
+								</a>
+								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+									@foreach ($categories as $cat)
+									<a class="dropdown-item" href='{{"/forum/".$cat->slug}}'>{{$cat->name}}</a>
+									@endforeach
+								</div>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/contact">Contact</a>
