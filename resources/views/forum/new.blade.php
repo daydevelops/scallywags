@@ -32,7 +32,7 @@
 			<div class='row form-group'>
 				<div class="g-recaptcha m-auto" data-sitekey="6LdZ47oUAAAAADz9-BI-0B8ecrjz3S_kN4fvbmcm"></div>
 			</div>
-			<div class='form-group'>
+			<div class='form-group text-center'>
 				<button type='submit' class="btn btn-primary d-inline m-auto">Submit</button>
 				<button class="btn btn-danger d-inline m-auto" onClick='window.location="/forum"'>Cancel</button>
 			</div>
