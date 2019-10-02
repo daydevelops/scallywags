@@ -12,3 +12,4 @@ This project was built with Laravel and VueJS. It started as only one feature of
 - run `npm install`
 - run `php artisan key:generate`
 - You will also need to set up a Google Recaptcha service. Enter your keys in the .env file.
+- This application uses a Redis server. To install Redis, run `sudo apt install redis-server`
