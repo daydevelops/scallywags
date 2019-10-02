@@ -11,4 +11,4 @@ This project was built with Laravel and VueJS. It started as only one feature of
 - run `composer install`
 - run `npm install`
 - run `php artisan key:generate`
-- You will also need to set up a Google Recaptcha service. Enter your secret key in the .env file. Enter your public key in the recaptcha form located in 'resources/views/forum/new.blade.php'.
+- You will also need to set up a Google Recaptcha service. Enter your keys in the .env file.
