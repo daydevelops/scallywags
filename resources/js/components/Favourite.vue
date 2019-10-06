@@ -1,6 +1,6 @@
 <template>
 	<div v-bind:class="{favourited:favourited}">
-		<i class="fas fa-heart" @click='toggle()'></i>
+		<i class="fas fa-heart" @click='toggle(event)'></i>
 	</div>
 </template>
 <script>
@@ -13,6 +13,7 @@ export default {
 	},
 	methods: {
 		toggle() {
+			event.stopPropagation(); 
 			var identifier = this.type=='thread' ? this.item.slug : this.item.id;
 			if (this.favourited) {
 				axios.delete('/favourite/'+this.type+'/'+identifier)
