@@ -16,7 +16,7 @@ use Faker\Generator as Faker;
 $factory->define(App\User::class, function (Faker $faker) {
     $email = $faker->unique()->safeEmail;
     $hash = md5(strtolower(trim($email)));
-    $image = "http://www.gravatar.com/avatar/$hash?d=wavatar";
+    $image = "https://www.gravatar.com/avatar/$hash?d=wavatar";
     
     return [
         'name' => $faker->unique()->name,

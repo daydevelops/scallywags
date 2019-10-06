@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
 	{
 		if (!User::find(1)) {
 			$hash = md5(strtolower(trim('adamday618@gmail.com')));
-			$image = "http://www.gravatar.com/avatar/$hash?d=wavatar";
+			$image = "https://www.gravatar.com/avatar/$hash?d=wavatar";
 			User::create([
 				'name'=>'Adam Day',
 				'email'=>'adamday1618@gmail.com',
