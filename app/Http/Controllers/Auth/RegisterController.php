@@ -64,7 +64,7 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         $hash = md5(strtolower(trim($data['email'])));
- 	    $image = "http://www.gravatar.com/avatar/$hash?d=wavatar";
+ 	    $image = "https://www.gravatar.com/avatar/$hash?d=wavatar";
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
