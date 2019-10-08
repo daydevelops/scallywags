@@ -27,8 +27,8 @@ class NotifySubscribedUsers
     public function handle(ThreadReplyCreated $event)
     {
 		foreach($event->reply->thread->subscriptions as $sub) {
-			if ($event->reply->user_id !== auth()->id()) { //no need to notify the user leaving the reply
-				$sub->user->notify(new \App\Notifications\ThreadRepliedTo($event->reply));
+			if ($event->reply->thread->user_id != auth()->id()) { //no need to notify the user leaving the reply
+        $sub->user->notify(new \App\Notifications\ThreadRepliedTo($event->reply));
 			}
 		}
     }

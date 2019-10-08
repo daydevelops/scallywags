@@ -66,7 +66,7 @@ class ThreadSubscriptionTest extends TestCase
 	/** @test */
 	public function users_are_not_notified_when_leaving_their_own_reply() {
 		$this->signIn();
-		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()]);
 		$thread->subscribe();
 		$reply = factory('App\ThreadReply')->make(['user_id'=>auth()->id()]);
 		$thread->addReply($reply->toArray());
