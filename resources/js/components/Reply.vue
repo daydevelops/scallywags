@@ -54,7 +54,7 @@ export default {
 			return window.App.signedIn
 		},
 		ago() {
-			return moment(this.data.created_at+'z').fromNow();
+			return moment(this.data.created_at + 'z', 'YYYY-MM-DD HH:mm:ss Z').fromNow();
 		}
 	},
 	created () {
