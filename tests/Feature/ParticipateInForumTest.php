@@ -135,7 +135,6 @@ class ParticipateInForumTest extends TestCase
 		$this->signIn();
 		$thread = factory('App\Thread')->make();
 		$thread= $thread->toArray();
-		$thread['g-recaptcha-response'] = 'test';
 		$this->withExceptionHandling()->post('/forum/',$thread)->assertSessionHasErrors('g-recaptcha-response');
 	}
 
