@@ -1,4 +1,4 @@
-# Scally Wags
+# Scally Wags [![Build Status](https://travis-ci.org/daydevelops/scallywags.svg?branch=master)](https://travis-ci.org/daydevelops/scallywags)
 
 A public forum built by [Adam Day](daydevelops.com)
 
