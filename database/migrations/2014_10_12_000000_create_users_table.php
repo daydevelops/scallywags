@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('skill');
             $table->string('image')->nullable();
             $table->boolean('is_admin')->default(0);
+            $table->unsignedInteger('reputation')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -27,6 +27,10 @@ class Thread extends Model
 		});
 		static::deleting(function($thread) {
 			$thread->replies->each->delete();
+			$thread->user()->decrement('reputation',1);
+		});
+		static::created(function($thread) {
+			$thread->user()->increment('reputation',1);
 		});
 
 	}
@@ -51,6 +55,8 @@ class Thread extends Model
 	public function addReply($reply) {
 		$reply = $this->replies()->create($reply);
 		event(new ThreadReplyCreated($reply));
+		$this->user()->increment('reputation',1);
+		$reply->user()->increment('reputation',1);
 		return $reply;
 	}
 	public function subscribe() {

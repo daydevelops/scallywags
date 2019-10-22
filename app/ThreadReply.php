@@ -21,9 +21,9 @@ class ThreadReply extends Model
 		static::addGlobalScope('thread', function ($builder) {
 			$builder->with('thread');
 		});
-		static::deleting(function($thread) {
-			// dont alert the user that this thread was updated since they are the one updating it
-			auth()->user()->read($thread->id);
+		static::deleting(function($reply) {
+			$reply->thread->user()->decrement('reputation',1);
+			$reply->user()->decrement('reputation',1);
 		});
 		// static::saving(function($thread) {
 		// 	auth()->user()->read($thread->id);
@@ -61,6 +61,9 @@ class ThreadReply extends Model
 		$thread = $this->thread;
 		if (!$thread->best_reply_id) {
 			$thread->update(['best_reply_id'=>$this->id]);
+			if ($this->user_id != auth()->id()) {
+				$this->user()->increment('reputation',10);
+			}
 			return true;
 		}
 		return false;
