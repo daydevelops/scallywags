@@ -22,8 +22,8 @@ class ThreadReply extends Model
 			$builder->with('thread');
 		});
 		static::deleting(function($reply) {
-			$reply->thread->user()->decrement('reputation',1);
-			$reply->user()->decrement('reputation',1);
+			$reply->thread->user->unaward('lost_reply');
+			$reply->user->unaward('deleted_reply');
 		});
 		// static::saving(function($thread) {
 		// 	auth()->user()->read($thread->id);
@@ -62,7 +62,7 @@ class ThreadReply extends Model
 		if (!$thread->best_reply_id) {
 			$thread->update(['best_reply_id'=>$this->id]);
 			if ($this->user_id != auth()->id()) {
-				$this->user()->increment('reputation',10);
+				$this->user->award('received_best_reply');
 			}
 			return true;
 		}

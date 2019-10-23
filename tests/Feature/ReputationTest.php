@@ -35,7 +35,7 @@ class ReputationTest extends TestCase
     {
         $this->signIn();
         $thread = factory(Thread::class)->create(['user_id' => auth()->id()]);
-        $reply = factory(ThreadReply::class)->make(['user_id' => 999])->toArray();
+        $reply = factory(ThreadReply::class)->make()->toArray();
         $thread->addReply($reply);
         $this->assertEquals(2, $thread->user->fresh()->reputation);
     }
@@ -45,7 +45,7 @@ class ReputationTest extends TestCase
     {
         $this->signIn();
         $thread = factory(Thread::class)->create(['user_id' => auth()->id()]);
-        $reply = factory(ThreadReply::class)->make(['user_id' => 999])->toArray();
+        $reply = factory(ThreadReply::class)->make()->toArray();
         $thread->addReply($reply);
         ThreadReply::first()->delete();
         $this->assertEquals(1, $thread->user->fresh()->reputation);
@@ -74,7 +74,7 @@ class ReputationTest extends TestCase
     public function a_user_earns_rep_when_their_reply_is_favourited()
     {
         $this->signIn();
-        $thread = factory(Thread::class)->create(['user_id' => 999]);
+        $thread = factory(Thread::class)->create();
         $reply = factory(ThreadReply::class)->make(['user_id' => auth()->id()]);
         $thread->addReply($reply->toArray());
         $reply = ThreadReply::first();
@@ -87,7 +87,7 @@ class ReputationTest extends TestCase
     /** @test */
     public function a_user_loses_rep_when_their_reply_is_unfavourited() {
         $this->signIn();
-        $thread = factory(Thread::class)->create(['user_id' => 999]);
+        $thread = factory(Thread::class)->create();
         $reply = factory(ThreadReply::class)->make(['user_id' => auth()->id()]);
         $thread->addReply($reply->toArray());
         $reply = ThreadReply::first();
@@ -133,7 +133,7 @@ class ReputationTest extends TestCase
     /** @test */
     public function a_user_does_not_earn_rep_for_favouriting_their_own_reply() {
         $this->signIn();
-        $thread = factory(Thread::class)->create(['user_id' => 999]);
+        $thread = factory(Thread::class)->create();
         $reply = factory(ThreadReply::class)->make(['user_id' => auth()->id()]);
         $thread->addReply($reply->toArray());
         $reply = ThreadReply::first();
@@ -145,7 +145,7 @@ class ReputationTest extends TestCase
     /** @test */
     public function a_user_does_not_lose_rep_for_unfavouriting_their_own_reply() {
         $this->signIn();
-        $thread = factory(Thread::class)->create(['user_id' => 999]);
+        $thread = factory(Thread::class)->create();
         $reply = factory(ThreadReply::class)->make(['user_id' => auth()->id()]);
         $thread->addReply($reply->toArray());
         $reply = ThreadReply::first();

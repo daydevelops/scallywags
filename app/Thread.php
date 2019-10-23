@@ -27,10 +27,10 @@ class Thread extends Model
 		});
 		static::deleting(function($thread) {
 			$thread->replies->each->delete();
-			$thread->user()->decrement('reputation',1);
+			$thread->user->unaward('deleted_thread');
 		});
 		static::created(function($thread) {
-			$thread->user()->increment('reputation',1);
+			$thread->user->award('created_thread');
 		});
 
 	}
@@ -55,8 +55,8 @@ class Thread extends Model
 	public function addReply($reply) {
 		$reply = $this->replies()->create($reply);
 		event(new ThreadReplyCreated($reply));
-		$this->user()->increment('reputation',1);
-		$reply->user()->increment('reputation',1);
+		$this->user->award('received_reply');
+		$reply->user->award('created_reply');
 		return $reply;
 	}
 	public function subscribe() {

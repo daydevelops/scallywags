@@ -31,7 +31,7 @@ trait Favourable
         $attributes = ['user_id' => auth()->id()];
         if (! $this->favourites()->where($attributes)->exists()) {
             if ($this->user_id != auth()->id()) {
-                $this->user()->increment('reputation',3);
+                $this->user->award('favourited');
             }
             return $this->favourites()->create($attributes);
         }
@@ -44,7 +44,7 @@ trait Favourable
         $attributes = ['user_id' => auth()->id()];
         $this->favourites()->where($attributes)->get()->each->delete();
         if ($this->user_id != auth()->id()) {
-            $this->user()->decrement('reputation',3);
+            $this->user->unaward('unfavourited');
         }
     }
     /**
