@@ -1,10 +1,9 @@
 <template>
-	<button
-	class="btn"
-	:class="subscribed?'btn-secondary':'btn-primary'"
+	<span
+	class='thread-controls'
 	@click="toggleSubscribed"
-	v-text="subscribed?'unsubscribe':'subscribe'">
-	</button>
+	v-text="subscribed?'Unsubscribe':'Subscribe'">
+	</span>
 </template>
 
 <script>

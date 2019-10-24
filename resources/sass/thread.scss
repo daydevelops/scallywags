@@ -11,6 +11,9 @@
 .thread-date, .thread-user, .thread-title, .thread-category {
 	margin:0px;
 }
+.thread-meta-icon {
+	margin:0px 3px;
+}
 .reply {
 	border:1px solid grey;
 	border-radius:5px;
@@ -18,7 +21,7 @@
 	box-shadow:0px 0px 3px #AAA;
 }
 .best-reply {
-	background-color:#8CF1AA;
+	background-color:rgb(73, 73, 73);
 }
 .hidden {
 	display:none;
@@ -42,4 +45,10 @@ p.trending-thread {
 }
 p.trending-thread a{
 	color:#AAA;
+}
+.thread-controls {
+	cursor:pointer;
+	border:0px;
+	background:rgba(0,0,0,0);
+	color:white;
 }

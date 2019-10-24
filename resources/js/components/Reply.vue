@@ -1,11 +1,21 @@
 <template>
 	<div :class="is_best?'best-reply reply':'reply'" :id="'reply'+data.id">
 		<div class="row reply-header">
-			<div class="col-8">
+			<div class="col-1">
 				<img :src="data.user.image" class='user-thumbnail'>
-				<b><small><a :href="'/profile/'+data.user.id" v-text="data.user.name"></a> | <span v-text="ago"></span></small></b>
 			</div>
-			<div class="col-4 text-right" v-if="signedIn">
+			<div class="col-8">
+				<p>
+					<b><a :href="'/profile/'+data.user.id" v-text="data.user.name"></a></b>
+				</p>
+				<div>
+					<b><small><span class='reply-user-reputation' v-text="'Points: '+data.user.reputation"></span></small></b>
+				</div>
+			</div>
+			<div class="col-3 text-right" v-if="signedIn">
+				<div>
+					<b><small><span v-text="ago"></span></small></b>
+				</div>
 				<favourite :item="data" :type="'reply'" class='favourite-wrapper'></favourite>
 			</div>
 		</div>

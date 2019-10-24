@@ -11,12 +11,17 @@
 				@forelse ($threads as $t)
 					<div class="thread panel" onclick='window.location="{{$t->getPath()}}"'>
 						<div class="row thread-header">
-							<div class="col-10 text-Center">
-								<p>
+							<div class="col-3 text-left">
+								<div>
 									<img src='{{$t->user->image}}' class='user-thumbnail'>
-									<a href='{{$t->user->getPath()}}'>{{$t->user->name}}</a>
-									<span> posted in: </span>{{$t->category->name}}
-								</p>
+								</div>
+								<div>
+									<a href='{{$t->user->getPath()}}'>{{$t->user->name}}</a></div>
+								<div>
+									<small><span>posted in: </span>{{$t->category->name}}</span></small>
+								</div>
+							</div>
+							<div class='col-8 text-left'>
 								<h2 class='thread-title'>
 									@if ($t->hasBeenUpdated())
 										<b>{{$t->title}}</b>
@@ -25,7 +30,7 @@
 									@endif
 								</h2>
 							</div>
-							<div class="col-2 text-right">
+							<div class="col-1 text-right">
 								@can('favourite',$t)
 									<favourite :item="{{$t}}" :type="'thread'" class='favourite-wrapper'></favourite>
 								@endcan
@@ -39,10 +44,11 @@
 						</div>
 						<div class="row">
 							<div class='col-12 text-center'>
-								
-								<i class="fas fa-clock"></i>{{ $t->created_at->diffForHumans() }}&nbsp;,&nbsp;
-								<i class="fas fa-comment"></i>{{$t->replies_count}}&nbsp;,&nbsp;
-								<i class="fas fa-eye"></i>{{ $t->visits }}
+								<small>
+								<i class="fas fa-clock thread-meta-icon"></i>{{ $t->created_at->diffForHumans() }}&nbsp;,&nbsp;
+								<i class="fas fa-comment thread-meta-icon"></i>{{$t->replies_count}}&nbsp;,&nbsp;
+								<i class="fas fa-eye thread-meta-icon"></i>{{ $t->visits }}
+								</small>
 							</div>
 						</div>
 					</div>
