@@ -22,7 +22,7 @@ class ThreadSubscriptionTest extends TestCase
 	/** @test */
 	public function a_user_can_subscribe_and_unsubscribe_to_a_thread() {
 		$this->signIn();
-		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread = factory('App\Thread')->create();
 		$request = $this->post($thread->getPath().'/subscribe');
 		$this->assertTrue(auth()->id() == $thread->subscriptions[0]->user_id);
 		$request = $this->delete($thread->getPath().'/unsubscribe');
@@ -43,7 +43,7 @@ class ThreadSubscriptionTest extends TestCase
 	/** @test */
 	public function a_user_can_only_subscribe_to_a_thread_once() {
 		$this->signIn();
-		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread = factory('App\Thread')->create();
 		$request = $this->post($thread->getPath().'/subscribe');
 		$request = $this->post($thread->getPath().'/subscribe');
 		$this->assertCount(1,\App\ThreadSubscription::all());
@@ -52,7 +52,7 @@ class ThreadSubscriptionTest extends TestCase
 	/** @test */
 	public function users_are_notified_when_a_subscribed_thread_receives_a_reply() {
 		$this->signIn();
-		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread = factory('App\Thread')->create();
 		$thread->subscribe();
 		$reply = factory('App\ThreadReply')->make();
 		$thread->addReply($reply->toArray());

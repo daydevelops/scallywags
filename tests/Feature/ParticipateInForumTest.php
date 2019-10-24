@@ -88,7 +88,7 @@ class ParticipateInForumTest extends TestCase
 	/** @test */
 	public function an_unauth_user_cannot_edit_a_thread() {
 		$this->signIn();
-		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread = factory('App\Thread')->create();
 		$this->withExceptionHandling()->json('patch',$thread->getPath())->assertStatus(403);
 		$this->assertNotEquals($thread->fresh()->title,'foobar');
 	}
@@ -113,7 +113,7 @@ class ParticipateInForumTest extends TestCase
 		$user = factory('App\User')->create(['is_admin'=>1]);
 		$this->signIn($user);
 		auth()->user()->update(['is_admin'=>1]);
-		$thread = factory('App\Thread')->create(['user_id'=>999]);
+		$thread = factory('App\Thread')->create();
 		$thread->lock();
 		$this->json('patch',$thread->getPath(),[
 			'title'=>'foobar',
@@ -176,7 +176,7 @@ class ParticipateInForumTest extends TestCase
 	/** @test */
 	public function a_user_can_not_delete_another_users_thread() {
 		$this->signIn();
-		$thread = factory('App\Thread')->create(['user_id'=>auth()->id()+1]);
+		$thread = factory('App\Thread')->create();
 		$this->withExceptionHandling()->json('DELETE',$thread->getPath())->assertStatus(403);
 		$this->assertDatabasehas('threads',['id'=>$thread->id]);
 	}
@@ -184,7 +184,7 @@ class ParticipateInForumTest extends TestCase
 	/** @test */
 	public function a_user_can_not_delete_another_users_reply() {
 		$this->signIn();
-		$reply = factory('App\ThreadReply')->create(['user_id'=>auth()->id()+1]);
+		$reply = factory('App\ThreadReply')->create();
 		$this->withExceptionHandling()->json('DELETE','/forum/reply/'.$reply->id);
 		$this->assertDatabaseMissing('thread_replies',['id'=>$reply->id,'body'=>'Reply deleted']);
 	}
