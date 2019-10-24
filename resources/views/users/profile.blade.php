@@ -11,9 +11,12 @@
 				
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-12" id="header">
-				<h1 class='text-center'>{{$user->name}}</h1>
+		<div class="row" id="header">
+			<div class="col-9">
+				<h1 class='text-left'>{{$user->name}}</h1>
+			</div>
+			<div class="col-3">
+				<h1 class='text-right'>Points: {{$user->reputation}}</h1>
 			</div>
 		</div>
 		<div class='row'>
