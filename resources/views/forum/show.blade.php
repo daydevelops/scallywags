@@ -18,10 +18,9 @@
 						@include('forum/thread_body')
 						@include('forum/thread_edit_form')
 						<replies :locked="{{$thread->is_locked}}" :page="{{$page}}" :best_id='{{$thread->best_reply_id?$thread->best_reply_id:0}}' @add="replies_count++" @removed="replies_count--"></replies>
-
 					</div>
-				</div>
-			</thread>
+				</thread>
+			</div>
 			<div class="col-3">
 				@include('particals/sidebar')
 			</div>
