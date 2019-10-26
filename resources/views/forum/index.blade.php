@@ -39,7 +39,7 @@
 						<hr>
 						<div class="row">
 							<div class="col-12">
-								<p class='thread-body'>{!! str_limit($t->body,400, '...') !!}</p>
+								<p class='thread-body'>{!! str_limit($t->body,400, '...</div>') !!}</p>
 							</div>
 						</div>
 						<div class="row">
