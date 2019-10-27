@@ -29,6 +29,12 @@
 										{{$t->title}}
 									@endif
 								</h2>
+								@if ($t->is_locked)
+									<div class="font-weight-light">
+										<i class="fas fa-lock" style="font-size: 0.9rem;"></i>
+										<span style="font-size: 0.9rem;">Locked</span>
+									</div>
+								@endif
 							</div>
 							<div class="col-1 text-right">
 								@can('favourite',$t)
