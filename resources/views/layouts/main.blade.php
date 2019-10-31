@@ -7,7 +7,7 @@
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 	<title>@yield('title')</title>
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css?family=Oleo+Script&display=swap" rel="stylesheet">
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
 	@yield('css')
 
@@ -41,14 +41,14 @@
 							<a class="nav-link" href="/forum?unanswered=1">Unanswered</a>
 						</li>
 						<li class="nav-item dropdown">
-								<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-									Categories <span class="caret"></span>
-								</a>
-								<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-									@foreach ($categories as $cat)
-									<a class="dropdown-item" href='{{"/forum/".$cat->slug}}'>{{$cat->name}}</a>
-									@endforeach
-								</div>
+                            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                Categories <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                @foreach ($categories as $cat)
+                                <a class="dropdown-item" href='{{"/forum/".$cat->slug}}'>{{$cat->name}}</a>
+                                @endforeach
+                            </div>
 						</li>
 					</ul>
 					<ul class="nav navbar-nav ml-auto w-100 justify-content-end">
@@ -70,26 +70,27 @@
 									<a class="dropdown-item" href="/forum?u={{auth()->id()}}">My posts</a>
 									<a class="dropdown-item" href="/favourites">My favourites</a>
 									<a class="dropdown-item" href="{{ route('logout') }}"
-									onclick="event.preventDefault();
-									document.getElementById('logout-form').submit();">
-									{{ __('Logout') }}
-								</a>
+									    onclick="event.preventDefault();
+									    document.getElementById('logout-form').submit();">
+									    {{ __('Logout') }}
+								    </a>
 
-								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-									@csrf
-								</form>
-							</div>
-						</li>
-					@endguest
-				</ul>
-			</div>
-		</nav>
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+							    </div>
+						    </li>
+					    @endguest
+				    </ul>
+			    </div>
+		    </nav>
 
+            <main class="bg-light text-dark">
+                @yield('content')
+                <flash message="{{session('message')}}" class="{{session('alert-type')}}"></flash>
+            </main>
 
-		@yield('content')
-		<flash message="{{session('message')}}" class="{{session('alert-type')}}"></flash>
-
-		@include('particals/footer')
+		    @include('particals/footer')
 	</div>
 	<script src="{{ asset('js/app.js') }}"></script>
 	@yield('javascript')

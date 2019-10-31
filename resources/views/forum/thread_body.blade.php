@@ -1,28 +1,33 @@
 <div v-if="!editing" class="thread">
 	<div class="row thread-header">
-		<div class="col-3 text-left">
-			<div>
-				<img src='{{$thread->user->image}}' class='user-thumbnail'>
-			</div>
-			<div>
-				<a href='{{$thread->user->getPath()}}'>{{$thread->user->name}}</a></div>
-			<div>
-				<small><span>posted in: </span>{{$thread->category->name}}</span></small>
-			</div>
-		</div>
-		<div class='col-7 text-center'>
-			<h2 class='thread-title'>
-				{{$thread->title}}
-			</h2>
-		</div>
+        <div class="col-auto text-left">
+            <div>
+                <a href='{{$thread->user->getPath()}}'>
+                    <img src='{{$thread->user->image}}' class='user-thumbnail'>
+                </a>
+            </div>
+        </div>
+        <div class='col text-left'>
+            <h1 class='thread-title' style="font-size: 1.5rem;">
+                @if ($thread->hasBeenUpdated())
+                    <b>{{$thread->title}}</b>
+                @else
+                    {{$thread->title}}
+                @endif
+            </h1>
+            <div class="help-block thread-details">
+                Posted by: {{$thread->user->name}}
+                <div class="badge badge-info">{{ $thread->category->name }}</div>
+            </div>
+        </div>
 		<div class="col-2 text-right">
 			@can('favourite',$thread)
 				<favourite :item="{{$thread}}" :type="'thread'" class='favourite-wrapper'></favourite>
 			@endcan
 		</div>
 	</div>
-	<hr>
-	<div class="row">
+
+	<div class="row py-4">
 		<div class="col-12">
 			<p class='thread-body'>{!! $thread->body !!}</p>
 		</div>
