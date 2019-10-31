@@ -23,7 +23,7 @@ body {
     position:relative;
     padding-bottom:50px;
 }
-#main-nav {
+#main-nav, #footer {
     background-color:$header-color;
 }
 .user-thumbnail {
@@ -43,7 +43,7 @@ body {
   font-size:40px;
 }
 .card {
-  background-color:#555;
+  background-color:#f1f1f1;
 }
 #footer {
   position:absolute;
