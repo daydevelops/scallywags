@@ -131,5 +131,13 @@ class Thread extends Model
 
 	public function unlock() {
 		$this->update(['is_locked'=>0]);
+    }
+
+	public function pin() {
+		$this->update(['is_pinned'=>1]);
+	}
+
+	public function unpin() {
+		$this->update(['is_pinned'=>0]);
 	}
 }

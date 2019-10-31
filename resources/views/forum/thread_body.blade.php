@@ -47,6 +47,10 @@
 				@csrf
 				| <button class='thread-controls' type='submit' id="lock-btn">{{$thread->is_locked?"Unlock":"Lock"}}</button>
 			</form>
+			<form class='d-inline' method='post' action='{{$thread->getPath()}}{{$thread->is_pinned?"/unpin":"/pin"}}'>
+				@csrf
+				| <button class='thread-controls' type='submit' id="pin-btn">{{$thread->is_pinned?"Unpin":"Pin"}}</button>
+			</form>
 			@endif
 		</small></small>
 		</div>

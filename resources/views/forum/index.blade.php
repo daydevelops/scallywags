@@ -10,7 +10,14 @@
         <p class="text-secondary small">The community forums is a place to discuss anything. Remember to be nice and have fun.</p>
 		<div class="row">
 			<div class="col-9">
+				@forelse ($pinned_threads as $thread)
+					@include('threads.panel')
+                @empty
+                    {{-- No pinned threads --}}
+                @endforelse
+
                 @forelse ($threads as $thread)
+                    @continue( $pinned_threads->where('id', $thread->id)->count() > 0 )
 					@include('threads.panel')
 				@empty
 					<br><hr>
