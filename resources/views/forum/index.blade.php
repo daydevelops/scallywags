@@ -17,7 +17,7 @@
                 @endforelse
 
                 @forelse ($threads as $thread)
-                    @continue( $pinned_threads->where('id', $thread->id)->count() > 0 )
+                    @continue(!!$thread->is_pinned)
 					@include('threads.panel')
 				@empty
 					<br><hr>
