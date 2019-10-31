@@ -32,14 +32,13 @@ class ThreadsController extends Controller
 		// $categories = Category::all();
 
 		$trending_threads = Trending::get();
-        $pinned_threads = Thread::where('is_pinned', 1)->get();
 
 		if (request()->wantsJson()) {
 			return $threads;
 		}
 		// echo json_encode($threads);
 		// return null;
-		return view('forum/index',compact('threads','trending_threads', 'pinned_threads'));
+		return view('forum/index',compact('threads','trending_threads'));
 	}
 
 	/**
@@ -151,26 +150,6 @@ class ThreadsController extends Controller
 	*/
 	public function unlock($category, Thread $thread) {
 		$thread->unlock();
-		return back();
-    }
-
-	/**
-	* Pin the thread
-	*
-	* @param  \App\Thread  $thread
-	*/
-	public function pin($category, Thread $thread) {
-		$thread->pin();
-		return back();
-	}
-
-	/**
-	* Unpin the thread
-	*
-	* @param  \App\Thread  $thread
-	*/
-	public function unpin($category, Thread $thread) {
-		$thread->unpin();
 		return back();
 	}
 }

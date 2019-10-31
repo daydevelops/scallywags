@@ -24,8 +24,6 @@ Route::post('/forum/{category}/{thread}/subscribe','ThreadSubscriptionController
 Route::post('/forum/{category}/{thread}/reply','ThreadReplyController@store');
 Route::post('/forum/{category}/{thread}/lock','ThreadsController@lock')->middleware('admin');
 Route::post('/forum/{category}/{thread}/unlock','ThreadsController@unlock')->middleware('admin');
-Route::post('/forum/{category}/{thread}/pin','ThreadsController@pin')->middleware('admin');
-Route::post('/forum/{category}/{thread}/unpin','ThreadsController@unpin')->middleware('admin');
 Route::post('/forum/reply/{reply}/best','BestReplyController@store');
 
 Route::delete('/forum/reply/{reply}','ThreadReplyController@destroy');
