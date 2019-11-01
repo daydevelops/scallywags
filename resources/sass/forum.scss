@@ -4,8 +4,8 @@
 	cursor:pointer;
 }
 .thread:hover {
-	// box-shadow:-2px 2px 3px #AAA;
-	// transform: TranslateX(2px) TranslateY(-2px);
+	background-color:#f1f1f1;
+	border-radius:15px;
 }
 .thread-date, .thread-user, .thread-reply-count {
 	margin:0px;
@@ -23,12 +23,4 @@
 #categories-dropdown>.dropdown-menu {
 	width:100%;
 }
-p.trending-thread {
-	font-size:15px;
-	margin-bottom:10px;
-	line-height:15px;
-}
-p.trending-thread a{
-	color:#000;
-	text-decoration:underline;
-}
+

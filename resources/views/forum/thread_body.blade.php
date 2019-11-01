@@ -33,7 +33,13 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-6 level">
+		<div class="col-6 text-left">
+			<small><i class="fas fa-clock thread-meta-icon"></i>{{ $thread->created_at->diffForHumans() }}</small>
+			<small><i class="fas fa-comment thread-meta-icon"></i>{{$thread->replies_count}}</small>
+			<small><i class="fas fa-eye thread-meta-icon"></i>{{ $thread->visits }}</small>
+		</div>
+
+		<div class="col-6 level text-right">
 			<small><small>
 			@can('update',$thread)
 			<span class='thread-controls' onclick='showAYSM("delete","thread",{{$thread->id}},"{{$thread->getPath()}}")'>Delete</span> |
@@ -53,11 +59,6 @@
 			</form>
 			@endif
 		</small></small>
-		</div>
-		<div class="col-6 text-right">
-			<small><i class="fas fa-clock thread-meta-icon"></i>{{ $thread->created_at->diffForHumans() }}</small>
-			<small><i class="fas fa-comment thread-meta-icon"></i>{{$thread->replies_count}}</small>
-			<small><i class="fas fa-eye thread-meta-icon"></i>{{ $thread->visits }}</small>
 		</div>
 	</div>
 </div>

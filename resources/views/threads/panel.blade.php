@@ -41,7 +41,7 @@
 
     <div class="row">
         <div class="col-12">
-            <p class='thread-body text-secondary'>{!! str_limit($thread->body,400, '...</div>') !!}</p>
+            <p class='thread-body text-secondary pt-2'>{!! str_limit($thread->body,400, '...</div>') !!}</p>
         </div>
     </div>
     <div class="row">

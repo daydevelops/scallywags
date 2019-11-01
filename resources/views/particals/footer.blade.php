@@ -1,4 +1,4 @@
-<div class='row' id='footer'>
+<div id='footer'>
     <p class='text-center'>
         <a href="/forum" id='brand-name-footer' class="oleo d-inline">
 		    <span class='capital'>S</span>cally<span class='capital'>W</span>ags
