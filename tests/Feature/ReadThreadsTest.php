@@ -50,12 +50,17 @@ class ReadThreadsTest extends TestCase
 	/** @test */
 	public function a_user_can_browse_thread_by_category() {
 		$cat = factory('App\Category')->create();
+		$cat2 = factory('App\Category')->create();
+		$cat3 = factory('App\Category')->create();
 		$thread_in_cat = factory('App\Thread')->create(['category_id'=>$cat->id]);
-		$thread_not_in_cat = factory('App\Thread')->create();
+		$thread1_not_in_cat = factory('App\Thread')->create(['category_id'=>$cat2->id]);
+		// make sure pinned threads also dont show up
+		$thread2_not_in_cat = factory('App\Thread')->create(['category_id'=>$cat3->id,'is_pinned'=>1]);
 
 		$this->get('forum/'.$cat->slug)
 		->assertSee($thread_in_cat->title)
-		->assertDontSee($thread_not_in_cat->title);
+		->assertDontSee($thread1_not_in_cat->title)
+		->assertDontSee($thread2_not_in_cat->title);
 
 	}
 
@@ -66,9 +71,11 @@ class ReadThreadsTest extends TestCase
 		// then user1 thread should be visible
 		// and user2 thread should not be visible
 		$threads = factory('App\Thread',2)->create();
+		$pinned_thread = factory('App\Thread')->create(['is_pinned'=>1]);
 
 		$this->get('forum?u='.$threads[0]->user_id)
 		->assertSee($threads[0]->title)
+		->assertDontSee($pinned_thread->title)
 		->assertDontSee($threads[1]->title);
 	}
 
@@ -94,14 +101,17 @@ class ReadThreadsTest extends TestCase
 		// given that we have many threads with random amount of replies
 		$t1 = factory('App\Thread')->create();
 		$t2 = factory('App\Thread')->create();
+		$pinned_thread = factory('App\Thread')->create(['is_pinned'=>1]);
 
 		factory('App\ThreadReply',2)->create(['thread_id'=>$t1->id]);
+		factory('App\ThreadReply',2)->create(['thread_id'=>$pinned_thread->id]);
 		// when we sort those threads by the number of replies
 		$response = $this->get('/forum?unanswered=1');
 		// dd($response);
 		// the user should see the threads sorted
 		$response->assertSee($t2->body);
 		$response->assertDontSee($t1->body);
+		$response->assertDontSee($pinned_thread->body);
 	}
 
 	/** @test */
@@ -110,6 +120,7 @@ class ReadThreadsTest extends TestCase
 		// given that we have many threads with random amount of replies
 		$t1 = factory('App\Thread')->create();
 		$t2 = factory('App\Thread')->create();
+		$pinned_thread = factory('App\Thread')->create(['is_pinned'=>1]);
 		$r1 = factory('App\ThreadReply')->create(['thread_id'=>$t1->id]);
 		$r2 = factory('App\ThreadReply')->create(['thread_id'=>$t2->id]);
 
@@ -121,6 +132,7 @@ class ReadThreadsTest extends TestCase
 
 		$response->assertSee($t2->title);
 		$response->assertDontSee($t1->title);
+		$response->assertDontSee($pinned_thread->title);
 		$response->assertSee($r2->body);
 		$response->assertDontSee($r1->body);
 	}

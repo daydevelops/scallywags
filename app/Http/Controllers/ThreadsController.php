@@ -32,7 +32,8 @@ class ThreadsController extends Controller
 		// $categories = Category::all();
 
 		$trending_threads = Trending::get();
-        $pinned_threads = Thread::where('is_pinned', 1)->get();
+		// get pinned threads from filtered threads
+        $pinned_threads = $threads->where('is_pinned', 1);
 
 		if (request()->wantsJson()) {
 			return $threads;
