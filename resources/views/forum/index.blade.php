@@ -6,8 +6,6 @@
 
 @section('content')
 	<div class="container p-3">
-        <h2>Forums</h2>
-        <p class="text-secondary small">The community forums is a place to discuss anything. Remember to be nice and have fun.</p>
 		<div class="row">
 			<div class="col-9">
 				@forelse ($pinned_threads as $thread)

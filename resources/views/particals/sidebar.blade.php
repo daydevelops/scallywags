@@ -14,7 +14,7 @@
 		</ol>
 	</small>
 	<hr>
-	<h4 class='text-center'>Trending Threads</h4>
+	<h4 class='text-center'><b>Trending Threads</b></h4>
 	@foreach ($trending_threads as $tt)
 		<p class='trending-thread text-left'><a href="{{$tt->path}}">{{$tt->title}}</a></p>
 	@endforeach
