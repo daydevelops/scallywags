@@ -36,6 +36,9 @@
 						<span v-if='canEdit()'>
 							<button class="btn btn-secondary" @click='editing = true'>Edit</button>
 							<button class='btn btn-danger' @click='destroy' >Delete</button>
+
+
+
 						</span>
 						<span v-if='canMarkAsBest()'>
 							<button class='btn btn-success mark-as-best-btn' @click='markAsBest' >Mark As Best</button>
@@ -98,7 +101,13 @@ export default {
 			this.editing = false;
 		},
 		canEdit() {
-			return this.authorize(user => this.data.user_id == window.App.user.id);
+
+		    if(window.App.user.is_admin == 1){
+			     return 1;
+			}
+			else{
+			    return this.authorize(user => this.data.user_id == window.App.user.id);
+			}
 		},
 		markAsBest() {
 			$('.mark-as-best-btn').addClass('hidden');
