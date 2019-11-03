@@ -36,14 +36,14 @@ window.Vue.prototype.authorize = function (handler) {
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('flash', require('./components/Flash.vue'));
-Vue.component('notification',require('./components/Notification.vue'));
-Vue.component('thread',require('./pages/Thread.vue'));
-Vue.component('favourite',require('./components/Favourite.vue'));
-Vue.component('paginator',require('./components/Paginator.vue'));
-Vue.component('subscribe-button',require('./components/subscribe-button.vue'));
-Vue.component('avatar-form',require('./components/AvatarForm.vue'));
-Vue.component('wysiwyg',require('./components/Wysiwyg.vue'));
+Vue.component('flash', require('./components/Flash.vue').default);
+Vue.component('notification',require('./components/Notification.vue').default);
+Vue.component('thread',require('./pages/Thread.vue').default);
+Vue.component('favourite',require('./components/Favourite.vue').default);
+Vue.component('paginator',require('./components/Paginator.vue').default);
+Vue.component('subscribe-button',require('./components/subscribe-button.vue').default);
+Vue.component('avatar-form',require('./components/AvatarForm.vue').default);
+Vue.component('wysiwyg',require('./components/Wysiwyg.vue').default);
 const app = new Vue({
     el: '#app',
 });

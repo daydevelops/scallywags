@@ -4,7 +4,7 @@
     "/css/dashboard.css": "/css/dashboard.css",
     "/css/thread.css": "/css/thread.css",
     "/css/forum.css": "/css/forum.css",
-    "/js/thread.js": "/js/thread.js",
+    "/js/dashboard.js": "/js/dashboard.js",
     "/js/forum.js": "/js/forum.js",
-    "/js/dashboard.js": "/js/dashboard.js"
+    "/js/thread.js": "/js/thread.js"
 }
