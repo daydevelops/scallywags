@@ -102,7 +102,7 @@ export default {
 		},
 		canEdit() {
 
-		    if(window.App.user.is_admin == 1){
+		    if(window.App.signedIn && window.App.user.is_admin == 1){
 			     return 1;
 			}
 			else{
