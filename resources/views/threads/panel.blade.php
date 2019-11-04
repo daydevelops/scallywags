@@ -20,19 +20,19 @@
                 <div class="badge badge-info">{{ $thread->category->name }}</div>
             </div>
             @if ($thread->is_locked)
-                <div class="font-weight-light">
+                <span class="font-weight-light">
                     <i class="fas fa-lock" style="font-size: 0.9rem;"></i>
                     <span style="font-size: 0.9rem;">Locked</span>
-                </div>
+                </span>
             @endif
             @if ($thread->is_pinned)
-                <div class="font-weight-light">
+                <span class="font-weight-light">
                     <i class="fas fa-thumbtack" style="font-size: 0.9rem;"></i>
                     <span style="font-size: 0.9rem;">Pinned</span>
-                </div>
+                </span>
             @endif
         </div>
-        <div class="col-1 text-right">
+        <div class="col-1 text-right p-1">
             @can('favourite',$thread)
                 <favourite :item="{{$thread}}" :type="'thread'" class='favourite-wrapper'></favourite>
             @endcan

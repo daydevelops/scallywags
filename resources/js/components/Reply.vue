@@ -1,41 +1,43 @@
 <template>
 	<div :class="is_best?'best-reply reply':'reply'" :id="'reply'+data.id">
 		<div class="row reply-header">
-			<div class="col-1">
-				<img :src="data.user.image" class='user-thumbnail'>
-			</div>
-			<div class="col-8">
-				<p>
-					<b><a :href="'/profile/'+data.user.id" v-text="data.user.name"></a></b>
-				</p>
-				<div>
-					<b><small><span class='reply-user-reputation' v-text="'Points: '+data.user.reputation"></span></small></b>
+			<div class='col-10'>
+				<div class='row'>
+					<div class="col-3">
+						<img :src="data.user.image" class='user-thumbnail'>
+					</div>
+					<div class="col-9">
+						<div>
+							<b><a :href="'/profile/'+data.user.id" v-text="data.user.name"></a></b>
+						</div>
+						<div>
+							<small><div v-text="ago"></div></small>
+							<b><small><span class='reply-user-reputation' v-text="'Rep: '+data.user.reputation"></span></small></b>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="col-3 text-right" v-if="signedIn">
-				<div>
-					<b><small><span v-text="ago"></span></small></b>
-				</div>
+			<div class="col-2 text-right" v-if="signedIn">
 				<favourite :item="data" :type="'reply'" class='favourite-wrapper'></favourite>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row pt-3">
 			<div class="col-12">
 				<div v-if='editing'>
 					<div class="form-group">
 						<p class="text-center" v-text="errors"></p>
 						<wysiwyg ref='edit_reply_wysiwyg' v-model="body" :initial_content="body" :name="'body'"></wysiwyg>
 						<!-- <textarea class='form-control' v-model='body'></textarea> -->
-						<button class="btn btn-primary" @click='update'>Update</button>
-						<button class="btn btn-secondary" @click='cancelEdit'>Cancel</button>
+						<button class="btn btn-sm btn-primary" @click='update'>Update</button>
+						<button class="btn btn-sm btn-secondary" @click='cancelEdit'>Cancel</button>
 					</div>
 				</div>
 				<div class='reply-body' v-else>
 					<p v-html='body'></p>
 					<div class="level">
 						<span v-if='canEdit()'>
-							<button class="btn btn-secondary" @click='editing = true'>Edit</button>
-							<button class='btn btn-danger' @click='destroy' >Delete</button>
+							<button class="btn btn-sm btn-secondary" @click='editing = true'>Edit</button>
+							<button class='btn btn-sm btn-danger' @click='destroy' >Delete</button>
 
 
 

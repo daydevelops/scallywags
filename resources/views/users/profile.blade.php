@@ -6,18 +6,10 @@
 
 @section('content')
 	<div class="container">
-		<div class="row">
-			<div class="col-6 offset-3" id="user-img-wrap">
-				
-			</div>
-		</div>
-		<div class="row" id="header">
-			<div class="col-9">
-				<h1 class='text-left'>{{$user->name}}</h1>
-			</div>
-			<div class="col-3">
-				<h1 class='text-right'>Points: {{$user->reputation}}</h1>
-			</div>
+		<div id="header">
+			<img class="d-block ml-auto mr-auto mt-3 rounded-circle" src="{{$user->image}}" class='user-thumbnail'>
+			<h3 class='text-center'>{{$user->name}}</h3>
+			<h4 class='text-center'>Rep: {{$user->reputation}}</h4>
 		</div>
 		<div class='row'>
 			<div class='col-12'>

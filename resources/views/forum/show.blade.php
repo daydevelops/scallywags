@@ -12,7 +12,7 @@
 @section('content')
 	<div class="container">
 		<div class='row'>
-			<div class='col-9'>
+			<div class='col-md-9'>
 				<thread :thread="{{$thread}}" :initial_replies_count="{{$thread->replies_count}}" inline-template>
 					<div>
 						@include('forum/thread_body')
@@ -21,7 +21,7 @@
 					</div>
 				</thread>
 			</div>
-			<div class="col-3">
+			<div class="col-md-3">
 				@include('particals/sidebar')
 			</div>
 		</div>

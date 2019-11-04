@@ -28,4 +28,10 @@ export default {
 	background-color: #EEEEEE99;
 	padding:20px
 }
+trix-toolbar {
+	overflow-x:scroll;
+	white-space: nowrap;
+	width:100%;
+}
+
 </style>

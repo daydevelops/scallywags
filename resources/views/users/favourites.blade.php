@@ -13,7 +13,7 @@
 		</div>
 		<div class="row">
 			<div class="col-12" id="header">
-				<h1 class='text-center'>Favourited Items</h1>
+				<h3 class='text-center mt-3'>Favourited Items</h3>
 			</div>
 		</div>
 		<div class='row'>
@@ -31,8 +31,8 @@
                         <div class="thread panel" onclick='window.location="{{$fav->favourited->thread->getPath()}}"'>
 						    <div class="row thread-header">
 							    <div class="col-10 text-Center">
+                                    <p><small>A reply to: {{$fav->favourited->thread->title}}.</small></p>
 								    <h2 class='thread-title'>{{$fav->favourited->body}}</h2>
-                                    <p> -- A reply within: {{$fav->favourited->thread->title}}.</p>
 							    </div>
                             </div>
                         </div>

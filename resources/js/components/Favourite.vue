@@ -41,7 +41,6 @@ export default {
 <style>
 .favourite-wrapper {
 	color:#999;
-	padding:15px;
 }
 .favourite-wrapper.favourited {
 	color:#A33;

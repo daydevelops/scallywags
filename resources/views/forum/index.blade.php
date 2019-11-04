@@ -7,7 +7,7 @@
 @section('content')
 	<div class="container p-3">
 		<div class="row">
-			<div class="col-9">
+			<div class="col-md-9">
 				@forelse ($pinned_threads as $thread)
 					@include('threads.panel')
                 @empty
@@ -25,7 +25,7 @@
 				{{ $threads->links() }}
 			</div>
 
-			<div class="col-3">
+			<div class="col-md-3">
 				@include('particals/sidebar')
 			</div>
 		</div>
