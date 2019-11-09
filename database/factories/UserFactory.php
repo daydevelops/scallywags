@@ -19,7 +19,7 @@ $factory->define(App\User::class, function (Faker $faker) {
     $image = "https://www.gravatar.com/avatar/$hash?d=wavatar";
     
     return [
-        'name' => $faker->unique()->name,
+        'name' => str_replace("'","",$faker->unique()->name),
         'email' => $email,
         'email_verified_at' => now(),
         'skill' => 'A',
