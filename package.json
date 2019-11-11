@@ -26,7 +26,9 @@
   "dependencies": {
     "at.js": "^1.5.4",
     "jquery.caret": "^0.3.1",
+    "laravel-echo": "^1.6.1",
     "moment": "^2.24.0",
+    "pusher-js": "^5.0.2",
     "trix": "^1.2.0"
   }
 }

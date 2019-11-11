@@ -1,5 +1,5 @@
 <?php
-
+use App\Events\UserSentMessage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -57,3 +57,10 @@ Route::delete('/notifications/all','UserNotificationController@destroyAll');
 Route::delete('/notifications/{notification}','UserNotificationController@destroy');
 
 Route::get('/api/users','Api\UsersController@index');
+
+Route::get('/chat', function() {
+    return view('home');
+});
+Route::get('/msg', function() {
+    UserSentMessage::dispatch("hello");
+});
