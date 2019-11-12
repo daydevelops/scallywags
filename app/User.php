@@ -7,6 +7,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
 use App\Favourite;
+use App\Message;
+use App\Conversation;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -58,6 +60,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
 	public function subscriptions() {
 		return $this->hasMany(ThreadSubscription::class);
+	}
+
+	public function messages() {
+		return $this->hasMany(Message::class);
+	}
+
+	public function conversations() {
+		return $this->belongsToMany(Conversation::class);
 	}
 
 	public static function allPublic() {
