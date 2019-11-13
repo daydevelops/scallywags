@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UsersTableSeeder::class,
 			ThreadsTableSeeder::class,
-			// NotificationsTableSeeder::class,
+			ConversationSeeder::class
         ]);
     }
 }
