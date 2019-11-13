@@ -6,5 +6,6 @@
     "/css/forum.css": "/css/forum.css",
     "/js/dashboard.js": "/js/dashboard.js",
     "/js/forum.js": "/js/forum.js",
-    "/js/thread.js": "/js/thread.js"
+    "/js/thread.js": "/js/thread.js",
+    "/css/conversations.css": "/css/conversations.css"
 }
