@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Conversation extends Model
 {
     protected $fillable = ['channel_name'];
+    protected $appends = ['friend'];
 
     protected static function boot() {
 		parent::boot();
@@ -26,6 +27,10 @@ class Conversation extends Model
 
     public function messages() {
         return $this->hasMany(Message::class);
+    }
+
+    public function getFriendAttribute() {
+        return $this->friend();
     }
 
     public function friend() {
