@@ -39,4 +39,8 @@ class Chat extends Model
             return $u->id !== auth()->id();
         });
     }
+
+    public function addMessage($data) {
+        $this->messages()->create($data);
+    }
 }

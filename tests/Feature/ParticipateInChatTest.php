@@ -49,4 +49,22 @@ class ParticipateInChatTest extends TestCase
         $response->assertSee($this->user2->name);
     }
     
+    /** @test */
+    public function a_user_can_not_view_another_users_chats() {
+        $this->createChat();
+        $this->signIn();
+        $response = $this->get('/chats');
+        $response->assertDontSee($this->user2->name);
+    }
+
+    /** @test */
+    public function a_user_can_create_a_new_message() {
+        $this->createChat();
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing']);
+        $this->assertDatabaseHas('messages',[
+            'body'=>'testing',
+            'chat_id'=>$this->chat->id,
+            'user_id'=>auth()->id()
+        ]);
+    }
 }
