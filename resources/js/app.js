@@ -43,6 +43,7 @@ Vue.component('favourite',require('./components/Favourite.vue').default);
 Vue.component('paginator',require('./components/Paginator.vue').default);
 Vue.component('subscribe-button',require('./components/subscribe-button.vue').default);
 Vue.component('avatar-form',require('./components/AvatarForm.vue').default);
+Vue.component('conversations',require('./components/Conversations.vue').default);
 Vue.component('wysiwyg',require('./components/Wysiwyg.vue').default);
 const app = new Vue({
     el: '#app',

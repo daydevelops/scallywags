@@ -18,5 +18,4 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .sass('resources/sass/dashboard.scss', 'public/css')
     .sass('resources/sass/thread.scss', 'public/css')
-    .sass('resources/sass/forum.scss', 'public/css')
-    .sass('resources/sass/conversations.scss', 'public/css');
+    .sass('resources/sass/forum.scss', 'public/css');
