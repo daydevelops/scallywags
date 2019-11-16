@@ -6,7 +6,7 @@ use App\User;
 use App\Message;
 use Illuminate\Database\Eloquent\Model;
 
-class Conversation extends Model
+class Chat extends Model
 {
     protected $fillable = ['channel_name'];
     protected $appends = ['friend'];

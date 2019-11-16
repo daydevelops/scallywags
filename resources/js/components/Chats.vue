@@ -3,13 +3,13 @@
     <div class="row">
       <div class="col-md-3">
         <h4 class="text-center">Recent</h4>
-        <div id="conversations">
-          <div v-for="(convo) in convos" :key="convo.id" class="convo-li row">
+        <div id="chats">
+          <div v-for="(chat) in chats" :key="chat.id" class="chat-li row">
             <div class="col-3 p-0">
-              <img class="convo-img" :src="convo.friend.image" alt="friend profile image" />
+              <img class="chat-img" :src="chat.friend.image" alt="friend profile image" />
             </div>
-            <div class="col-9 convo-name-wrapper">
-              <h4 class="convo-name" v-text="convo.friend.name" @click="showConvo(convo)"></h4>
+            <div class="col-9 chat-name-wrapper">
+              <h4 class="chat-name" v-text="chat.friend.name" @click="showChat(chat)"></h4>
             </div>
           </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="form-group">
               <p class="text-center" v-text="errors"></p>
               <textarea class="form-control" v-model="new_msg.body"></textarea>
-              <button class="btn btn-sm btn-primary" @click="sendMsg(convo.id)">Send</button>
+              <button class="btn btn-sm btn-primary" @click="sendMsg(chat.id)">Send</button>
             </div>
           </div>
         </div>
@@ -40,7 +40,7 @@
 
 <script>
 export default {
-  props: ["convos"],
+  props: ["chats"],
   data() {
     return {
       messages: [],
@@ -51,20 +51,20 @@ export default {
     };
   },
   mounted: function() {
-    if (this.convos.length > 0) {
-      this.showConvo(this.convos[0]);
+    if (this.chats.length > 0) {
+      this.showChat(this.chats[0]);
     }
   },
   methods: {
     isMyMsg(msg) {
       return window.App.user.id == msg.user.id;
     },
-    showConvo(convo) {
-      this.messages = convo.messages;
+    showChat(chat) {
+      this.messages = chat.messages;
       this.scrollMsgsToBottom();
     },
-    sendMsg(convo_id) {
-      var endpoint = location.pathname + "/" + convo_id + "/messages";
+    sendMsg(chat_id) {
+      var endpoint = location.pathname + "/" + chat_id + "/messages";
       axios.post(endpoint, { body: this.new_msg.body }).then(
         response => {
           console.log(response.data);
@@ -82,22 +82,22 @@ export default {
 };
 </script>
 <style scoped>
-.convo-li {
+.chat-li {
     background-color:rgba(0,0,0,0.05);
     margin:3px;
     padding:5px;
     border-radius:15px;
 }
-.convo-li:hover {
+.chat-li:hover {
     cursor:pointer;
     background-color:rgba(0,0,0,0.10);
 }
-.convo-name-wrapper {
+.chat-name-wrapper {
     display:flex;
     flex-direction:column;
     justify-content: center;
 }
-.convo-img {
+.chat-img {
     height:60px;
     width:60px;
     border-radius:50%;

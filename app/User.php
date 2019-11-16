@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
 use App\Favourite;
 use App\Message;
-use App\Conversation;
+use App\Chat;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -66,8 +66,8 @@ class User extends Authenticatable implements MustVerifyEmail
 		return $this->hasMany(Message::class);
 	}
 
-	public function conversations() {
-		return $this->belongsToMany(Conversation::class);
+	public function chats() {
+		return $this->belongsToMany(Chat::class);
 	}
 
 	public static function allPublic() {

@@ -53,7 +53,7 @@ Route::get('/profile/{user}','ProfileController@show');
 Route::get('/dashboard', 'DashboardController@index');
 
 ///// MESSAGING /////
-Route::get('/conversations','ConversationController@index');
+Route::get('/chats','ChatsController@index');
 /////////////////////
 
 

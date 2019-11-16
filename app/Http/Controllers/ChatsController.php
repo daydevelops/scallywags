@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Conversation;
+use App\Chat;
 use Illuminate\Http\Request;
 
-class ConversationController extends Controller
+class ChatsController extends Controller
 {
 	public function __construct() {
 		$this->middleware('auth');
@@ -18,8 +18,8 @@ class ConversationController extends Controller
      */
     public function index()
     {
-        $convos = auth()->user()->conversations;
-        return view('conversations/all',compact('convos'));
+        $chats = auth()->user()->chats;
+        return view('chats/all',compact('chats'));
     }
 
     /**
@@ -46,10 +46,10 @@ class ConversationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Conversation  $conversation
+     * @param  \App\Chat  $chat
      * @return \Illuminate\Http\Response
      */
-    public function show(Conversation $conversation)
+    public function show(Chat $chat)
     {
         
     }
@@ -57,10 +57,10 @@ class ConversationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Conversation  $conversation
+     * @param  \App\Chat  $chat
      * @return \Illuminate\Http\Response
      */
-    public function edit(Conversation $conversation)
+    public function edit(Chat $chat)
     {
         //
     }
@@ -69,10 +69,10 @@ class ConversationController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Conversation  $conversation
+     * @param  \App\Chat  $chat
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Conversation $conversation)
+    public function update(Request $request, Chat $chat)
     {
         //
     }
@@ -80,10 +80,10 @@ class ConversationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Conversation  $conversation
+     * @param  \App\Chat  $chat
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Conversation $conversation)
+    public function destroy(Chat $chat)
     {
         //
     }

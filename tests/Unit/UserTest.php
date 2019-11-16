@@ -73,13 +73,13 @@ class UserTest extends TestCase
 	}
 
 	/** @test */
-	public function it_has_conversations() {
-		$convo = factory('App\Conversation')->create();
-		DB::table('conversation_user')->insert([
-			'conversation_id'=>$convo->id,
+	public function it_has_chats() {
+		$chat = factory('App\Chat')->create();
+		DB::table('chat_user')->insert([
+			'chat_id'=>$chat->id,
 			'user_id'=>$this->user->id
 		]);
-		$this->assertInstanceOf('App\Conversation',$this->user->conversations[0]);
+		$this->assertInstanceOf('App\Chat',$this->user->chats[0]);
 	}
 
 	/** @test */

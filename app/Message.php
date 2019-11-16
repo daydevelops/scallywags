@@ -2,13 +2,13 @@
 
 namespace App;
 use App\User;
-use App\Conversation;
+use App\Chat;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    protected $fillable = ['user_id','conversation_id','body'];
+    protected $fillable = ['user_id','chat_id','body'];
 
     protected static function boot() {
 		parent::boot();

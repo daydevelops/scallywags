@@ -8,9 +8,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use App\User;
-use App\Conversation;
+use App\Test;
 
-class ConversationTest extends TestCase
+class ChatTest extends TestCase
 {
 
     use DatabaseMigrations;
@@ -19,9 +19,9 @@ class ConversationTest extends TestCase
 		parent::setup();
 
 		$this->user = factory('App\User')->create();
-		$this->convo = factory('App\Conversation')->create();
-		DB::table('conversation_user')->insert([
-			'conversation_id'=>$this->convo->id,
+		$this->chat = factory('App\Chat')->create();
+		DB::table('chat_user')->insert([
+			'chat_id'=>$this->chat->id,
 			'user_id'=>$this->user->id
 		]);
     }
@@ -29,14 +29,14 @@ class ConversationTest extends TestCase
 
     /** @test */
     public function it_has_users() {
-        $this->assertInstanceOf('App\User',$this->convo->users[0]);
+        $this->assertInstanceOf('App\User',$this->chat->users[0]);
     }
 
     /** @test */
     public function it_has_messages() {
 		factory('App\Message')->create([
-			'conversation_id'=>$this->convo->id
+			'chat_id'=>$this->chat->id
 		]);
-		$this->assertInstanceOf('App\Message',$this->convo->messages[0]);
+		$this->assertInstanceOf('App\Message',$this->chat->messages[0]);
     }
 }
