@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\ThreadReplyCreated;
+use App\Events\NewMessage;
 use App\Listeners\NotifyInvitedUser;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
@@ -23,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
 		ThreadReplyCreated::class => [
 			\App\Listeners\NotifySubscribedUsers::class,
 			\App\Listeners\NotifyMentionedUsers::class
+        ],
+		NewMessage::class => [
+			\App\Listeners\NotifyMessagedUsers::class
 		]
     ];
 

@@ -4,6 +4,7 @@ namespace App;
 
 use App\User;
 use App\Message;
+use App\Events\NewMessage;
 use Illuminate\Database\Eloquent\Model;
 
 class Chat extends Model
@@ -40,7 +41,8 @@ class Chat extends Model
         });
     }
 
-    public function addMessage($data) {
-        $this->messages()->create($data);
+    public function addMessage($msg) {
+        $message = $this->messages()->create($msg);
+		event(new NewMessage($message));
     }
 }

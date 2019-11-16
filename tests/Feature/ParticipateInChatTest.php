@@ -67,4 +67,15 @@ class ParticipateInChatTest extends TestCase
             'user_id'=>auth()->id()
         ]);
     }
+
+    /** @test */
+    public function a_user_is_notified_when_sent_a_message() {
+        $this->createChat();
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing']);
+        $this->assertDatabaseHas('notifications',[
+			'notifiable_type'=>'App\User',
+			'type'=>'App\Notifications\NewMessage',
+			'notifiable_id'=>$this->user2->id
+		]);
+    }
 }

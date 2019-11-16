@@ -20,6 +20,7 @@ class MessagesController extends Controller
 			'body'=>'required',
 		]);
         $data['user_id'] = auth()->user()->id;
+        $data['chat_id'] = $chat->id;
         $chat->addMessage($data);
     }
 
