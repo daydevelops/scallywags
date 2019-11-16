@@ -20,4 +20,10 @@ class MessageTest extends TestCase
 		factory('App\Message')->create();
         $this->assertInstanceOf('App\User',Message::first()->user);
     }
+
+    /** @test */
+    public function it_has_a_chat() {
+		factory('App\Message')->create();
+        $this->assertInstanceOf('App\Chat',Message::first()->chat);
+    }
 }
