@@ -40,7 +40,13 @@ class ChatsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = request()->validate([
+            'user_ids'=>'required|array',
+            'user_ids.*'=>'int',
+            'message'=>'required'
+        ]);
+        $chat = Chat::startNew($data);
+        response()->json(['chat' => $chat],200);
     }
 
     /**

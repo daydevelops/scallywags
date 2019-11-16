@@ -69,6 +69,13 @@ class ParticipateInChatTest extends TestCase
     }
 
     /** @test */
+    public function a_user_cannot_send_a_message_to_a_chat_they_dont_own() {
+        $this->createChat();
+        $this->signIn();
+		$this->withExceptionHandling()->json('post','/chats/'.$this->chat->id.'/messages',['body'=>'testing'])->assertStatus(403);
+    }
+
+    /** @test */
     public function a_user_is_notified_when_sent_a_message() {
         $this->createChat();
         $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing']);
@@ -78,4 +85,49 @@ class ParticipateInChatTest extends TestCase
 			'notifiable_id'=>$this->user2->id
 		]);
     }
+
+    /** @test */
+    public function a_user_is_not_notified_of_their_own_message() {
+        $this->createChat();
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing']);
+        $this->assertDatabaseMissing('notifications',[
+			'notifiable_type'=>'App\User',
+			'type'=>'App\Notifications\NewMessage',
+			'notifiable_id'=>auth()->id()
+        ]);
+    }
+
+    /** @test */
+    public function a_user_can_start_a_chat() {
+        $this->signIn();
+        $user = factory('App\User')->create();
+        $this->assertDatabaseMissing('chats',['id'=>1]);
+        $response = $this->post('/chats',[
+            'user_ids'=>[$user->id],
+            'message'=>'TESTING'
+        ]);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('chats',['id'=>1]);
+        $this->assertDatabaseHas('chat_user',[
+            'chat_id'=>1,
+            'user_id'=>auth()->id()
+        ]);
+        $this->assertDatabaseHas('chat_user',[
+            'chat_id'=>1,
+            'user_id'=>$user->id
+        ]);
+        $this->assertDatabaseHas('messages',[
+            'body'=>'TESTING',
+            'chat_id'=>1,
+            'user_id'=>auth()->id()
+        ]);
+        $this->assertDatabaseHas('notifications',[
+			'notifiable_type'=>'App\User',
+			'type'=>'App\Notifications\NewMessage',
+			'notifiable_id'=>$user->id
+        ]);
+
+    }
+
+    
 }

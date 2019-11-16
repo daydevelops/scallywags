@@ -41,8 +41,31 @@ class Chat extends Model
         });
     }
 
+    public function isUser($user_id) {
+       return  $this->users()->where(['user_id'=>$user_id])->exists();
+    }
+
     public function addMessage($msg) {
         $message = $this->messages()->create($msg);
 		event(new NewMessage($message));
+    }
+
+    public static function startNew($data) {
+        // create the chat
+        $chat = Chat::create();
+        $chat->update(['channel_name'=>'chat_'.$chat->id]);
+        
+        // add the users
+        $chat->users()->attach($data['user_ids']);
+        $chat->users()->attach(auth()->id());
+
+        // log the first message
+        $chat->addMessage([
+            'body'=>$data['message'],
+            'user_id'=>auth()->id(),
+            'chat_id'=>$chat->id
+        ]);
+
+        return $chat->fresh();
     }
 }

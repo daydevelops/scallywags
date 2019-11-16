@@ -16,9 +16,13 @@ class MessagesController extends Controller
      */
     public function store(Chat $chat, Request $request)
     {
+        if ( ! $chat->isUser(auth()->id())) {
+            return response()->json(['error' => 'Not authorized.'],403);
+        }
+
         $data = request()->validate([
-			'body'=>'required',
-		]);
+            'body'=>'required',
+        ]);
         $data['user_id'] = auth()->user()->id;
         $data['chat_id'] = $chat->id;
         $chat->addMessage($data);

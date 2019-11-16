@@ -38,5 +38,12 @@ class ChatTest extends TestCase
 			'chat_id'=>$this->chat->id
 		]);
 		$this->assertInstanceOf('App\Message',$this->chat->messages[0]);
-    }
+	}
+	
+	/** @test */
+	public function it_knows_if_someone_is_a_member() {
+		$user2 = factory('App\User')->create();
+		$this->assertTrue($this->chat->isUser($this->user->id));
+		$this->assertTrue( ! $this->chat->isUser($user2->id));
+	} 
 }
