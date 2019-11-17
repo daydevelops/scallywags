@@ -49,7 +49,7 @@ class ChatsController extends Controller
         array_push($data['user_ids'],auth()->id());
         $data['user_ids'] = array_unique($data['user_ids']);
 
-        if (Chat::alreadyExists($data)) {
+        if (Chat::alreadyExists($data['user_ids'])) {
             return response()->json("You already have a chat room for these users",406); // 406 => not acceptable
         }
 

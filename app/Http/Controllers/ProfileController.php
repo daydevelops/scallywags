@@ -13,7 +13,7 @@ class ProfileController extends Controller
 	}
     public function show(User $user) {
 		$activities = $user->activities()->with('subject')->latest()->get();
-		// return $activities;
-		return view('users/profile',compact('user','activities'));
+		$chat_exists = \App\Chat::alreadyExists([$user->id,auth()->id()]);
+		return view('users/profile',compact('user','activities','chat_exists'));
 	}
 }

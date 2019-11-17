@@ -50,13 +50,13 @@ class Chat extends Model
 		event(new NewMessage($message));
     }
 
-    public static function alreadyExists($data) {
+    public static function alreadyExists($user_ids) {
         // is there already a chat room with this combination of users?
         $chats = auth()->user()->chats;
         foreach ($chats as $chat) {
             // compare an array of the user ids
             $users = $chat->users->pluck('id')->toArray();
-            if ($users == array_values(array_sort($data['user_ids']))) {
+            if ($users == array_values(array_sort($user_ids))) {
                 return true;
             }
         }
