@@ -47,6 +47,7 @@ class ChatsController extends Controller
         ]);
         //add auth user to the chat
         array_push($data['user_ids'],auth()->id());
+        $data['user_ids'] = array_unique($data['user_ids']);
 
         if (Chat::alreadyExists($data)) {
             return response()->json("You already have a chat room for these users",406); // 406 => not acceptable

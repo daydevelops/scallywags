@@ -142,5 +142,16 @@ class ParticipateInChatTest extends TestCase
         $this->assertDatabaseMissing('chats',['id'=>3]);
     }
 
+    /** @test */
+    public function users_cannot_be_added_to_a_chat_more_than_once() {
+        $this->signIn();
+        $user = factory('App\User')->create();
+        $response = $this->post('/chats',[
+            'user_ids'=>[$user->id,$user->id],
+            'message'=>'TESTING'
+        ]);
+        $this->assertCount(1,DB::table('chat_user')->where(['user_id'=>$user->id])->get());
+    }
+
     
 }
