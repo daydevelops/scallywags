@@ -26,6 +26,19 @@ class UsersTableSeeder extends Seeder
 				'image'=>$image
 			]);
 		}
+		if (!User::find(2)) {
+			$hash = md5(strtolower(trim('test'.env('ADMIN_EMAIL'))));
+			$image = "https://www.gravatar.com/avatar/$hash?d=wavatar";
+			User::create([
+				'name'=>'test'.env('ADMIN_NAME'),
+				'email'=>'test'.env('ADMIN_EMAIL'),
+				'password'=>Hash::make(env('ADMIN_PASS')),
+				'email_verified_at' => now(),
+				'skill' => 'A',
+				'is_admin'=>0,
+				'image'=>$image
+			]);
+		}
 		factory(App\User::class,10)->create();
 	}
 }
