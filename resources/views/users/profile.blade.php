@@ -11,6 +11,7 @@
 		<img class="d-block ml-auto mr-auto mt-3 rounded-circle" src="{{$user->image}}" class='user-thumbnail'>
 		<h3 class='text-center'>{{$user->name}}</h3>
 		<h4 class='text-center'>Rep: {{$user->reputation}}</h4>
+		@if(auth()->check() && auth()->id()!=$user->id)
 		@if($chat_exists)
 		<p class="btn btn-small btn-primary"><a href="/chats">Message</a></p>
 		@else
@@ -37,6 +38,7 @@
 				</div>
 			</div>
 		</div>
+		@endif
 		@endif
 	</div>
 	<div class='row'>
