@@ -50,6 +50,19 @@ class Chat extends Model
 		event(new NewMessage($message));
     }
 
+    public static function alreadyExists($data) {
+        // is there already a chat room with this combination of users?
+        $chats = auth()->user()->chats;
+        foreach ($chats as $chat) {
+            // compare an array of the user ids
+            $users = $chat->users->pluck('id')->toArray();
+            if ($users == array_values(array_sort($data['user_ids']))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function startNew($data) {
         // create the chat
         $chat = Chat::create();
@@ -57,7 +70,6 @@ class Chat extends Model
         
         // add the users
         $chat->users()->attach($data['user_ids']);
-        $chat->users()->attach(auth()->id());
 
         // log the first message
         $chat->addMessage([

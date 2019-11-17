@@ -129,5 +129,18 @@ class ParticipateInChatTest extends TestCase
 
     }
 
+    /** @test */
+    public function chat_rooms_cannot_be_duplicated() {
+        // cannot create a duplicate chat room between the same combination of users
+        $this->createChat();
+        $this->createChat();
+        $response = $this->post('/chats',[
+            'user_ids'=>[$this->user2->id],
+            'message'=>'TESTING'
+        ])->assertStatus(406);
+        $this->assertDatabaseHas('chats',['id'=>2]);
+        $this->assertDatabaseMissing('chats',['id'=>3]);
+    }
+
     
 }
