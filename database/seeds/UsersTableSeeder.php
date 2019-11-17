@@ -14,15 +14,28 @@ class UsersTableSeeder extends Seeder
 	public function run()
 	{
 		if (!User::find(1)) {
-			$hash = md5(strtolower(trim('adamday618@gmail.com')));
+			$hash = md5(strtolower(trim(env('ADMIN_EMAIL'))));
 			$image = "https://www.gravatar.com/avatar/$hash?d=wavatar";
 			User::create([
-				'name'=>'Adam Day',
-				'email'=>'adamday1618@gmail.com',
-				'password'=>Hash::make('adam'),
+				'name'=>env('ADMIN_NAME'),
+				'email'=>env('ADMIN_EMAIL'),
+				'password'=>Hash::make(env('ADMIN_PASS')),
 				'email_verified_at' => now(),
 				'skill' => 'A',
 				'is_admin'=>1,
+				'image'=>$image
+			]);
+		}
+		if (!User::find(2)) {
+			$hash = md5(strtolower(trim('test'.env('ADMIN_EMAIL'))));
+			$image = "https://www.gravatar.com/avatar/$hash?d=wavatar";
+			User::create([
+				'name'=>'test'.env('ADMIN_NAME'),
+				'email'=>'test'.env('ADMIN_EMAIL'),
+				'password'=>Hash::make(env('ADMIN_PASS')),
+				'email_verified_at' => now(),
+				'skill' => 'A',
+				'is_admin'=>0,
 				'image'=>$image
 			]);
 		}
