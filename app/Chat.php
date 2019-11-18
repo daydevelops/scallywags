@@ -66,7 +66,7 @@ class Chat extends Model
     public static function startNew($data) {
         // create the chat
         $chat = Chat::create();
-        $chat->update(['channel_name'=>'chat_'.$chat->id]);
+        $chat->update(['channel_name'=>'chat-'.$chat->id]);
         
         // add the users
         $chat->users()->attach($data['user_ids']);

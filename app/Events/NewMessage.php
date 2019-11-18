@@ -31,6 +31,6 @@ class NewMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat-'.$this->data->id);
+        return new PrivateChannel('chat-'.$this->data->chat_id);
     }
 }

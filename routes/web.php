@@ -67,11 +67,10 @@ Route::delete('/notifications/{notification}','UserNotificationController@destro
 
 Route::get('/api/users','Api\UsersController@index');
 
-
-
-Route::get('/chat', function() {
-    return view('home');
-});
 Route::get('/msg', function() {
-    UserSentMessage::dispatch("hello");
+
+    $data['body'] = "test3";
+    $data['user_id'] = 24;
+
+    \App\Chat::find(6)->addMessage($data);
 });

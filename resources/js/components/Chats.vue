@@ -9,7 +9,7 @@
               <img class="chat-img" :src="chat.friend.image" alt="friend profile image" />
             </div>
             <div class="col-9 chat-name-wrapper">
-              <h4 class="chat-name" v-text="chat.friend.name" @click="showChat(chat)"></h4>
+              <h4 :class="chat.has_new ? 'updated chat-name' : 'chat-name'" v-text="chat.friend.name" @click="showChat(chat)"></h4>
             </div>
           </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="form-group">
               <p class="text-center" v-text="errors"></p>
               <textarea class="form-control" v-model="new_msg.body"></textarea>
-              <button class="btn btn-sm btn-primary" @click="sendMsg(chat.id)">Send</button>
+              <button class="btn btn-sm btn-primary" @click="sendMsg(current_chat.id)">Send</button>
             </div>
           </div>
         </div>
@@ -39,10 +39,22 @@
 
 
 <script>
+import Echo from "laravel-echo";
+
+window.Pusher = require("pusher-js");
+
+window.Echo = new Echo({
+  broadcaster: "pusher",
+  key: process.env.MIX_PUSHER_APP_KEY,
+  cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+  encrypted: true
+});
+
 export default {
   props: ["chats"],
   data() {
     return {
+      current_chat:0,
       messages: [],
       new_msg: {
         body: ""
@@ -50,24 +62,32 @@ export default {
       errors: ""
     };
   },
-  mounted: function() {
+  created: function() {
     if (this.chats.length > 0) {
       this.showChat(this.chats[0]);
     }
+    this.chats.forEach(chat => {
+      window.Echo.private(chat.channel_name).listen("NewMessage", e => {
+        this.processMessage(e);
+      });
+      chat.has_new = false;
+    });
   },
   methods: {
     isMyMsg(msg) {
-      return window.App.user.id == msg.user.id;
+      return window.App.user.id == msg.user_id;
     },
     showChat(chat) {
       this.messages = chat.messages;
-      this.scrollMsgsToBottom();
+      this.current_chat = chat;
+      chat.has_new=false;
     },
     sendMsg(chat_id) {
       var endpoint = location.pathname + "/" + chat_id + "/messages";
       axios.post(endpoint, { body: this.new_msg.body }).then(
         response => {
           console.log(response.data);
+          this.new_msg.body="";
         },
         error => {
           this.errors = error.response.data;
@@ -77,32 +97,48 @@ export default {
     scrollMsgsToBottom() {
       var msg_box = document.querySelector("#messages");
       msg_box.scrollTop = msg_box.scrollHeight;
+    },
+    processMessage(event) {
+      this.addMsgToChat(event.data);
+      // if the user is currently looking at the updated chat
+      if (this.current_chat.id == event.data.chat_id) {
+        this.showChat(this.current_chat);
+        this.scrollMsgsToBottom();
+      } else {
+        this.chats.find(c => c.id === event.data.chat_id).has_new=true;
+      }
+    },
+    addMsgToChat(msg) {
+      this.chats.find(c => c.id === msg.chat_id).messages.push(msg);
     }
   }
 };
 </script>
 <style scoped>
 .chat-li {
-    background-color:rgba(0,0,0,0.05);
-    margin:3px;
-    padding:5px;
-    border-radius:15px;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin: 3px;
+  padding: 5px;
+  border-radius: 15px;
 }
 .chat-li:hover {
-    cursor:pointer;
-    background-color:rgba(0,0,0,0.10);
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1);
 }
 .chat-name-wrapper {
-    display:flex;
-    flex-direction:column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.chat-name.updated {
+  font-weight:bold;
 }
 .chat-img {
-    height:60px;
-    width:60px;
-    border-radius:50%;
-    margin:auto;
-    display:block;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  margin: auto;
+  display: block;
 }
 #messages {
   max-height: 75vh;
