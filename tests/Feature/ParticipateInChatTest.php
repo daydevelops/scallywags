@@ -69,6 +69,15 @@ class ParticipateInChatTest extends TestCase
     }
 
     /** @test */
+    public function a_new_msg_is_automatically_read_by_its_owner() {
+        $this->createChat();
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing']);
+        $this->assertTrue(
+            Message::where(['body'=>'testing'])->first()->hasViewed(auth()->id())
+        );
+    }
+
+    /** @test */
     public function a_user_cannot_send_a_message_to_a_chat_they_dont_own() {
         $this->createChat();
         $this->signIn();
@@ -95,6 +104,17 @@ class ParticipateInChatTest extends TestCase
 			'type'=>'App\Notifications\NewMessage',
 			'notifiable_id'=>auth()->id()
         ]);
+    }
+
+    /** @test */
+    public function a_user_can_read_all_chat_messages() {
+        $this->createChat();
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing']);
+        $msg = Message::where(['body'=>'testing'])->first();
+        $this->signIn($this->user2);
+        $this->assertFalse($msg->hasViewed(auth()->id()));
+        $this->post('/chats/'.$this->chat->id.'/read');
+        $this->assertTrue($msg->hasViewed(auth()->id()));
     }
 
     /** @test */

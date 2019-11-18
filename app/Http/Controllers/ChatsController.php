@@ -101,4 +101,8 @@ class ChatsController extends Controller
     {
         //
     }
+
+    public function hasRead(Chat $chat) {
+        $chat->viewed();
+    }
 }

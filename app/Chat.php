@@ -47,6 +47,7 @@ class Chat extends Model
 
     public function addMessage($msg) {
         $message = $this->messages()->create($msg);
+        $message->viewed();
 		event(new NewMessage($message));
     }
 
@@ -79,5 +80,12 @@ class Chat extends Model
         ]);
 
         return $chat->fresh();
+    }
+
+    public function viewed() {
+        $msgs = $this->messages();
+        $msgs->each(function($msg) {
+            $msg->viewed();
+        });
     }
 }
