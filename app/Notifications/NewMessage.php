@@ -56,7 +56,7 @@ class NewMessage extends Notification
     {
         return [
             'message_id'=>$this->message->id,
-			'description'=>$this->message->user->id." has sent you a new message!",
+			'description'=>$this->message->user->name." has sent you a new message!",
 			'url'=>"/chats"
         ];
     }
