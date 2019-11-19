@@ -9,7 +9,11 @@
               <img class="chat-img" :src="chat.friend.image" alt="friend profile image" />
             </div>
             <div class="col-9 chat-name-wrapper">
-              <h4 :class="chat.has_new ? 'updated chat-name' : 'chat-name'" v-text="chat.friend.name" @click="showChat(chat)"></h4>
+              <h4 
+                :class="chat.has_new ? 'updated chat-name' : 'chat-name'" 
+                v-text="chat.friend.name" 
+                @click="showChat(chat)"
+              ></h4>
             </div>
           </div>
         </div>
@@ -67,10 +71,12 @@ export default {
       this.showChat(this.chats[0]);
     }
     this.chats.forEach(chat => {
+      // listen to pusher channel for each chat
       window.Echo.private(chat.channel_name).listen("NewMessage", e => {
+        console.log('new message');
         this.processMessage(e);
       });
-      chat.has_new = false;
+      chat.has_new = false; // to-do: this is a bad assumption
     });
   },
   methods: {
@@ -86,6 +92,8 @@ export default {
       var endpoint = location.pathname + "/" + chat_id + "/messages";
       axios.post(endpoint, { body: this.new_msg.body }).then(
         response => {
+          // no need to add message to chat here
+          // we will get an update from pusher which will call processMessage()
           console.log(response.data);
           this.new_msg.body="";
         },
@@ -99,6 +107,7 @@ export default {
       msg_box.scrollTop = msg_box.scrollHeight;
     },
     processMessage(event) {
+      // process the incoming message from pusher
       this.addMsgToChat(event.data);
       // if the user is currently looking at the updated chat
       if (this.current_chat.id == event.data.chat_id) {
@@ -157,5 +166,8 @@ export default {
 .friend-msg {
   margin-right: auto;
   background-color: palegreen;
+}
+.updated {
+  font-weight:bold;
 }
 </style>
