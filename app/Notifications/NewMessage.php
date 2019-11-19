@@ -16,9 +16,10 @@ class NewMessage extends Notification
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($message, $data_for_notif)
     {
 		$this->message = $message;
+		$this->data_for_notif = $data_for_notif;
     }
 
     /**
@@ -54,10 +55,6 @@ class NewMessage extends Notification
      */
     public function toArray($notifiable)
     {
-        return [
-            'chat_id'=>$this->message->chat_id,
-			'description'=>$this->message->user->name." has sent you a new message!",
-			'url'=>"/chats"
-        ];
+        return $this->data_for_notif;
     }
 }
