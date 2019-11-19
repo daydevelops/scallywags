@@ -13,9 +13,8 @@ class ChatSeeder extends Seeder
     {
         for ($i = 0; $i < 2; $i++) {
             // create 1 chat for the admin and one other user
-            $chat = factory('App\Chat')->create([
-                'channel_name' => 'testing'
-            ]);
+            $chat = factory('App\Chat')->create();
+            $chat->fresh()->update(['channel_name'=>'chat-'.$chat->id]);
 
             $admin = App\User::where('is_admin', 1)->first();
             $non_admin = App\User::where('is_admin', 0)->get()[$i];
