@@ -1,5 +1,5 @@
 <?php
-
+use App\Events\UserSentMessage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -34,7 +34,9 @@ Route::delete('/forum/{category}/{thread}/unsubscribe','ThreadSubscriptionContro
 
 Route::patch('/forum/reply/{reply}','ThreadReplyController@update');
 Route::patch('/forum/{category}/{thread}','ThreadsController@update');
+/////////////////
 
+///// Favourites /////
 Route::get('/favourites','FavouriteController@index');
 
 Route::post('/favourite/thread/{thread}','FavouriteController@storeThread');
@@ -42,12 +44,20 @@ Route::post('/favourite/reply/{reply}','FavouriteController@storeReply');
 
 Route::delete('/favourite/thread/{thread}','FavouriteController@destroyThread');
 Route::delete('/favourite/reply/{reply}','FavouriteController@destroyReply');
+//////////////////////
 
 ///// PROFILE /////
 Route::post('/profile/avatar','Api\AvatarController@store');
 Route::get('/profile/{user}','ProfileController@show');
 
 Route::get('/dashboard', 'DashboardController@index');
+
+///// MESSAGING /////
+Route::get('/chats','ChatsController@index');
+Route::post('/chats','ChatsController@store');
+Route::post('/chats/{chat}/read','ChatsController@hasRead');
+Route::post('/chats/{chat}/messages','MessagesController@store');
+/////////////////////
 
 
 Auth::routes(['verify' => true]);
@@ -57,3 +67,11 @@ Route::delete('/notifications/all','UserNotificationController@destroyAll');
 Route::delete('/notifications/{notification}','UserNotificationController@destroy');
 
 Route::get('/api/users','Api\UsersController@index');
+
+Route::get('/msg', function() {
+
+    $data['body'] = "test3";
+    $data['user_id'] = 24;
+
+    \App\Chat::find(6)->addMessage($data);
+});

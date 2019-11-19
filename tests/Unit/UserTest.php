@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 
 class UserTest extends TestCase
 {
@@ -69,6 +70,24 @@ class UserTest extends TestCase
 		// dd($favs);
 		$this->assertEquals($t1->title,$favs[0]->favourited()->get()[0]->title);
 		$this->assertEquals($r1->title,$favs[1]->favourited()->get()[0]->title);
+	}
+
+	/** @test */
+	public function it_has_chats() {
+		$chat = factory('App\Chat')->create();
+		DB::table('chat_user')->insert([
+			'chat_id'=>$chat->id,
+			'user_id'=>$this->user->id
+		]);
+		$this->assertInstanceOf('App\Chat',$this->user->chats[0]);
+	}
+
+	/** @test */
+	public function it_has_messages() {
+		factory('App\Message')->create([
+			'user_id'=>$this->user->id
+		]);
+		$this->assertInstanceOf('App\Message',$this->user->messages[0]);
 	}
 
 	// /** @test */
