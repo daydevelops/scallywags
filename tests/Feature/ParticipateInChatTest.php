@@ -119,7 +119,13 @@ class ParticipateInChatTest extends TestCase
 
     /** @test */
     public function the_user_sees_only_one_notif_per_user_when_sent_multiple_msgs() {
-        // if someone sends you 10 messages, you dont need to see 10 notifications, just one.
+        $this->assertCount(0,DB::table('notifications')->get());
+        $this->createChat();
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing']);
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing2']);
+        $this->signIn($this->user2);
+        $this->assertCount(1,$this->user2->unreadNotifications);
+
     }
 
     /** @test */
