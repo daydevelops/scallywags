@@ -6,6 +6,8 @@ use App\User;
 use App\Message;
 use App\Events\NewMessage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class Chat extends Model
 {
@@ -48,6 +50,10 @@ class Chat extends Model
     public function addMessage($msg) {
         $message = $this->messages()->create($msg);
         $message->viewed();
+        DB::table('chat_user')->where([
+            'chat_id'=>$this->id,
+            'user_id'=>auth()->id()
+        ])->update(['last_contribution'=>Carbon::now()]);
 		event(new NewMessage($message));
     }
 

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Carbon;
 
 class ChatUser extends Migration
 {
@@ -17,6 +18,7 @@ class ChatUser extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('chat_id');
+            $table->timestamp('last_contribution')->default(Carbon::now());
         });
     }
 

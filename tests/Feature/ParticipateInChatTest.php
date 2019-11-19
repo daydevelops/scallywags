@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
 use App\Message;
+use Carbon\Carbon;
 
 class ParticipateInChatTest extends TestCase
 {
@@ -55,6 +56,37 @@ class ParticipateInChatTest extends TestCase
         $this->signIn();
         $response = $this->get('/chats');
         $response->assertDontSee($this->user2->name);
+    }
+
+    /** @test */
+    public function chats_are_ordered_by_date_of_last_msg_sent_by_auth_user() {
+        // for example, any incomming messages do not push a chat to the top of a list
+
+        // create 3 chats all with one primary user and 3 secondary users
+        $chats = factory('App\Chat',3)->create();
+        $users = factory('App\User',4)->create();
+        // for each chat, assign the users and add a msg from the 3 secondary users
+        for ($i=0;$i<sizeof($chats);$i++) {
+            $chats[$i]->users()->attach([$users[0]->id,$users[$i+1]->id]);
+            $this->signIn($users[$i+1]);
+            $this->post('/chats/'.$chats[$i]->id.'/messages',['body'=>'testing']);
+        }
+        // sign in as the primary user, add msg to the second chat, and check the order of the chats
+        $this->signIn($users[0]);
+        $this->post('/chats/'.$chats[1]->id.'/messages',['body'=>'testing']);
+
+        // test is too fast, add extra time to last contribution
+        DB::table('chat_user')->where([
+            'chat_id'=>$chats[1]->id,
+            'user_id'=>auth()->id()
+        ])->update(['last_contribution'=>Carbon::now()->addSeconds(10)]);
+
+        $response = $this->getJson('/chats')->json();
+        $this->assertEquals([2,1,3],[
+            $response[0]['id'],
+            $response[1]['id'],
+            $response[2]['id']
+        ]);
     }
 
     /** @test */

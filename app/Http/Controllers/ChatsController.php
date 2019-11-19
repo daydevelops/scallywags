@@ -18,7 +18,11 @@ class ChatsController extends Controller
      */
     public function index()
     {
-        $chats = auth()->user()->chats;
+        $chats = auth()->user()->chats()->orderBy('chat_user.last_contribution','DESC')->get();
+
+        if (request()->wantsJson()) {
+			return $chats;
+		}
         return view('chats/all',compact('chats'));
     }
 
