@@ -87,6 +87,7 @@ export default {
       this.messages = chat.messages;
       this.current_chat = chat;
       chat.has_new=false;
+      axios.post(location.pathname + "/" + chat.id + "/read");
     },
     sendMsg(chat_id) {
       var endpoint = location.pathname + "/" + chat_id + "/messages";
