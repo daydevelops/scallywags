@@ -104,5 +104,13 @@ class ChatsController extends Controller
 
     public function hasRead(Chat $chat) {
         $chat->viewed();
+        // clear the notification for this chat
+        $notification = auth()->user()->unreadNotifications()->where([
+			'type'=>'App\Notifications\NewMessage',
+            'data->chat_id'=>$chat->id
+        ])->get();
+        if ($notification != null) {
+            $notification->markAsRead();
+        }
     }
 }

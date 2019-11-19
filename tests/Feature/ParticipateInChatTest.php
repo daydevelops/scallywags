@@ -118,6 +118,55 @@ class ParticipateInChatTest extends TestCase
     }
 
     /** @test */
+    public function the_user_sees_only_one_notif_per_user_when_sent_multiple_msgs() {
+        // if someone sends you 10 messages, you dont need to see 10 notifications, just one.
+    }
+
+    /** @test */
+    public function when_a_msg_is_read_the_notification_is_cleared() {
+
+        // create chat, sned a message and make sure there is a notification
+        $this->createChat();
+        $user1 = auth()->user();
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing']);
+        $msg = Message::where(['body'=>'testing'])->first();
+
+        $this->signIn($this->user2);
+
+        $this->assertFalse($msg->hasViewed);
+        $this->assertDatabaseHas('notifications',[
+			'notifiable_type'=>'App\User',
+			'type'=>'App\Notifications\NewMessage',
+            'notifiable_id'=>$this->user2->id,
+            'read_at'=>null
+        ]);
+
+        // post another message so we can test that the other user gets a notification,
+        // which does not get deleted.
+        $this->post('/chats/'.$this->chat->id.'/messages',['body'=>'testing2']);
+
+        // read all messages in this chat
+        $this->post('/chats/'.$this->chat->id.'/read');
+
+        // test that the auth users notification is deleted
+        $this->assertTrue($msg->fresh()->hasViewed);
+        $this->assertDatabaseMissing('notifications',[
+			'notifiable_type'=>'App\User',
+			'type'=>'App\Notifications\NewMessage',
+			'notifiable_id'=>$this->user2->id,
+            'read_at'=>null
+        ]);
+
+        // and the other user still has a notification
+        $this->assertDatabaseHas('notifications',[
+			'notifiable_type'=>'App\User',
+			'type'=>'App\Notifications\NewMessage',
+			'notifiable_id'=>$user1->id,
+            'read_at'=>null
+        ]);
+    }
+
+    /** @test */
     public function a_user_can_start_a_chat() {
         $this->signIn();
         $user = factory('App\User')->create();
@@ -172,6 +221,4 @@ class ParticipateInChatTest extends TestCase
         ]);
         $this->assertCount(1,DB::table('chat_user')->where(['user_id'=>$user->id])->get());
     }
-
-    
 }

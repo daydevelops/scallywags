@@ -55,7 +55,7 @@ class NewMessage extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message_id'=>$this->message->id,
+            'chat_id'=>$this->message->chat_id,
 			'description'=>$this->message->user->name." has sent you a new message!",
 			'url'=>"/chats"
         ];
