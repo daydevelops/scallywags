@@ -63,7 +63,7 @@ class ParticipateInChatTest extends TestCase
         $this->createChat();
         $this->signIn();
         $response = $this->getJson('/chats/'.$this->chat->id)->json();
-        $this->assertEquals($response['channel_name'],$this->chat->channel_name);
+        $this->assertEquals($response['id'],$this->chat->id);
     }
 
     /** @test */

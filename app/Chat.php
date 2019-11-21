@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class Chat extends Model
 {
-    protected $fillable = ['channel_name'];
+    protected $fillable = [];
     protected $appends = ['friend'];
 
     protected static function boot() {
@@ -73,7 +73,6 @@ class Chat extends Model
     public static function startNew($data) {
         // create the chat
         $chat = Chat::create();
-        $chat->update(['channel_name'=>'chat-'.$chat->id]);
         
         // add the users
         $chat->users()->attach($data['user_ids']);
