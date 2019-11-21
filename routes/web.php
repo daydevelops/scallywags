@@ -54,6 +54,7 @@ Route::get('/dashboard', 'DashboardController@index');
 
 ///// MESSAGING /////
 Route::get('/chats','ChatsController@index');
+Route::get('/chats/{chat}','ChatsController@show');
 Route::post('/chats','ChatsController@store');
 Route::post('/chats/{chat}/read','ChatsController@hasRead');
 Route::post('/chats/{chat}/messages','MessagesController@store');

@@ -59,6 +59,14 @@ class ParticipateInChatTest extends TestCase
     }
 
     /** @test */
+    public function a_user_can_request_a_specific_chat() {
+        $this->createChat();
+        $this->signIn();
+        $response = $this->getJson('/chats/'.$this->chat->id)->json();
+        $this->assertEquals($response['channel_name'],$this->chat->channel_name);
+    }
+
+    /** @test */
     public function chats_are_ordered_by_date_of_last_msg_sent_by_auth_user() {
         // for example, any incomming messages do not push a chat to the top of a list
 
