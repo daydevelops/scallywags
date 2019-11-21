@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Chat;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -31,6 +32,12 @@ class NewMessage implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('chat-'.$this->data->chat_id);
+        // broadcast on every users channel for this chat
+        $users = Chat::find($this->data->chat_id)->users;
+        $channels = [];
+        foreach ($users as $u) {
+            $channels[] = new PrivateChannel('chat-user-'.$u->id);
+        }
+        return $channels;
     }
 }

@@ -9,9 +9,9 @@
               <img class="chat-img" :src="chat.friend.image" alt="friend profile image" />
             </div>
             <div class="col-9 chat-name-wrapper">
-              <h4 
-                :class="chat.has_new ? 'updated chat-name' : 'chat-name'" 
-                v-text="chat.friend.name" 
+              <h4
+                :class="chat.has_new ? 'updated chat-name' : 'chat-name'"
+                v-text="chat.friend.name"
                 @click="showChat(chat)"
               ></h4>
             </div>
@@ -55,10 +55,11 @@ window.Echo = new Echo({
 });
 
 export default {
-  props: ["chats"],
+  props: ["initial_chats"],
   data() {
     return {
-      current_chat:0,
+      chats: this.initial_chats,
+      current_chat: 0,
       messages: [],
       new_msg: {
         body: ""
@@ -70,14 +71,14 @@ export default {
     if (this.chats.length > 0) {
       this.showChat(this.chats[0]);
     }
-    this.chats.forEach(chat => {
-      // listen to pusher channel for each chat
-      window.Echo.private(chat.channel_name).listen("NewMessage", e => {
-        console.log('new message');
+    // listen to pusher channel for this user
+    window.Echo.private("chat-user-" + window.App.user.id).listen(
+      "NewMessage",
+      e => {
+        console.log("new message");
         this.processMessage(e);
-      });
-      chat.has_new = false; // to-do: this is a bad assumption
-    });
+      }
+    );
   },
   methods: {
     isMyMsg(msg) {
@@ -86,7 +87,7 @@ export default {
     showChat(chat) {
       this.messages = chat.messages;
       this.current_chat = chat;
-      chat.has_new=false;
+      chat.has_new = false;
       axios.post(location.pathname + "/" + chat.id + "/read");
     },
     sendMsg(chat_id) {
@@ -96,7 +97,8 @@ export default {
           // no need to add message to chat here
           // we will get an update from pusher which will call processMessage()
           console.log(response.data);
-          this.new_msg.body="";
+          this.new_msg.body = "";
+          this.moveToTop(chat_id);
         },
         error => {
           this.errors = error.response.data;
@@ -109,17 +111,45 @@ export default {
     },
     processMessage(event) {
       // process the incoming message from pusher
-      this.addMsgToChat(event.data);
+
       // if the user is currently looking at the updated chat
       if (this.current_chat.id == event.data.chat_id) {
         this.showChat(this.current_chat);
         this.scrollMsgsToBottom();
       } else {
-        this.chats.find(c => c.id === event.data.chat_id).has_new=true;
+        var chat_index = this.chats.findIndex(c => c.id === event.data.chat_id);
+        if (chat_index == -1) {
+          // recieved a message for a chat not shown on this page?
+          // must be a newly initiated chat from someone
+          var new_chat = axios
+            .get(location.pathname + "/" + event.data.chat_id)
+            .then(
+              response => {
+                // no need to add message to chat here
+                // we will get an update from pusher which will call processMessage()
+                var new_chat = response.data;
+                new_chat.has_new = true;
+                this.chats.push(new_chat);
+                this.moveToTop(new_chat.id);
+              },
+              error => {
+                location.reload();
+              }
+            );
+        } else {
+          this.chats[chat_index].has_new = true;
+        }
       }
+
+      this.addMsgToChat(event.data);
     },
     addMsgToChat(msg) {
       this.chats.find(c => c.id === msg.chat_id).messages.push(msg);
+    },
+    moveToTop(chat_id) {
+      var chat = this.chats.find(c => c.id === chat_id);
+      this.chats = this.chats.filter(c => c.id !== chat_id);
+      this.chats.unshift(chat);
     }
   }
 };
@@ -141,7 +171,7 @@ export default {
   justify-content: center;
 }
 .chat-name.updated {
-  font-weight:bold;
+  font-weight: bold;
 }
 .chat-img {
   height: 60px;
@@ -169,6 +199,6 @@ export default {
   background-color: palegreen;
 }
 .updated {
-  font-weight:bold;
+  font-weight: bold;
 }
 </style>
