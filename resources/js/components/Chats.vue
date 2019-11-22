@@ -4,13 +4,13 @@
       <div class="col-md-3">
         <h4 class="text-center">Recent</h4>
         <div id="chats">
-          <div v-for="(chat) in chats" :key="chat.id" class="chat-li row">
+          <div v-for="(chat) in chats" :key="chat.id" class="chat-li row p-2 m-1 border border-dark">
             <div class="col-3 p-0">
-              <img class="chat-img" :src="chat.friend.image" alt="friend profile image" />
+              <img class="chat-img m-auto d-block rounded-circle" :src="chat.friend.image" alt="friend profile image" />
             </div>
-            <div class="col-9 chat-name-wrapper">
+            <div class="col-9 chat-name-wrapper d-flex flex-column justify-content-center">
               <h4
-                :class="chat.has_new ? 'updated chat-name' : 'chat-name'"
+                :class="chat.has_new ? 'font-weight-bold chat-name' : 'chat-name'"
                 v-text="chat.friend.name"
                 @click="showChat(chat)"
               ></h4>
@@ -19,22 +19,23 @@
         </div>
       </div>
       <div class="col-md-9">
+        <h3 class='chat-name text-center' v-text="this.current_chat.friend.name"></h3>
         <div id="msg-wrapper">
-          <div id="messages">
-            <div
+          <div id="messages" class="d-flex flex-column p-3 mb-3">
+            <span
               v-for="(msg) in this.messages"
               :key="msg.id"
-              :class="isMyMsg(msg) ? 'my-msg msg' : 'friend-msg msg'"
+              :class="isMyMsg(msg) ? 'my-msg msg text-right ml-auto' : 'friend-msg msg text-left mr-auto'"
               v-text="msg.body"
-            ></div>
+            ></span>
           </div>
           <div id="new-msg-form">
-            <div class="form-group">
-              <p class="text-center" v-text="errors"></p>
-              <textarea class="form-control" v-model="new_msg.body"></textarea>
-              <button class="btn btn-sm btn-primary" @click="sendMsg(current_chat.id)">Send</button>
+            <div class="form-group d-flex align-items-center">
+              <textarea id='new-msg-body' class="form-control" v-model="new_msg.body"></textarea>
+              <button id='new-msg-btn' class="btn btn-sm btn-primary" @click="sendMsg(current_chat.id)">Send</button>
             </div>
           </div>
+          <p class="text-center" v-text="errors"></p>
         </div>
       </div>
     </div>
@@ -111,11 +112,11 @@ export default {
     },
     processMessage(event) {
       // process the incoming message from pusher
+      // event.data is the message object
 
       // if the user is currently looking at the updated chat
       if (this.current_chat.id == event.data.chat_id) {
-        this.showChat(this.current_chat);
-        this.scrollMsgsToBottom();
+        axios.post(location.pathname + "/" + event.data.chat_id + "/read");
       } else {
         var chat_index = this.chats.findIndex(c => c.id === event.data.chat_id);
         if (chat_index == -1) {
@@ -125,8 +126,6 @@ export default {
             .get(location.pathname + "/" + event.data.chat_id)
             .then(
               response => {
-                // no need to add message to chat here
-                // we will get an update from pusher which will call processMessage()
                 var new_chat = response.data;
                 new_chat.has_new = true;
                 this.chats.push(new_chat);
@@ -142,6 +141,7 @@ export default {
       }
 
       this.addMsgToChat(event.data);
+      this.scrollMsgsToBottom();
     },
     addMsgToChat(msg) {
       this.chats.find(c => c.id === msg.chat_id).messages.push(msg);
@@ -156,49 +156,47 @@ export default {
 </script>
 <style scoped>
 .chat-li {
-  background-color: rgba(0, 0, 0, 0.05);
-  margin: 3px;
-  padding: 5px;
   border-radius: 15px;
 }
 .chat-li:hover {
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.1);
 }
-.chat-name-wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.chat-name.updated {
-  font-weight: bold;
-}
 .chat-img {
   height: 60px;
   width: 60px;
-  border-radius: 50%;
-  margin: auto;
-  display: block;
+}
+#chats {
+  height: calc(60vh + 80px + 1rem);
+  overflow-y: scroll;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 #messages {
-  max-height: 75vh;
+  background-color: rgba(0, 0, 0, 0.05);
+  height: 60vh;
   overflow-y: scroll;
 }
 .msg {
-  width: 90%;
+  max-width: 75%;
   border-radius: 20px;
   padding: 15px;
   margin: 5px 0px;
+  border:1px solid black;
 }
 .my-msg {
-  margin-left: auto;
-  background-color: lightblue;
+  background-color: rgb(213, 255, 255);
 }
 .friend-msg {
-  margin-right: auto;
-  background-color: palegreen;
+  background-color: #dfd;
 }
-.updated {
-  font-weight: bold;
+#new-msg-form {
+  height:80px;
+}
+#new-msg-body {
+  flex:1;
+  height:80px;
+}
+#new-msg-btn {
+  margin: 0px 15px;
 }
 </style>
