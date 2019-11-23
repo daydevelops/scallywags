@@ -66,8 +66,8 @@ export default {
   data() {
     return {
       chats: this.initial_chats,
-      current_chat: 0,
-      messages: [],
+      current_chat: this.initial_chats[0],
+      messages: this.initial_chats[0].messages,
       new_msg: {
         body: ""
       },
@@ -75,9 +75,6 @@ export default {
     };
   },
   created: function() {
-    if (this.chats.length > 0) {
-      this.showChat(this.chats[0]);
-    }
     // listen to pusher channel for this user
     window.Echo.private("chat-user-" + window.App.user.id).listen(
       "NewMessage",
@@ -87,6 +84,11 @@ export default {
       }
     );
   },
+  mounted() {
+    this.$nextTick(() => {
+        this.showChat(this.current_chat);
+      });
+  },
   methods: {
     isMyMsg(msg) {
       return window.App.user.id == msg.user_id;
@@ -95,6 +97,9 @@ export default {
       this.messages = chat.messages;
       this.current_chat = chat;
       chat.has_new = false;
+      this.$nextTick(() => {
+        this.scrollMsgsToBottom();
+      });
       axios.post(location.pathname + "/" + chat.id + "/read");
     },
     toggleTimestamp(msg) {
