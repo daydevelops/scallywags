@@ -1,5 +1,4 @@
 <?php
-use App\Events\UserSentMessage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -68,11 +67,3 @@ Route::delete('/notifications/all','UserNotificationController@destroyAll');
 Route::delete('/notifications/{notification}','UserNotificationController@destroy');
 
 Route::get('/api/users','Api\UsersController@index');
-
-Route::get('/msg', function() {
-
-    $data['body'] = "test3";
-    $data['user_id'] = 24;
-
-    \App\Chat::find(6)->addMessage($data);
-});
