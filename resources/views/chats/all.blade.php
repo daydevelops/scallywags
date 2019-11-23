@@ -1,7 +1,7 @@
 @extends('layouts/main')
 
 @section('content')
-<chats :chats="{{$chats}}">
+<chats :initial_chats="{{$chats}}">
 </chats>
 
 @endsection

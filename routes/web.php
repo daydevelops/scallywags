@@ -1,5 +1,4 @@
 <?php
-use App\Events\UserSentMessage;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -54,6 +53,7 @@ Route::get('/dashboard', 'DashboardController@index');
 
 ///// MESSAGING /////
 Route::get('/chats','ChatsController@index');
+Route::get('/chats/{chat}','ChatsController@show');
 Route::post('/chats','ChatsController@store');
 Route::post('/chats/{chat}/read','ChatsController@hasRead');
 Route::post('/chats/{chat}/messages','MessagesController@store');
@@ -67,11 +67,3 @@ Route::delete('/notifications/all','UserNotificationController@destroyAll');
 Route::delete('/notifications/{notification}','UserNotificationController@destroy');
 
 Route::get('/api/users','Api\UsersController@index');
-
-Route::get('/msg', function() {
-
-    $data['body'] = "test3";
-    $data['user_id'] = 24;
-
-    \App\Chat::find(6)->addMessage($data);
-});

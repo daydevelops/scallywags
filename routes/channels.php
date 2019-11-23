@@ -11,6 +11,6 @@
 |
 */
 
-Broadcast::channel('chat-{id}', function ($user, $id) {
-    return $user->chats()->find($id) != null;
+Broadcast::channel('chat-user-{id}', function ($user, $id) {
+    return auth()->id() == $id;
 });

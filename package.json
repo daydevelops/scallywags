@@ -12,13 +12,13 @@
   "devDependencies": {
     "axios": "^0.18",
     "bootstrap": "^4.3.1",
-    "cross-env": "^5.1",
-    "jquery": "^3.4",
+    "cross-env": "^5.2.1",
+    "jquery": "^3.4.1",
     "laravel-mix": "^5.0.0",
-    "lodash": "^4.17.13",
-    "popper.js": "^1.12",
-    "resolve-url-loader": "^3.1.0",
-    "sass": "^1.23.3",
+    "lodash": "^4.17.15",
+    "popper.js": "^1.16.0",
+    "resolve-url-loader": "^3.1.1",
+    "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
     "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10"
@@ -28,7 +28,8 @@
     "jquery.caret": "^0.3.1",
     "laravel-echo": "^1.6.1",
     "moment": "^2.24.0",
-    "pusher-js": "^5.0.2",
-    "trix": "^1.2.0"
+    "moment-timezone": "^0.5.27",
+    "pusher-js": "^5.0.3",
+    "trix": "^1.2.1"
   }
 }
