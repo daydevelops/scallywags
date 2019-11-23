@@ -22,12 +22,15 @@
         <h3 class='chat-name text-center' v-text="this.current_chat.friend.name"></h3>
         <div id="msg-wrapper">
           <div id="messages" class="d-flex flex-column p-3 mb-3">
-            <span
+            <div
               v-for="(msg) in this.messages"
               :key="msg.id"
               :class="isMyMsg(msg) ? 'my-msg msg text-right ml-auto' : 'friend-msg msg text-left mr-auto'"
-              v-text="msg.body"
-            ></span>
+              @click="toggleTimestamp(msg)"
+            >
+              <div v-text="msg.body"></div>
+              <div :ref="'timestamp-'+msg.id" class='timestamp hidden'></div>
+            </div>
           </div>
           <div id="new-msg-form">
             <div class="form-group d-flex align-items-center">
@@ -45,6 +48,9 @@
 
 <script>
 import Echo from "laravel-echo";
+
+window.moment = require('moment/moment');
+window.moment = require('moment-timezone/moment-timezone');
 
 window.Pusher = require("pusher-js");
 
@@ -90,6 +96,11 @@ export default {
       this.current_chat = chat;
       chat.has_new = false;
       axios.post(location.pathname + "/" + chat.id + "/read");
+    },
+    toggleTimestamp(msg) {
+      var ts = this.$refs['timestamp-'+msg.id][0];
+      ts.classList.toggle('hidden');
+      ts.innerHTML = moment.utc(msg.created_at).local().calendar();
     },
     sendMsg(chat_id) {
       var endpoint = location.pathname + "/" + chat_id + "/messages";
@@ -182,6 +193,7 @@ export default {
   padding: 15px;
   margin: 5px 0px;
   border:1px solid black;
+  cursor:pointer;
 }
 .my-msg {
   background-color: rgb(213, 255, 255);
@@ -198,5 +210,11 @@ export default {
 }
 #new-msg-btn {
   margin: 0px 15px;
+}
+.timestamp {
+  font-size: 12px;
+}
+.timestamp.hidden {
+  display:none;
 }
 </style>
