@@ -13,7 +13,11 @@ This project was built with Laravel and VueJS. It started as only one feature of
 - run `php artisan key:generate`
 - You will also need to set up a Google Recaptcha service. Enter your keys in the .env file.
 - This application uses a Redis server. To install Redis, run `sudo apt install redis-server`
+- This application also uses Pusher for the chat rooms. To opt into using Pusher, add your keys to the .env file and change the *BROADCAST_DRIVER* value
 - Create a table in your database for the forum
 - Run your migrations and seeders (if necessary)
+- Compile your assets with `npm run dev`, `npm run prod`, or `npm run watch`, depending on your environment
 
 [here](https://scallywags.daydevelops.com) is a live demo of the site
+
+Anyone who would like to contribute is welcome to do so.
