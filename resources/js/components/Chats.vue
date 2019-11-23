@@ -1,12 +1,20 @@
 <template>
   <div class="container">
-    <div class="row">
+    <div class="row" v-if="chats.length>0">
       <div class="col-md-3">
         <h4 class="text-center">Recent</h4>
         <div id="chats">
-          <div v-for="(chat) in chats" :key="chat.id" class="chat-li row p-2 m-1 border border-dark">
+          <div
+            v-for="(chat) in chats"
+            :key="chat.id"
+            class="chat-li row p-2 m-1 border border-dark"
+          >
             <div class="col-3 p-0">
-              <img class="chat-img m-auto d-block rounded-circle" :src="chat.friend.image" alt="friend profile image" />
+              <img
+                class="chat-img m-auto d-block rounded-circle"
+                :src="chat.friend.image"
+                alt="friend profile image"
+              />
             </div>
             <div class="col-9 chat-name-wrapper d-flex flex-column justify-content-center">
               <h4
@@ -19,7 +27,11 @@
         </div>
       </div>
       <div class="col-md-9">
-        <h3 class='chat-name text-center' v-text="this.current_chat.friend.name"></h3>
+        <h3
+          class="chat-name text-center"
+          v-if="this.current_chat"
+          v-text="this.current_chat.friend.name"
+        ></h3>
         <div id="msg-wrapper">
           <div id="messages" class="d-flex flex-column p-3 mb-3">
             <div
@@ -29,18 +41,27 @@
               @click="toggleTimestamp(msg)"
             >
               <div v-text="msg.body"></div>
-              <div :ref="'timestamp-'+msg.id" class='timestamp hidden'></div>
+              <div :ref="'timestamp-'+msg.id" class="timestamp hidden"></div>
             </div>
           </div>
+
           <div id="new-msg-form">
             <div class="form-group d-flex align-items-center">
-              <textarea id='new-msg-body' class="form-control" v-model="new_msg.body"></textarea>
-              <button id='new-msg-btn' class="btn btn-sm btn-primary" @click="sendMsg(current_chat.id)">Send</button>
+              <textarea id="new-msg-body" class="form-control" v-model="new_msg.body"></textarea>
+              <button
+                id="new-msg-btn"
+                class="btn btn-sm btn-primary"
+                @click="sendMsg(current_chat.id)"
+              >Send</button>
             </div>
           </div>
           <p class="text-center" v-text="errors"></p>
         </div>
       </div>
+    </div>
+    <div class="text-center" v-else>
+      <h3>Looks like you don't have any conversations yet.</h3>
+      <p>Visit a users profile to initiate a chat!</p>
     </div>
   </div>
 </template>
@@ -49,8 +70,8 @@
 <script>
 import Echo from "laravel-echo";
 
-window.moment = require('moment/moment');
-window.moment = require('moment-timezone/moment-timezone');
+window.moment = require("moment/moment");
+window.moment = require("moment-timezone/moment-timezone");
 
 window.Pusher = require("pusher-js");
 
@@ -66,8 +87,8 @@ export default {
   data() {
     return {
       chats: this.initial_chats,
-      current_chat: this.initial_chats[0],
-      messages: this.initial_chats[0].messages,
+      current_chat: null,
+      messages: [],
       new_msg: {
         body: ""
       },
@@ -86,16 +107,18 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-        this.showChat(this.current_chat);
-      });
+      if (this.chats.length > 0) {
+        this.showChat(this.chats[0]);
+      }
+    });
   },
   methods: {
     isMyMsg(msg) {
       return window.App.user.id == msg.user_id;
     },
     showChat(chat) {
-      this.messages = chat.messages;
       this.current_chat = chat;
+      this.messages = chat.messages;
       chat.has_new = false;
       this.$nextTick(() => {
         this.scrollMsgsToBottom();
@@ -103,9 +126,12 @@ export default {
       axios.post(location.pathname + "/" + chat.id + "/read");
     },
     toggleTimestamp(msg) {
-      var ts = this.$refs['timestamp-'+msg.id][0];
-      ts.classList.toggle('hidden');
-      ts.innerHTML = moment.utc(msg.created_at).local().calendar();
+      var ts = this.$refs["timestamp-" + msg.id][0];
+      ts.classList.toggle("hidden");
+      ts.innerHTML = moment
+        .utc(msg.created_at)
+        .local()
+        .calendar();
     },
     sendMsg(chat_id) {
       var endpoint = location.pathname + "/" + chat_id + "/messages";
@@ -131,9 +157,15 @@ export default {
       // event.data is the message object
 
       // if the user is currently looking at the updated chat
-      if (this.current_chat.id == event.data.chat_id) {
+      if (this.current_chat && this.current_chat.id == event.data.chat_id) {
         axios.post(location.pathname + "/" + event.data.chat_id + "/read");
+        this.addMsgToChat(event.data);
+        if (event.data.user_id == window.App.user.id) {
+          // this user sent this message, so scroll to the bottom
+          this.scrollMsgsToBottom();
+        }
       } else {
+        // a chat in the chat list needs to be updated
         var chat_index = this.chats.findIndex(c => c.id === event.data.chat_id);
         if (chat_index == -1) {
           // recieved a message for a chat not shown on this page?
@@ -142,22 +174,29 @@ export default {
             .get(location.pathname + "/" + event.data.chat_id)
             .then(
               response => {
+                // add the new chat to the chat list
                 var new_chat = response.data;
                 new_chat.has_new = true;
                 this.chats.push(new_chat);
-                this.moveToTop(new_chat.id);
+
+                // if this is the only chat for this user, show it
+                if (this.current_chat == null) {
+                  this.showChat(this.chats[0]);
+                } else {
+                  this.moveToTop(new_chat.id);
+                }
               },
               error => {
                 location.reload();
               }
             );
         } else {
+          // update the chat already in the chat list
+          this.addMsgToChat(event.data);
           this.chats[chat_index].has_new = true;
         }
       }
 
-      this.addMsgToChat(event.data);
-      this.scrollMsgsToBottom();
     },
     addMsgToChat(msg) {
       this.chats.find(c => c.id === msg.chat_id).messages.push(msg);
@@ -197,8 +236,8 @@ export default {
   border-radius: 20px;
   padding: 15px;
   margin: 5px 0px;
-  border:1px solid black;
-  cursor:pointer;
+  border: 1px solid black;
+  cursor: pointer;
 }
 .my-msg {
   background-color: rgb(213, 255, 255);
@@ -207,11 +246,11 @@ export default {
   background-color: #dfd;
 }
 #new-msg-form {
-  height:80px;
+  height: 80px;
 }
 #new-msg-body {
-  flex:1;
-  height:80px;
+  flex: 1;
+  height: 80px;
 }
 #new-msg-btn {
   margin: 0px 15px;
@@ -220,6 +259,6 @@ export default {
   font-size: 12px;
 }
 .timestamp.hidden {
-  display:none;
+  display: none;
 }
 </style>
