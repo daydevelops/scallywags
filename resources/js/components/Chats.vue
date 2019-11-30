@@ -96,14 +96,14 @@ export default {
     };
   },
   created: function() {
-    // listen to pusher channel for this user
-    window.Echo.private("chat-user-" + window.App.user.id).listen(
-      "NewMessage",
-      e => {
-        console.log("new message");
+    this.chats.forEach(chat => {
+      // listen to pusher channel for each chat
+      window.Echo.private("chat-"+chat.id).listen("NewMessage", e => {
+        console.log('new message');
         this.processMessage(e);
-      }
-    );
+      });
+      chat.has_new = false; // to-do: this is a bad assumption
+    })
   },
   mounted() {
     this.$nextTick(() => {
@@ -167,34 +167,8 @@ export default {
       } else {
         // a chat in the chat list needs to be updated
         var chat_index = this.chats.findIndex(c => c.id === event.data.chat_id);
-        if (chat_index == -1) {
-          // recieved a message for a chat not shown on this page?
-          // must be a newly initiated chat from someone
-          var new_chat = axios
-            .get(location.pathname + "/" + event.data.chat_id)
-            .then(
-              response => {
-                // add the new chat to the chat list
-                var new_chat = response.data;
-                new_chat.has_new = true;
-                this.chats.push(new_chat);
-
-                // if this is the only chat for this user, show it
-                if (this.current_chat == null) {
-                  this.showChat(this.chats[0]);
-                } else {
-                  this.moveToTop(new_chat.id);
-                }
-              },
-              error => {
-                location.reload();
-              }
-            );
-        } else {
-          // update the chat already in the chat list
-          this.addMsgToChat(event.data);
-          this.chats[chat_index].has_new = true;
-        }
+        this.addMsgToChat(event.data);
+        this.chats[chat_index].has_new = true;
       }
 
     },

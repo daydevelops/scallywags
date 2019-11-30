@@ -35,13 +35,7 @@ class NewMessage implements ShouldBroadcast
         if (\App::runningUnitTests()) {
             return new PrivateChannel('test-channel');
         } else {
-            // broadcast on every users channel for this chat
-            $users = Chat::find($this->data->chat_id)->users;
-            $channels = [];
-            foreach ($users as $u) {
-                $channels[] = new PrivateChannel('chat-user-' . $u->id);
-            }
-            return $channels;
+            return new PrivateChannel('chat-' . $this->data->chat_id);
         }
     }
 }
