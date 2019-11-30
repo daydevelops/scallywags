@@ -70,7 +70,6 @@
 <script>
 import Echo from "laravel-echo";
 
-window.moment = require("moment/moment");
 window.moment = require("moment-timezone/moment-timezone");
 
 window.Pusher = require("pusher-js");
