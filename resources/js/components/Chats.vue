@@ -133,6 +133,9 @@ export default {
         .calendar();
     },
     sendMsg(chat_id) {
+      if (this.new_msg.body == "") {
+        return false;
+      }
       var endpoint = location.pathname + "/" + chat_id + "/messages";
       axios.post(endpoint, { body: this.new_msg.body }).then(
         response => {
@@ -143,7 +146,7 @@ export default {
           this.moveToTop(chat_id);
         },
         error => {
-          this.errors = error.response.data;
+          this.errors = "There was a problem sending your message";
         }
       );
     },
