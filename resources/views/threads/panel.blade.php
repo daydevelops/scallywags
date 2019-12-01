@@ -16,8 +16,8 @@
                 @endif
             </h2>
             <div class="help-block thread-details">
-                Posted by: {{$thread->user->name}} {{ $thread->created_at->diffForHumans() }}
-                <div class="badge badge-info">{{ $thread->category->name }}</div>
+                Posted by: <a class="text-dark" href="{{$thread->user->getPath()}}">{{$thread->user->name}}</a> {{ $thread->created_at->diffForHumans() }}
+                <div class="badge badge-info"><a class="text-dark" href="/forum/{{ $thread->category->slug }}">{{ $thread->category->name }}</a></div>
             </div>
             @if ($thread->is_locked)
                 <span class="font-weight-light">
