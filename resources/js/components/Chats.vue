@@ -43,11 +43,13 @@
               <div v-text="msg.body"></div>
               <div :ref="'timestamp-'+msg.id" class="timestamp hidden"></div>
             </div>
+            <div v-if="active_friend" class='typing-notif' v-text="active_friend+' is typing...'">
+            </div>
           </div>
 
           <div id="new-msg-form">
             <div class="form-group d-flex align-items-center">
-              <textarea id="new-msg-body" class="form-control" v-model="new_msg.body"></textarea>
+              <textarea id="new-msg-body" class="form-control" v-model="new_msg.body" @keydown="IAmTyping(current_chat.id)"></textarea>
               <button
                 id="new-msg-btn"
                 class="btn btn-sm btn-primary"
@@ -91,7 +93,9 @@ export default {
       new_msg: {
         body: ""
       },
-      errors: ""
+      errors: "",
+      active_friend:"",
+      typing_timer:false,
     };
   },
   created: function() {
@@ -100,6 +104,11 @@ export default {
       window.Echo.private("chat-"+chat.id).listen("NewMessage", e => {
         console.log('new message');
         this.processMessage(e);
+      })
+      .listenForWhisper('typing', e => {
+        if (this.current_chat.id == chat.id) {
+          this.friendIsTyping(e);
+        }
       });
       chat.has_new = false; // to-do: this is a bad assumption
     })
@@ -119,6 +128,7 @@ export default {
       this.current_chat = chat;
       this.messages = chat.messages;
       chat.has_new = false;
+      this.active_friend = "";
       this.$nextTick(() => {
         this.scrollMsgsToBottom();
       });
@@ -181,6 +191,24 @@ export default {
       var chat = this.chats.find(c => c.id === chat_id);
       this.chats = this.chats.filter(c => c.id !== chat_id);
       this.chats.unshift(chat);
+    },
+    IAmTyping(chat_id) {
+      console.log('typ')
+      window.Echo.private("chat-"+chat_id)
+        .whisper('typing',{
+          name:window.App.user.name
+        })
+    },
+    friendIsTyping(event) {
+      this.active_friend = event.name;
+
+      if (this.typing_timer) {
+        clearTimeout(this.typing_timer)
+      }
+
+      this.typing_timer = setTimeout(() => {
+        this.active_friend = "";
+      },3000)
     }
   }
 };
