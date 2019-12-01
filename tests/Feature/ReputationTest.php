@@ -189,6 +189,17 @@ class ReputationTest extends TestCase
         $this->assertEquals(1, $reply->user->fresh()->reputation);
     }
 
+    /** @test */
+    public function a_users_reputation_has_a_min_of_zero() {
+        $this->signIn();
+        $thread = factory(Thread::class)->create(['user_id' => auth()->id()]);
+        $user = $thread->user;
+        $user->decrement('reputation',$user->reputation);
+        $this->assertEquals(0, $user->reputation);
+        $thread->delete();
+        $this->assertEquals(0, $thread->user->reputation);
+    }
+
     public function publishThread($overrides = [])
     {
         $this->signIn();

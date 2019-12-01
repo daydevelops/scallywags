@@ -20,6 +20,11 @@ trait Reputation {
     }
     
     public function unaward($event) {
-        $this->decrement('reputation',$this->reputation_events[$event]);
+        if ($this->reputation < $this->reputation_events[$event]) {
+            // bring the reputation to a minimum of zero
+            $this->decrement('reputation',$this->reputation);
+        } else {
+            $this->decrement('reputation',$this->reputation_events[$event]);
+        }
     }
 }
