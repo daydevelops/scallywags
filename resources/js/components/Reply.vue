@@ -32,7 +32,8 @@
 						<button class="btn btn-sm btn-secondary" @click='cancelEdit'>Cancel</button>
 					</div>
 				</div>
-				<div class='reply-body' v-else>
+				<div class='reply-body' v-else> 
+					<p v-if="this.edited"><small>[edited]</small></p>
 					<p v-html='body'></p>
 					<div class="level">
 						<span v-if='canEdit()'>
@@ -61,7 +62,8 @@ export default {
 			editing:false,
 			body:this.data.body,
 			errors:"",
-			is_best:0
+			is_best:0,
+			edited:this.data.created_at != this.data.updated_at
 		}
 	},
 	computed: {
@@ -83,6 +85,7 @@ export default {
 					console.log(response.data)
 					this.editing = false;
 					this.data.body = this.body;
+					this.edited = true;
 				},
 				(error) => {
 					this.errors = error.response.data;

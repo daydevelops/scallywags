@@ -36,6 +36,9 @@
 
 	<div class="row py-4">
 		<div class="col-12">
+			@if ($thread->created_at != $thread->updated_at) 
+			<p><small>[edited]</small></p>
+			@endif
 			<p class='thread-body'>{!! $thread->body !!}</p>
 		</div>
 	</div>
