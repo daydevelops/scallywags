@@ -8,6 +8,7 @@
             v-for="(chat) in chats"
             :key="chat.id"
             class="chat-li row p-2 m-1 border border-dark"
+            :class="chat.id == current_chat.id ? 'current-chat' : ''"
           >
             <div class="col-3 p-0">
               <img
@@ -229,6 +230,9 @@ export default {
   height: calc(60vh + 80px + 1rem);
   overflow-y: scroll;
   background-color: rgba(0, 0, 0, 0.05);
+}
+.current-chat {
+  background-color:rgba(0,0,0,0.2);
 }
 #messages {
   background-color: rgba(0, 0, 0, 0.05);
