@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <div class="row" v-if="chats.length>0">
-      <div class="col-md-3">
-        <h4 class="text-center">Recent</h4>
+      <div class="col-lg-3">
+        <h4 id='accordion' class="text-center" @click='toggleChats'>Recent</h4>
         <div id="chats">
           <div
             v-for="(chat) in chats"
@@ -27,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-9">
+      <div class="col-lg-9">
         <h3
           class="chat-name text-center"
           v-if="this.current_chat"
@@ -228,6 +228,9 @@ export default {
           this.errors = "There was a problem retrieving your messages";
         }
        )
+    },
+    toggleChats() {
+      $('#chats')[0].classList.toggle("active");
     }
   }
 };
@@ -286,5 +289,27 @@ export default {
 }
 .timestamp.hidden {
   display: none;
+}
+
+@media (max-width: 979px) {
+  #accordion {
+    cursor:pointer;
+    background-color:rgb(208, 255, 246);
+    padding: 15px;
+    border: 1px solid black;
+    border-radius: 15px;
+    margin: 10px 100px;
+  }
+
+  #chats.active{
+    display:block;
+    height:auto;
+    background-color:rgb(208, 255, 246);
+    margin-bottom:50px;
+  }
+
+  #chats {
+    display: none;
+  } 
 }
 </style>
