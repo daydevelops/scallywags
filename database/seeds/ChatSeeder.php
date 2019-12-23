@@ -20,8 +20,8 @@ class ChatSeeder extends Seeder
 
             $chat->users()->attach([$admin->id, $non_admin->id]);
 
-            // 10 msgs each in alternating order
-            for ($j = 0; $j < 10; $j++) {
+            // 100 msgs each in alternating order
+            for ($j = 0; $j < 100; $j++) {
                 factory('App\Message')->create([
                     'user_id' => $admin->id,
                     'chat_id' => $chat->id
