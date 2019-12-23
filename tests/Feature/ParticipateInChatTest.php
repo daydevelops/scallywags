@@ -58,13 +58,13 @@ class ParticipateInChatTest extends TestCase
         $response->assertDontSee($this->user2->name);
     }
 
-    /** @test */
-    public function a_user_can_request_a_specific_chat() {
-        $this->createChat();
-        $this->signIn();
-        $response = $this->getJson('/chats/'.$this->chat->id)->json();
-        $this->assertEquals($response['id'],$this->chat->id);
-    }
+    // /** @test */
+    // public function a_user_can_request_a_specific_chat() {
+    //     $this->createChat();
+    //     $this->signIn();
+    //     $response = $this->getJson('/chats/'.$this->chat->id)->json();
+    //     $this->assertEquals($response['id'],$this->chat->id);
+    // }
 
     /** @test */
     public function chats_are_ordered_by_date_of_last_msg_sent_by_auth_user() {
@@ -266,5 +266,42 @@ class ParticipateInChatTest extends TestCase
             'message'=>'TESTING'
         ]);
         $this->assertCount(1,DB::table('chat_user')->where(['user_id'=>$user->id])->get());
+    }
+
+    /** @test */
+    public function only_the_last_50_messages_are_shown_for_a_chat() {
+        $this->createChat();
+        $msgs = factory('App\Message',60)->create([
+            'chat_id'=>$this->chat->id,
+            'user_id'=>$this->user2->id    
+        ]);
+        $response = $this->getJson('/chats')->json();
+        $this->assertCount(50,$response[0]['messages']);
+        $this->assertNotEquals($msgs[0]['id'],$response[0]['messages'][0]);
+    }
+
+    /** @test */
+    public function a_user_can_request_past_messages_for_a_chat() {
+        
+        $this->createChat();
+        $msgs = factory('App\Message',110)->create([
+            'chat_id'=>$this->chat->id,
+            'user_id'=>$this->user2->id    
+        ]);
+
+        $total_num_msgs = Message::where(['chat_id'=>$this->chat->id])->count(); // 112
+        $has = 42; // assume we have 42 messages already
+        $wants = 20; // and we want another 20.
+
+        $response = $this->get('/chats/'.$this->chat->id.'/messages?has='.$has.'&wants='.$wants)->json();
+
+        // we should get 20 msgs back
+        $this->assertCount(20,$response);
+
+        // and the id of the last msg should be: total_num_msgs - has  = 112-42=70
+        $this->assertEquals(70,$response[19]['id']);
+
+        // and the id of the first msg should be 70-20+1=51
+        $this->assertEquals(51,$response[0]['id']);
     }
 }
