@@ -12,15 +12,12 @@ use Illuminate\Support\Facades\DB;
 class Chat extends Model
 {
     protected $fillable = [];
-    protected $appends = ['friend'];
+    protected $appends = ['friend','messages'];
 
     protected static function boot() {
 		parent::boot();
 		static::addGlobalScope('users', function ($builder) {
 			$builder->with('users');
-		});
-		static::addGlobalScope('messages', function ($builder) {
-			$builder->with('messages');
 		});
 	}
 
@@ -28,8 +25,12 @@ class Chat extends Model
         return $this->belongsToMany(User::class);
     }
 
-    public function messages() {
-        return $this->hasMany(Message::class);
+    public function getMessagesAttribute() {
+        return $this->messages()->get()->reverse();
+    }
+
+    public function messages($has=null,$wants=50) {
+        return $this->hasMany(Message::class)->orderBy('id','desc')->skip($has)->take($wants);
     }
 
     public function getFriendAttribute() {

@@ -35,6 +35,7 @@
         ></h3>
         <div id="msg-wrapper">
           <div id="messages" class="d-flex flex-column p-3 mb-3">
+            <p class='text-center' @click='getMoreMsgs'>Load more messages</p>
             <div
               v-for="(msg) in this.messages"
               :key="msg.id"
@@ -89,7 +90,7 @@ export default {
   data() {
     return {
       chats: this.initial_chats,
-      current_chat: null,
+      current_chat: this.initial_chats[0],
       messages: [],
       new_msg: {
         body: ""
@@ -125,14 +126,16 @@ export default {
     isMyMsg(msg) {
       return window.App.user.id == msg.user_id;
     },
-    showChat(chat) {
+    showChat(chat,scroll_to_bottom=true) {
       this.current_chat = chat;
       this.messages = chat.messages;
       chat.has_new = false;
       this.active_friend = "";
-      this.$nextTick(() => {
-        this.scrollMsgsToBottom();
-      });
+      if (scroll_to_bottom) {
+        this.$nextTick(() => {
+          this.scrollMsgsToBottom();
+        });
+      }
       axios.post(location.pathname + "/" + chat.id + "/read");
     },
     toggleTimestamp(msg) {
@@ -210,6 +213,21 @@ export default {
       this.typing_timer = setTimeout(() => {
         this.active_friend = "";
       },3000)
+    },
+    getMoreMsgs() {
+      var has = this.current_chat.messages.length;
+      var wants = 50;
+       axios.get(location.pathname + "/" + this.current_chat.id + "/messages?has=" + has + "&wants=" + wants)
+       .then(
+        response => {
+          console.log(response.data);
+          this.current_chat.messages = response.data.concat(this.current_chat.messages);
+          this.showChat(this.current_chat,false);
+        },
+        error => {
+          this.errors = "There was a problem retrieving your messages";
+        }
+       )
     }
   }
 };

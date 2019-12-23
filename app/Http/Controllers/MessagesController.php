@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class MessagesController extends Controller
 {
+
+    public function index(Chat $chat, Request $request) {
+        return $chat->messages(request('has'),request('wants'))->get()->reverse()->values()->toArray();
+    }
+
     /**
      * Store a newly created resource in storage.
      *
