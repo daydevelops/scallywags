@@ -10,7 +10,7 @@ class CategoryTest extends TestCase
 {
 	use DatabaseMigrations;
 
-	public function setup() {
+	public function setup(): void {
 		parent::setup();
 
 		$this->category = factory('App\Category')->create();

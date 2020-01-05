@@ -10,7 +10,7 @@ class UserNotificationTest extends TestCase
 {
 	use DatabaseMigrations;
 
-	public function setup() {
+	public function setup(): void {
 		parent::setup();
 	}
 

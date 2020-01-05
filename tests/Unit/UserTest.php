@@ -11,7 +11,7 @@ class UserTest extends TestCase
 {
 	use DatabaseMigrations;
 
-	public function setup() {
+	public function setup(): void {
 		parent::setup();
 
 		$this->user = factory('App\User')->create();

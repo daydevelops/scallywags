@@ -10,7 +10,7 @@ class TrendingThreadsTest extends TestCase
 {
 	use DatabaseMigrations;
 
-	public function setup() {
+	public function setup(): void {
 		parent::setup();
 		Redis::del('trending_threads_test');
 	}

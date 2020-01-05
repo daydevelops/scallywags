@@ -11,7 +11,7 @@ class ThreadTest extends TestCase
 {
 	use DatabaseMigrations;
 
-	public function setup() {
+	public function setup(): void {
 		parent::setup();
 
 		$this->thread = factory('App\Thread')->create();

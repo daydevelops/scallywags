@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Favourite extends Model
 {
 	use RecordsActivity;
+	
+    public $incrementing = true;
 
 	protected static function boot() {
 		parent::boot();
