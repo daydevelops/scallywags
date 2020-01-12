@@ -26,7 +26,7 @@ class RemoveSkillFromUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('skill');
+            $table->text('skill')->nullable();
         });
     }
 }
