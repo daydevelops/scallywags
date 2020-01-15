@@ -26,6 +26,7 @@ class UserCrudController extends CrudController
         $this->crud->setModel('App\Models\User');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/user');
         $this->crud->setEntityNameStrings('user', 'users');
+        $this->crud->addButtonFromView('line', 'profile', 'profile', 'beginning');
     }
 
     protected function show($id)
