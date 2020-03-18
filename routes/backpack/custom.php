@@ -13,4 +13,5 @@ Route::group([
 ], function () { // custom admin routes
     Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
     Route::crud('user', 'UserCrudController');
+    Route::crud('category', 'CategoryCrudController');
 }); // this should be the absolute last line of this file
