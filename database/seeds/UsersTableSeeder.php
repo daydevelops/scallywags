@@ -21,7 +21,6 @@ class UsersTableSeeder extends Seeder
 				'email'=>env('ADMIN_EMAIL'),
 				'password'=>Hash::make(env('ADMIN_PASS')),
 				'email_verified_at' => now(),
-				'skill' => 'A',
 				'is_admin'=>1,
 				'image'=>$image
 			]);
@@ -34,7 +33,6 @@ class UsersTableSeeder extends Seeder
 				'email'=>'test'.env('ADMIN_EMAIL'),
 				'password'=>Hash::make(env('ADMIN_PASS')),
 				'email_verified_at' => now(),
-				'skill' => 'A',
 				'is_admin'=>0,
 				'image'=>$image
 			]);
