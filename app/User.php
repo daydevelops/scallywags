@@ -22,7 +22,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	* @var array
 	*/
 	protected $fillable = [
-		'name', 'email', 'password','skill','image','email_verified_at'
+		'name', 'email', 'password','image','email_verified_at'
 	];
 
 	/**
@@ -71,7 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
 	}
 
 	public static function allPublic() {
-		return User::select('id','name','skill','image')->get();
+		return User::select('id','name','image')->get();
 	}
 
 	public function read($thread_id) {
