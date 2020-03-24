@@ -26,7 +26,7 @@ class Chat extends Model
     }
 
     public function getMessagesAttribute() {
-        return $this->messages()->get()->reverse();
+        return $this->messages()->get()->reverse()->values();
     }
 
     public function messages($has=null,$wants=50) {
