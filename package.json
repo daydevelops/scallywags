@@ -16,6 +16,7 @@
     "jquery": "^3.4.1",
     "laravel-mix": "^5.0.4",
     "lodash": "^4.17.15",
+    "minimist": "^1.2.5",
     "popper.js": "^1.16.1",
     "resolve-url-loader": "^3.1.1",
     "sass": "^1.26.3",
@@ -26,7 +27,7 @@
   "dependencies": {
     "at.js": "^1.5.4",
     "jquery.caret": "^0.3.1",
-    "laravel-echo": "^1.6.1",
+    "laravel-echo": "^1.7.0",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",
     "pusher-js": "^5.1.1",
