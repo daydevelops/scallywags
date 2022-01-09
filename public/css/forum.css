@@ -1,0 +1,31 @@
+.thread {
+  cursor: pointer;
+}
+
+.thread:hover {
+  background-color: #f1f1f1;
+  border-radius: 15px;
+}
+
+.thread-date,
+.thread-user,
+.thread-reply-count {
+  margin: 0px;
+}
+
+.thread-meta-icon {
+  margin: 0px 3px;
+}
+
+.panel {
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0px 0px 3px #AAA;
+  margin: 15px 0px;
+}
+
+#categories-dropdown > .dropdown-menu {
+  width: 100%;
+}
+
